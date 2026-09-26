@@ -63,7 +63,7 @@ export async function startServer(opts: StartOptions = {}): Promise<{ http: Http
         aiStatus.ms = Math.round(r.ms);
         aiStatus.note = llm.log[llm.log.length - 1]?.note;
         console.log(aiStatus.ok
-          ? `[llm] self-check ok: ${cfg.models.smart} answered in ${aiStatus.ms} ms`
+          ? `[llm] self-check ok: ${cfg.models.smart} answered in ${aiStatus.ms} ms${llm.backupUses ? ` (via backup ${cfg.backupModel}: the primary said "model not found")` : ''}`
           : `[llm] self-check FAILED (${aiStatus.note ?? 'no answer'}): every AI job will use its template fallback. Check LLM_PROVIDER, LLM_BASE_URL, LLM_API_KEY, the model names, and LLM_REASONING_EFFORT.`);
       });
     }

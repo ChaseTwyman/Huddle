@@ -34,6 +34,12 @@ export type LlmConfig = {
    * answers in ~2 s. Empty = don't send the parameter.
    */
   reasoningEffort?: string;
+  /**
+   * Tried once, immediately, when the provider says "model not found". Meta's API answers a large share of
+   * muse-spark-1.3 requests that way (65% of identical requests with reasoning_effort set, in 60-140 ms, with no
+   * rate-limit headers) while the rest succeed; muse-spark-1.2 answered 100% in ~2-3 s.
+   */
+  backupModel?: string;
 };
 
 const DEFAULT_CLAUDE_MODEL = 'claude-opus-5';
@@ -56,6 +62,7 @@ export function configFromEnv(env = process.env): LlmConfig {
   return {
     provider, effort, ...shared,
     reasoningEffort: env.LLM_REASONING_EFFORT ?? (/api\.meta\.ai/.test(baseURL) ? 'minimal' : ''),
+    backupModel: env.LLM_MODEL_BACKUP ?? (/api\.meta\.ai/.test(baseURL) ? 'muse-spark-1.2' : ''),
     baseURL,
     apiKey: env.LLM_API_KEY || '',
     models: {
@@ -110,6 +117,8 @@ export class LLM {
   private backoffUntil = new Map<TaskName, number>();
   private warnedModels = new Set<string>();
   private noResponseFormat = false;
+  /** How often the backup model answered for a "model not found" (shown in the self-check). */
+  backupUses = 0;
   private mockSeq = 0;
   readonly log: AiLogEntry[] = [];
   onLog: ((log: AiLogEntry[]) => void) | null = null;
@@ -292,6 +301,11 @@ export class LLM {
       return choice?.message?.content ?? '';
     } catch (err) {
       const e = err as { status?: number; message?: string };
+      const backup = this.config.backupModel;
+      if (e?.status === 404 && backup && backup !== model && !signal.aborted) {
+        this.backupUses++;
+        return this.complete(backup, messages, temperature, signal, hasImages);
+      }
       if (useFormat && e?.status === 400 && /response_format|json/i.test(e.message ?? '')) {
         this.noResponseFormat = true;
         const res = await client.chat.completions.create({ model, messages, temperature }, { signal });

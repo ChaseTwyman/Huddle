@@ -93,6 +93,17 @@ describe('AI client (BUILD_PROMPT 10.1)', () => {
     expect(llm.log[llm.log.length - 1].note).toMatch(/backoff/);
   });
 
+  it('retries a "model not found" once with the backup model (Meta answers a share of muse-spark-1.3 requests that way)', async () => {
+    queue = [{ status: 404 }, { body: '{"answer":"from backup"}' }];
+    requests.length = 0;
+    const llm = new LLM(new RealClock(), { provider: 'openai_compatible', baseURL: base, apiKey: 'test', cache: false, models: { smart: 'smart-m', fast: 'fast-m', vision: 'vis-m' }, backupModel: 'backup-m' });
+    llm.quiet = true;
+    const r = await call(llm);
+    expect(r).toMatchObject({ value: { answer: 'from backup' }, source: 'llm' });
+    expect(requests.map((q) => (q.body as { model?: string }).model)).toEqual(['fast-m', 'backup-m']);
+    expect(llm.backupUses).toBe(1);
+  });
+
   it('logs a model-not-found hint once and falls back', async () => {
     queue = [{ status: 404 }];
     const llm = make();

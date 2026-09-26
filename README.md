@@ -88,18 +88,18 @@ Every push to `main` redeploys. Free-plan notes: the service sleeps after ~15 mi
 
 ## Switching providers and models
 
-Meta Model API with Muse Spark 1.3 (the default in `.env.example` and `render.yaml`; Meta retired the older Llama API at api.llama.com in July 2026):
+Meta Model API with Muse Spark 1.2 (the default in `.env.example` and `render.yaml`; Meta retired the older Llama API at api.llama.com in July 2026). Why 1.2, not 1.3: measured with the team's key on 2026-09-26, Meta answered 65% of identical `muse-spark-1.3` requests (with `reasoning_effort`) with an instant 404 "model not found" and no rate-limit headers, and a Director turn took 4–12 s; `muse-spark-1.2` answered 6/6 in 1.9–3.3 s with lines of the same quality. Huddle sends `reasoning_effort: minimal` for api.meta.ai and, on any "model not found", retries once with `LLM_MODEL_BACKUP` (default `muse-spark-1.2`), so a 1.3 setting still works:
 
 ```
 LLM_PROVIDER=openai_compatible
 LLM_BASE_URL=https://api.meta.ai/v1
 LLM_API_KEY=...your Meta Model API key...
-LLM_MODEL_SMART=muse-spark-1.3
-LLM_MODEL_FAST=muse-spark-1.3
-LLM_MODEL_VISION=muse-spark-1.3
+LLM_MODEL_SMART=muse-spark-1.2
+LLM_MODEL_FAST=muse-spark-1.2
+LLM_MODEL_VISION=muse-spark-1.2
 ```
 
-Muse Spark takes text and images, so one model covers every job including the scorebug reader. Avoid the `-contributor` variants for family use: they're cheaper because Meta may train on the prompts, which include first names and profile answers. If the AI log shows timeouts on the quick jobs (Call It has 2.5 s), try `muse-spark-1.2` for `LLM_MODEL_FAST`. List the models your key can use: `curl -H "Authorization: Bearer $LLM_API_KEY" https://api.meta.ai/v1/models`. If a call says "model not found", Huddle logs the same hint and keeps running on templates.
+Muse Spark takes text and images, so one model covers every job including the scorebug reader. Avoid the `-contributor` variants for family use: they're cheaper because Meta may train on the prompts, which include first names and profile answers. List the models your key can use: `curl -H "Authorization: Bearer $LLM_API_KEY" https://api.meta.ai/v1/models`. To check a deploy, open `/api/ai-status` (the server makes one test call at startup).
 
 Groq: `LLM_BASE_URL=https://api.groq.com/openai/v1`, `LLM_MODEL_SMART=meta-llama/llama-4-maverick-17b-128e-instruct`, `LLM_MODEL_FAST=meta-llama/llama-4-scout-17b-16e-instruct`.
 
