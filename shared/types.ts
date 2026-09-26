@@ -64,7 +64,8 @@ export type Concept = {
   reviewed: false | true;
 };
 
-export type Moment = { id: string; idx: number; label: string; qtr: number; clock: string; features: string[] };
+/** label includes features (server/logs only); publicLabel is spoiler-free (sent to the TV jump list). */
+export type Moment = { id: string; idx: number; label: string; publicLabel: string; qtr: number; clock: string; features: string[] };
 export type Segment = { id: string; label: string; startIdx: number; endIdx: number };
 export type MomentsFile = { moments: Moment[]; segments: Segment[]; keys: Record<string, number> };
 

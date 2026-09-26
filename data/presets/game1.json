@@ -1,0 +1,8 @@
+{
+  "id": "game1",
+  "label": "Simulated: Game 1 knowledge",
+  "_note": "Knowledge seeded by learner join order. Slots past the end reuse the last slot. \"basics\" means every concept with category basics.",
+  "slots": [
+    { "mastered": [], "familiar": [], "seen": [] }
+  ]
+}

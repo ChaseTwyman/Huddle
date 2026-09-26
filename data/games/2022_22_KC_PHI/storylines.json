@@ -1,0 +1,71 @@
+{
+  "gameFacts": [
+    { "text": "Super Bowl LVII was played on February 12, 2023, at State Farm Stadium in Glendale, Arizona.", "revealAfter": null, "verified": true },
+    { "text": "Rihanna performed the halftime show.", "revealAfter": null, "verified": true },
+    { "text": "Philadelphia led 24–14 at halftime.", "revealAfter": "halftime", "verified": true },
+    { "text": "Kansas City won 38–35.", "revealAfter": "final", "verified": true }
+  ],
+  "storylines": [
+    {
+      "id": "kelce-brothers", "title": "The Kelce brothers", "assignable": true,
+      "tags": ["family", "drama", "relationships"],
+      "players": [
+        { "name": "Travis Kelce", "team": "KC", "position": "tight end", "pbpNames": ["T.Kelce"] },
+        { "name": "Jason Kelce", "team": "PHI", "position": "center", "pbpNames": ["J.Kelce"] }
+      ],
+      "facts": [
+        { "text": "Travis Kelce (Chiefs tight end) and Jason Kelce (Eagles center) are the first brothers to play against each other in a Super Bowl.", "revealAfter": null, "verified": true },
+        { "text": "Their mother, Donna Kelce, is the first mom to have two sons play against each other in a Super Bowl.", "revealAfter": null, "verified": true },
+        { "text": "As the Eagles' center, Jason snaps the ball to start nearly every Eagles offensive play.", "revealAfter": null, "verified": true }
+      ]
+    },
+    {
+      "id": "toney-second-chance", "title": "Kadarius Toney's second chance", "assignable": true,
+      "tags": ["underdog", "comeback", "chaos"],
+      "players": [ { "name": "Kadarius Toney", "team": "KC", "position": "wide receiver and punt returner", "pbpNames": ["K.Toney"] } ],
+      "facts": [
+        { "text": "The New York Giants gave up on Toney midway through his second season and traded him to Kansas City.", "revealAfter": null, "verified": true },
+        { "text": "Toney caught a 5-yard touchdown pass that gave Kansas City its first lead of the night, 28–27.", "revealAfter": "toney-td", "verified": true },
+        { "text": "Toney returned a punt 65 yards, the longest punt return in Super Bowl history.", "revealAfter": "toney-return", "verified": true }
+      ]
+    },
+    {
+      "id": "hurts-philly", "title": "Jalen Hurts", "assignable": true,
+      "tags": ["drama", "leader", "numbers"],
+      "players": [ { "name": "Jalen Hurts", "team": "PHI", "position": "quarterback", "pbpNames": ["J.Hurts"] } ],
+      "facts": [
+        { "text": "Jalen Hurts is Philadelphia's quarterback.", "revealAfter": null, "verified": true },
+        { "text": "Hurts finished second in MVP voting that season.", "revealAfter": null, "verified": false },
+        { "text": "Hurts ran in a two-point conversion to tie the game 35–35.", "revealAfter": "hurts-2pt", "verified": true }
+      ]
+    },
+    {
+      "id": "mahomes-star", "title": "Patrick Mahomes", "assignable": true,
+      "tags": ["favorite", "star", "numbers"],
+      "players": [ { "name": "Patrick Mahomes", "team": "KC", "position": "quarterback", "pbpNames": ["P.Mahomes"] } ],
+      "facts": [
+        { "text": "Patrick Mahomes is Kansas City's quarterback.", "revealAfter": null, "verified": true },
+        { "text": "Mahomes was playing through an ankle injury.", "revealAfter": null, "verified": false },
+        { "text": "Mahomes was named Super Bowl MVP, his second.", "revealAfter": "final", "verified": true }
+      ]
+    },
+    {
+      "id": "kickers", "title": "The kickers", "assignable": true,
+      "tags": ["numbers", "pressure"],
+      "players": [ { "name": "Harrison Butker", "team": "KC", "position": "kicker", "pbpNames": ["H.Butker"] } ],
+      "facts": [
+        { "text": "Harrison Butker is Kansas City's kicker.", "revealAfter": null, "verified": true },
+        { "text": "Butker kicked the go-ahead 27-yard field goal, leaving 8 seconds on the clock.", "revealAfter": "butker-fg", "verified": true }
+      ]
+    },
+    {
+      "id": "the-call", "title": "The call", "assignable": false,
+      "tags": ["drama"],
+      "players": [ { "name": "James Bradberry", "team": "PHI", "position": "cornerback", "pbpNames": ["J.Bradberry"] } ],
+      "facts": [
+        { "text": "With the game tied and under two minutes left, Bradberry was called for defensive holding on 3rd and 8.", "revealAfter": "bradberry-flag", "verified": true },
+        { "text": "After the game Bradberry said: \"It was a holding. I tugged his jersey. I was hoping they would let it slide.\"", "revealAfter": "bradberry-flag", "verified": true }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,613 @@
+{
+ "moments": [
+  {
+   "id": "m7",
+   "idx": 7,
+   "label": "Q1 12:02 · Big play · 1st & 10 at KC 34",
+   "publicLabel": "Q1 12:02 · PHI · 1st & 10 at KC 34",
+   "qtr": 1,
+   "clock": "12:02",
+   "features": [
+    "Big play"
+   ]
+  },
+  {
+   "id": "m10",
+   "idx": 10,
+   "label": "Q1 10:22 · Review · 3rd & 3 at KC 4",
+   "publicLabel": "Q1 10:22 · PHI · 3rd & 3 at KC 4",
+   "qtr": 1,
+   "clock": "10:22",
+   "features": [
+    "Review"
+   ]
+  },
+  {
+   "id": "m11",
+   "idx": 11,
+   "label": "Q1 10:13 · Flag, Score · 1st & Goal at KC 1",
+   "publicLabel": "Q1 10:13 · PHI · 1st & Goal at KC 1",
+   "qtr": 1,
+   "clock": "10:13",
+   "features": [
+    "Flag",
+    "Score",
+    "Storyline: hurts-philly"
+   ]
+  },
+  {
+   "id": "m12",
+   "idx": 12,
+   "label": "Q1 10:09 · Score",
+   "publicLabel": "Q1 10:09 · PHI · Extra point",
+   "qtr": 1,
+   "clock": "10:09",
+   "features": [
+    "Score"
+   ]
+  },
+  {
+   "id": "m15",
+   "idx": 15,
+   "label": "Q1 9:33 · Big play · 2nd & 7 at KC 28",
+   "publicLabel": "Q1 9:33 · KC · 2nd & 7 at KC 28",
+   "qtr": 1,
+   "clock": "9:33",
+   "features": [
+    "Big play",
+    "Storyline: kelce-brothers"
+   ]
+  },
+  {
+   "id": "m17",
+   "idx": 17,
+   "label": "Q1 8:21 · Big play · 2nd & 2 at PHI 44",
+   "publicLabel": "Q1 8:21 · KC · 2nd & 2 at PHI 44",
+   "qtr": 1,
+   "clock": "8:21",
+   "features": [
+    "Big play"
+   ]
+  },
+  {
+   "id": "m19",
+   "idx": 19,
+   "label": "Q1 7:03 · Score · 2nd & 8 at PHI 18",
+   "publicLabel": "Q1 7:03 · KC · 2nd & 8 at PHI 18",
+   "qtr": 1,
+   "clock": "7:03",
+   "features": [
+    "Score",
+    "Storyline: kelce-brothers"
+   ]
+  },
+  {
+   "id": "m20",
+   "idx": 20,
+   "label": "Q1 6:57 · Score",
+   "publicLabel": "Q1 6:57 · KC · Extra point",
+   "qtr": 1,
+   "clock": "6:57",
+   "features": [
+    "Score"
+   ]
+  },
+  {
+   "id": "m22",
+   "idx": 22,
+   "label": "Q1 6:57 · Flag · 1st & 10 at PHI 25",
+   "publicLabel": "Q1 6:57 · PHI · 1st & 10 at PHI 25",
+   "qtr": 1,
+   "clock": "6:57",
+   "features": [
+    "Flag"
+   ]
+  },
+  {
+   "id": "m26",
+   "idx": 26,
+   "label": "Q1 5:00 · Decision · 4th & 14 at PHI 21",
+   "publicLabel": "Q1 5:00 · PHI · 4th & 14 at PHI 21",
+   "qtr": 1,
+   "clock": "5:00",
+   "features": [
+    "Decision"
+   ]
+  },
+  {
+   "id": "m28",
+   "idx": 28,
+   "label": "Q1 4:12 · Flag · 2nd & 4 at KC 40",
+   "publicLabel": "Q1 4:12 · KC · 2nd & 4 at KC 40",
+   "qtr": 1,
+   "clock": "4:12",
+   "features": [
+    "Flag"
+   ]
+  },
+  {
+   "id": "m29",
+   "idx": 29,
+   "label": "Q1 3:48 · Big play · 1st & 10 at KC 47",
+   "publicLabel": "Q1 3:48 · KC · 1st & 10 at KC 47",
+   "qtr": 1,
+   "clock": "3:48",
+   "features": [
+    "Big play",
+    "Storyline: kelce-brothers"
+   ]
+  },
+  {
+   "id": "m33",
+   "idx": 33,
+   "label": "Q1 2:28 · Decision · 4th & 3 at PHI 24",
+   "publicLabel": "Q1 2:28 · KC · 4th & 3 at PHI 24",
+   "qtr": 1,
+   "clock": "2:28",
+   "features": [
+    "Decision",
+    "Storyline: kickers"
+   ]
+  },
+  {
+   "id": "m36",
+   "idx": 36,
+   "label": "Q1 1:08 · Flag · 3rd & 4 at PHI 38",
+   "publicLabel": "Q1 1:08 · PHI · 3rd & 4 at PHI 38",
+   "qtr": 1,
+   "clock": "1:08",
+   "features": [
+    "Flag"
+   ]
+  },
+  {
+   "id": "m40",
+   "idx": 40,
+   "label": "Q2 15:00 · Score, Big play · 1st & 10 at KC 45",
+   "publicLabel": "Q2 15:00 · PHI · 1st & 10 at KC 45",
+   "qtr": 2,
+   "clock": "15:00",
+   "features": [
+    "Score",
+    "Big play"
+   ]
+  },
+  {
+   "id": "m41",
+   "idx": 41,
+   "label": "Q2 14:52 · Score",
+   "publicLabel": "Q2 14:52 · PHI · Extra point",
+   "qtr": 2,
+   "clock": "14:52",
+   "features": [
+    "Score"
+   ]
+  },
+  {
+   "id": "m46",
+   "idx": 46,
+   "label": "Q2 13:31 · Decision · 4th & 8 at KC 27",
+   "publicLabel": "Q2 13:31 · KC · 4th & 8 at KC 27",
+   "qtr": 2,
+   "clock": "13:31",
+   "features": [
+    "Decision"
+   ]
+  },
+  {
+   "id": "m52",
+   "idx": 52,
+   "label": "Q2 10:12 · Flag · 3rd & 1 at KC 47",
+   "publicLabel": "Q2 10:12 · PHI · 3rd & 1 at KC 47",
+   "qtr": 2,
+   "clock": "10:12",
+   "features": [
+    "Flag"
+   ]
+  },
+  {
+   "id": "m53",
+   "idx": 53,
+   "label": "Q2 9:48 · Score, Turnover · 3rd & 5 at PHI 49",
+   "publicLabel": "Q2 9:48 · PHI · 3rd & 5 at PHI 49",
+   "qtr": 2,
+   "clock": "9:48",
+   "features": [
+    "Score",
+    "Turnover",
+    "Storyline: hurts-philly"
+   ]
+  },
+  {
+   "id": "m54",
+   "idx": 54,
+   "label": "Q2 9:39 · Score",
+   "publicLabel": "Q2 9:39 · KC · Extra point",
+   "qtr": 2,
+   "clock": "9:39",
+   "features": [
+    "Score"
+   ]
+  },
+  {
+   "id": "m63",
+   "idx": 63,
+   "label": "Q2 5:28 · Decision, Big play · 4th & 5 at KC 44",
+   "publicLabel": "Q2 5:28 · PHI · 4th & 5 at KC 44",
+   "qtr": 2,
+   "clock": "5:28",
+   "features": [
+    "Decision",
+    "Big play",
+    "Storyline: hurts-philly"
+   ]
+  },
+  {
+   "id": "m67",
+   "idx": 67,
+   "label": "Q2 2:42 · Flag · 4th & 2 at KC 8",
+   "publicLabel": "Q2 2:42 · PHI · 4th & 2 at KC 8",
+   "qtr": 2,
+   "clock": "2:42",
+   "features": [
+    "Flag"
+   ]
+  },
+  {
+   "id": "m68",
+   "idx": 68,
+   "label": "Q2 2:24 · Score · 1st & Goal at KC 4",
+   "publicLabel": "Q2 2:24 · PHI · 1st & Goal at KC 4",
+   "qtr": 2,
+   "clock": "2:24",
+   "features": [
+    "Score",
+    "Storyline: hurts-philly"
+   ]
+  },
+  {
+   "id": "m69",
+   "idx": 69,
+   "label": "Q2 2:20 · Score",
+   "publicLabel": "Q2 2:20 · PHI · Extra point",
+   "qtr": 2,
+   "clock": "2:20",
+   "features": [
+    "Score"
+   ]
+  },
+  {
+   "id": "m74",
+   "idx": 74,
+   "label": "Q2 1:51 · Flag · 2nd & 10 at KC 36",
+   "publicLabel": "Q2 1:51 · KC · 2nd & 10 at KC 36",
+   "qtr": 2,
+   "clock": "1:51",
+   "features": [
+    "Flag"
+   ]
+  },
+  {
+   "id": "m78",
+   "idx": 78,
+   "label": "Q2 1:33 · Decision, Big play · 4th & 12 at KC 34",
+   "publicLabel": "Q2 1:33 · KC · 4th & 12 at KC 34",
+   "qtr": 2,
+   "clock": "1:33",
+   "features": [
+    "Decision",
+    "Big play"
+   ]
+  },
+  {
+   "id": "m80",
+   "idx": 80,
+   "label": "Q2 1:00 · Review · 2nd & 1 at KC 48",
+   "publicLabel": "Q2 1:00 · PHI · 2nd & 1 at KC 48",
+   "qtr": 2,
+   "clock": "1:00",
+   "features": [
+    "Review"
+   ]
+  },
+  {
+   "id": "m85",
+   "idx": 85,
+   "label": "Q2 0:23 · Big play · 3rd & 5 at KC 41",
+   "publicLabel": "Q2 0:23 · PHI · 3rd & 5 at KC 41",
+   "qtr": 2,
+   "clock": "0:23",
+   "features": [
+    "Big play"
+   ]
+  },
+  {
+   "id": "m88",
+   "idx": 88,
+   "label": "Q2 0:04 · Decision, Score · 2nd & 8 at KC 17",
+   "publicLabel": "Q2 0:04 · PHI · 2nd & 8 at KC 17",
+   "qtr": 2,
+   "clock": "0:04",
+   "features": [
+    "Decision",
+    "Score"
+   ]
+  },
+  {
+   "id": "halftime",
+   "idx": 90,
+   "label": "Q3 15:00 · kickoff",
+   "publicLabel": "Q3 15:00 · KC · Kickoff",
+   "qtr": 3,
+   "clock": "15:00",
+   "features": []
+  },
+  {
+   "id": "m100",
+   "idx": 100,
+   "label": "Q3 9:33 · Score · 2nd & Goal at PHI 1",
+   "publicLabel": "Q3 9:33 · KC · 2nd & Goal at PHI 1",
+   "qtr": 3,
+   "clock": "9:33",
+   "features": [
+    "Score"
+   ]
+  },
+  {
+   "id": "m101",
+   "idx": 101,
+   "label": "Q3 9:30 · Score",
+   "publicLabel": "Q3 9:30 · KC · Extra point",
+   "qtr": 3,
+   "clock": "9:30",
+   "features": [
+    "Score"
+   ]
+  },
+  {
+   "id": "m103",
+   "idx": 103,
+   "label": "Q3 9:30 · Review · 1st & 10 at PHI 25",
+   "publicLabel": "Q3 9:30 · PHI · 1st & 10 at PHI 25",
+   "qtr": 3,
+   "clock": "9:30",
+   "features": [
+    "Review"
+   ]
+  },
+  {
+   "id": "m111",
+   "idx": 111,
+   "label": "Q3 6:13 · Flag · 3rd & 9 at KC 42",
+   "publicLabel": "Q3 6:13 · PHI · 3rd & 9 at KC 42",
+   "qtr": 3,
+   "clock": "6:13",
+   "features": [
+    "Flag"
+   ]
+  },
+  {
+   "id": "m112",
+   "idx": 112,
+   "label": "Q3 6:13 · Review · 3rd & 14 at KC 47",
+   "publicLabel": "Q3 6:13 · PHI · 3rd & 14 at KC 47",
+   "qtr": 3,
+   "clock": "6:13",
+   "features": [
+    "Review"
+   ]
+  },
+  {
+   "id": "m116",
+   "idx": 116,
+   "label": "Q3 4:02 · Decision · 4th & 1 at KC 21",
+   "publicLabel": "Q3 4:02 · PHI · 4th & 1 at KC 21",
+   "qtr": 3,
+   "clock": "4:02",
+   "features": [
+    "Decision"
+   ]
+  },
+  {
+   "id": "m121",
+   "idx": 121,
+   "label": "Q3 1:48 · Decision, Score · 4th & 6 at KC 15",
+   "publicLabel": "Q3 1:48 · PHI · 4th & 6 at KC 15",
+   "qtr": 3,
+   "clock": "1:48",
+   "features": [
+    "Decision",
+    "Score"
+   ]
+  },
+  {
+   "id": "m129",
+   "idx": 129,
+   "label": "Q4 14:19 · Flag · 1st & 10 at PHI 30",
+   "publicLabel": "Q4 14:19 · KC · 1st & 10 at PHI 30",
+   "qtr": 4,
+   "clock": "14:19",
+   "features": [
+    "Flag"
+   ]
+  },
+  {
+   "id": "toney-td",
+   "idx": 133,
+   "label": "Q4 12:08 · Score · 3rd & 3 at PHI 5",
+   "publicLabel": "Q4 12:08 · KC · 3rd & 3 at PHI 5",
+   "qtr": 4,
+   "clock": "12:08",
+   "features": [
+    "Score",
+    "Storyline: toney-second-chance"
+   ]
+  },
+  {
+   "id": "m134",
+   "idx": 134,
+   "label": "Q4 12:04 · Score",
+   "publicLabel": "Q4 12:04 · KC · Extra point",
+   "qtr": 4,
+   "clock": "12:04",
+   "features": [
+    "Score"
+   ]
+  },
+  {
+   "id": "toney-return",
+   "idx": 139,
+   "label": "Q4 10:33 · Decision, Big play · 4th & 3 at PHI 32",
+   "publicLabel": "Q4 10:33 · PHI · 4th & 3 at PHI 32",
+   "qtr": 4,
+   "clock": "10:33",
+   "features": [
+    "Decision",
+    "Big play",
+    "Storyline: toney-second-chance"
+   ]
+  },
+  {
+   "id": "m142",
+   "idx": 142,
+   "label": "Q4 9:26 · Score · 3rd & Goal at PHI 4",
+   "publicLabel": "Q4 9:26 · KC · 3rd & Goal at PHI 4",
+   "qtr": 4,
+   "clock": "9:26",
+   "features": [
+    "Score"
+   ]
+  },
+  {
+   "id": "m143",
+   "idx": 143,
+   "label": "Q4 9:22 · Score",
+   "publicLabel": "Q4 9:22 · KC · Extra point",
+   "qtr": 4,
+   "clock": "9:22",
+   "features": [
+    "Score"
+   ]
+  },
+  {
+   "id": "m151",
+   "idx": 151,
+   "label": "Q4 5:45 · Big play · 1st & 10 at KC 47",
+   "publicLabel": "Q4 5:45 · PHI · 1st & 10 at KC 47",
+   "qtr": 4,
+   "clock": "5:45",
+   "features": [
+    "Big play"
+   ]
+  },
+  {
+   "id": "m152",
+   "idx": 152,
+   "label": "Q4 5:20 · Score · 1st & Goal at KC 2",
+   "publicLabel": "Q4 5:20 · PHI · 1st & Goal at KC 2",
+   "qtr": 4,
+   "clock": "5:20",
+   "features": [
+    "Score",
+    "Storyline: hurts-philly"
+   ]
+  },
+  {
+   "id": "hurts-2pt",
+   "idx": 153,
+   "label": "Q4 5:15 · Decision, Score",
+   "publicLabel": "Q4 5:15 · PHI · Try after touchdown",
+   "qtr": 4,
+   "clock": "5:15",
+   "features": [
+    "Decision",
+    "Score",
+    "Storyline: hurts-philly"
+   ]
+  },
+  {
+   "id": "m160",
+   "idx": 160,
+   "label": "Q4 2:55 · Big play · 1st & 10 at PHI 43",
+   "publicLabel": "Q4 2:55 · KC · 1st & 10 at PHI 43",
+   "qtr": 4,
+   "clock": "2:55",
+   "features": [
+    "Big play",
+    "Storyline: mahomes-star"
+   ]
+  },
+  {
+   "id": "bradberry-flag",
+   "idx": 164,
+   "label": "Q4 1:54 · Flag · 3rd & 8 at PHI 15",
+   "publicLabel": "Q4 1:54 · KC · 3rd & 8 at PHI 15",
+   "qtr": 4,
+   "clock": "1:54",
+   "features": [
+    "Flag",
+    "Storyline: the-call"
+   ]
+  },
+  {
+   "id": "butker-fg",
+   "idx": 171,
+   "label": "Q4 0:11 · Decision, Score · 4th & 8 at PHI 9",
+   "publicLabel": "Q4 0:11 · KC · 4th & 8 at PHI 9",
+   "qtr": 4,
+   "clock": "0:11",
+   "features": [
+    "Decision",
+    "Score",
+    "Storyline: kickers"
+   ]
+  },
+  {
+   "id": "m173",
+   "idx": 173,
+   "label": "Q4 0:06 · pass · 1st & 10 at PHI 36",
+   "publicLabel": "Q4 0:06 · PHI · 1st & 10 at PHI 36",
+   "qtr": 4,
+   "clock": "0:06",
+   "features": []
+  },
+  {
+   "id": "final",
+   "idx": 174,
+   "label": "Q4 0:00 · end_of_period",
+   "publicLabel": "Q4 0:00 · end_of_period",
+   "qtr": 4,
+   "clock": "0:00",
+   "features": []
+  }
+ ],
+ "segments": [
+  {
+   "id": "A",
+   "label": "A · Q4 11:22 · PHI drive",
+   "startIdx": 137,
+   "endIdx": 139
+  },
+  {
+   "id": "B",
+   "label": "B · Q4 5:45 · PHI drive",
+   "startIdx": 151,
+   "endIdx": 153
+  },
+  {
+   "id": "C",
+   "label": "C · Q4 2:07 · Tied, KC ball",
+   "startIdx": 161,
+   "endIdx": 171
+  }
+ ],
+ "keys": {
+  "toney-return": 139,
+  "toney-td": 133,
+  "hurts-2pt": 153,
+  "bradberry-flag": 164,
+  "butker-fg": 171,
+  "halftime": 90,
+  "final": 174
+ }
+}

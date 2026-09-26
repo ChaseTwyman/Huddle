@@ -1,0 +1,22 @@
+{
+  "id": "game4",
+  "label": "Simulated: Game 4 knowledge",
+  "_note": "Knowledge seeded by learner join order. Slots past the end reuse the last slot. \"basics\" means every concept with category basics.",
+  "slots": [
+    {
+      "mastered": ["basics", "touchdown", "extra_point", "field_goal", "punt", "holding_offensive", "false_start"],
+      "familiar": ["holding_defensive", "pass_interference_defensive", "automatic_first_down", "two_point_conversion", "fourth_down_decision", "running_out_the_clock"],
+      "seen": []
+    },
+    {
+      "mastered": [],
+      "familiar": ["basics", "touchdown", "field_goal", "punt"],
+      "seen": ["holding_defensive", "two_point_conversion", "extra_point"]
+    },
+    {
+      "mastered": [],
+      "familiar": [],
+      "seen": ["basics"]
+    }
+  ]
+}
