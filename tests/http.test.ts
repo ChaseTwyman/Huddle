@@ -16,7 +16,7 @@ async function post(summary: EspnSummary, gameId: string) {
     ? Promise.resolve(new Response(JSON.stringify(summary), { status: 200 }))
     : realFetch(url, init)));
   const clock = new RealClock();
-  const manager = new RoomManager({ clock, transport: new RecordingTransport(() => clock.now()), llmConfig: { provider: 'mock' } });
+  const manager = new RoomManager({ clock, transport: new RecordingTransport(() => clock.now()), llmConfig: { provider: 'mock' }, intel: false });
   const server = createHttpApp(manager, { prod: false, port: 0, clock }).listen(0);
   try {
     const { port } = server.address() as AddressInfo;

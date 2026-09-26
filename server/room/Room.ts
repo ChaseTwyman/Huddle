@@ -26,8 +26,9 @@ import { involvement } from '../game/involvement';
 import { buildRecap, type PersonStats } from '../game/recap';
 import { plainTicker, tickerText } from '../game/ticker';
 import { candidatesFor, Scheduler, triggerFor, type Trigger } from '../director/scheduler';
-import { directorTurn, situation } from '../director/director';
-import { sourceLine, type DirectorDecision } from '../director/templates';
+import { directorTurn, situation, templateTurn, type DirectorInput } from '../director/director';
+import { sourceLine, type DirectorDecision, type InsightDecision } from '../director/templates';
+import type { IntelFact, IntelProvider } from '../intel/types';
 import type { FamilyStore, FamilyFile } from '../persistence/families';
 import type { TtsService } from '../ai/tts';
 import type { LiveGame } from '../live/feed';
@@ -60,7 +61,7 @@ type Round = {
   close: () => void;
 };
 
-export type SpokenRecord = { lineId: string; text: string; kind: 'explain' | 'short' | 'beat' | 'announcement' | 'storyline' | 'halftime' | 'final' | 'intro'; at: number; endAt?: number; qtr: number; trigger?: Trigger; spoken: boolean;
+export type SpokenRecord = { lineId: string; text: string; kind: 'explain' | 'short' | 'insight' | 'beat' | 'announcement' | 'storyline' | 'halftime' | 'final' | 'intro'; at: number; endAt?: number; qtr: number; trigger?: Trigger; spoken: boolean;
   /** Huddle's short version after a person's explanation left someone confused (follows the human turn directly). */
   followUp?: boolean;
 };
@@ -83,9 +84,17 @@ export type RoomDeps = {
   /** F14 live mode: game data and feed for a live (or replayed-as-live) ESPN game instead of a committed file. */
   game?: GameData;
   live?: LiveGame | null;
+  /** Game intelligence (situational numbers, sourced player/team facts) for the Director. Absent = rules only. */
+  intel?: IntelProvider | null;
 };
 
-const first = (n: string) => n.trim().split(/\s+/)[0] || n;
+/** Entity keys for intel retrieval: both teams and the players named in the play (the flagged player only once announced). */
+function playEntities(play: TimelinePlay, stage: 'result' | 'announced'): string[] {
+  const people = Object.entries(play.players).filter(([role]) => stage === 'announced' || role !== 'penaltyPlayer').map(([, name]) => name);
+  return [...new Set([play.posteam, play.defteam, ...people].filter((e): e is string => !!e))];
+}
+
+const first =(n: string) => n.trim().split(/\s+/)[0] || n;
 const estimateMs = (text: string) => Math.round((text.trim().split(/\s+/).length / WORDS_PER_SECOND) * 1000) + 400;
 const loadPreset = (id: string): Preset => JSON.parse(fs.readFileSync(dataPath('presets', `${id}.json`), 'utf8'));
 
@@ -109,6 +118,12 @@ export class Room {
   private speed: number;
   private tts: TtsService | null;
   readonly live: LiveGame | null;
+  private intel: IntelProvider | null;
+  /** Intel facts already said in this room: never twice. */
+  readonly usedFactIds = new Set<string>();
+  /** Variety: what kinds of facts Huddle has said, so it doesn't say the same kind of thing again and again. */
+  private saidKinds: { kind: IntelFact['kind']; qtr: number; draft: boolean }[] = [];
+  private offeredFacts = new Map<string, IntelFact>();
 
   private gen = 0;
   private tvCount = 0;
@@ -156,6 +171,7 @@ export class Room {
     this.lastActivity = this.clock.now();
     this.game = deps.game ?? loadGame(settings.gameId);
     this.live = deps.live ?? null;
+    this.intel = deps.intel ?? null;
     this.scheduler = new Scheduler(settings.talkativeness);
     this.engine = new ReplayEngine(this.game.timeline, this.game.moments, this.clock, (ev) => this.onEngineEvent(ev), {
       mode: settings.mode, pacing: settings.pacing,
@@ -1054,6 +1070,7 @@ export class Room {
     if (f) this.field = { ...f, ballAbs: play.field.ballEndAbs ?? f.losAbs, animateMs: this.win(this.pace.playMs * 0.8) };
     this.scorebug = { ...this.scorebugFor(play, play.scoreAfter), review: !!play.challenge };
     this.ticker = tickerText(play, false);
+    this.prefetchDirector(play);
     // F11: swap in the plain-English sentence when it's ready (unless the call has been announced since).
     const pending = this.tickerCache.get(play.idx);
     if (pending) {
@@ -1233,39 +1250,129 @@ export class Room {
     return out.slice(0, 4);
   }
 
-  private async runDirector(gen: number, play: TimelinePlay, afterBeat: boolean) {
-    const trigger = triggerFor(play);
-    // Live: when the feed is running ahead of us, keep up rather than explain everyday plays.
-    if (this.live && trigger === 'play' && this.live.status().queued >= 3) return;
-    const learners = this.connectedLearners;
-    if (!learners.length) return;
-    const candidates = candidatesFor(play, learners.map((l) => l.knowledge), trigger);
-    if (!candidates.length) return;
-    const verdict = this.scheduler.canSpeak({ trigger, now: this.now(), qtr: play.qtr, windowOpen: this.windowsOpen > 0 });
-    if (!verdict.ok) return;
-    // Flags and decisions always get their explanation (F4, F5); they wait out the minimum gap instead
-    // (e.g. after a storyline beat on the same play, like Hurts' two-point try).
-    void afterBeat;
+  /**
+   * Game intelligence for this play's Director turn. Producers compute only from revealed data; the room still
+   * drops facts it already said, and (defense in depth) anything naming an unannounced penalty.
+   */
+  private intelFor(play: TimelinePlay): DirectorInput['intel'] {
+    if (!this.intel) return undefined;
+    const stage = this.announcedIdx === play.idx ? 'announced' : 'result';
+    const needles = stage === 'result' && play.penalty
+      ? [play.penalty.rawType, play.penalty.conceptId, concept(play.penalty.conceptId, this.league).name].map((s) => s.toLowerCase())
+      : [];
+    const safe = (f: IntelFact) => !this.usedFactIds.has(f.id) && !needles.some((n) => f.text.toLowerCase().includes(n)) && this.fresh(f, play.qtr);
+    try {
+      const sit = this.intel.situation(this.game.timeline.plays, play.idx, stage);
+      const facts = this.intel.retrieve({ entities: playEntities(play, stage), limit: 6, exclude: this.usedFactIds });
+      const out = { situation: { ...sit, facts: sit.facts.filter(safe) }, facts: facts.filter(safe) };
+      for (const f of [...out.situation.facts, ...out.facts]) this.offeredFacts.set(f.id, f);
+      return out;
+    } catch (e) {
+      // Intel is an enhancement: a producer bug must not cost the family the rule explanation.
+      console.error('[room] intel failed', e);
+      return undefined;
+    }
+  }
 
+  /**
+   * Variety rules (the family found repetition tiresome): never two facts of the same kind in a row, at most one
+   * win-probability swing per quarter, and at most two "was drafted by" bios per game, unless the fact is
+   * exceptional (weight ≥ 0.9).
+   */
+  private fresh(f: IntelFact, qtr: number): boolean {
+    if (f.weight >= 0.9) return true;
+    const last = this.saidKinds[this.saidKinds.length - 1];
+    if (last && last.kind === f.kind) return false;
+    if (f.kind === 'win_prob' && this.saidKinds.some((k) => k.kind === 'win_prob' && k.qtr === qtr)) return false;
+    if (/\bdrafted\b/i.test(f.text) && this.saidKinds.filter((k) => k.draft).length >= 2) return false;
+    return true;
+  }
+
+  /** The Director's input for a play, or null when there is nobody to talk to or nothing to consider. */
+  private directorInput(play: TimelinePlay): DirectorInput | null {
+    const trigger = triggerFor(play);
+    const learners = this.connectedLearners;
+    if (!learners.length) return null;
+    const candidates = candidatesFor(play, learners.map((l) => l.knowledge), trigger);
+    // With intel, a play with no open rules can still earn an insight; directorTurn decides (without a model call
+    // when nothing qualifies).
+    if (!candidates.length && !this.intel) return null;
     const handoffs: Record<string, string[]> = {};
     for (const c of candidates) {
       const ids = handoffCandidates(learners.map((l) => ({ id: l.id, knowledge: l.knowledge })), c.conceptId);
       if (ids.length) handoffs[c.conceptId] = ids;
     }
     const names = Object.fromEntries([...this.players.values()].map((p) => [p.id, first(p.name)]));
-    const decision = await directorTurn(this.llm, {
+    return {
       play, trigger, candidates, handoffs, names,
       playerFacts: this.playerFacts(play),
-      recentLines: this.spokenLog.filter((l) => l.kind === 'explain' || l.kind === 'short' || l.kind === 'beat').slice(-5).map((l) => l.text),
+      recentLines: this.spokenLog.filter((l) => l.kind === 'explain' || l.kind === 'short' || l.kind === 'beat' || l.kind === 'insight').slice(-5).map((l) => l.text),
       budget: { remainingThisQuarter: this.scheduler.remaining(play.qtr), exempt: trigger !== 'play' },
       announced: true,
       league: this.league, teams: this.game.timeline.teams,
-    }, this.game.timeline.home, this.game.timeline.away);
+      intel: this.intelFor(play),
+    };
+  }
+
+  /**
+   * With a real model and game intelligence, the Director needs ~5-6 s (it reasons over the facts). Start its call
+   * when the play's result is shown, so it runs during the field animation; dead time then waits at most 4 s (F6).
+   * Flagged plays wait for the announcement instead (the call must not happen before it).
+   */
+  private directorPrefetch: { idx: number; promise: Promise<DirectorDecision> } | null = null;
+
+  /** Resolve with `p`, or with `fallback()` if it takes longer than `ms` (on the room's clock). */
+  private within<T>(p: Promise<T>, ms: number, fallback: () => T): Promise<T> {
+    return new Promise<T>((resolve) => {
+      const t = this.clock.setTimeout(() => resolve(fallback()), ms);
+      p.then((v) => { this.clock.clearTimeout(t); resolve(v); }, () => { this.clock.clearTimeout(t); resolve(fallback()); });
+    });
+  }
+
+  private prefetchDirector(play: TimelinePlay) {
+    this.directorPrefetch = null;
+    if (!this.intel || this.llm.isMock || play.penalty) return;
+    const input = this.directorInput(play);
+    if (!input) return;
+    const promise = directorTurn(this.llm, input, this.game.timeline.home, this.game.timeline.away, 10_000);
+    promise.catch(() => undefined);
+    this.directorPrefetch = { idx: play.idx, promise };
+  }
+
+  private async runDirector(gen: number, play: TimelinePlay, afterBeat: boolean) {
+    const trigger = triggerFor(play);
+    const pre = this.directorPrefetch?.idx === play.idx ? this.directorPrefetch.promise : null;
+    this.directorPrefetch = null;
+    // Live: when the feed is running ahead of us, keep up rather than explain everyday plays.
+    if (this.live && trigger === 'play' && this.live.status().queued >= 3) return;
+    const verdict = this.scheduler.canSpeak({ trigger, now: this.now(), qtr: play.qtr, windowOpen: this.windowsOpen > 0 });
+    if (!verdict.ok) return;
+    // Flags and decisions always get their explanation (F4, F5); they wait out the minimum gap instead
+    // (e.g. after a storyline beat on the same play, like Hurts' two-point try).
+    void afterBeat;
+    const input = this.directorInput(play);
+    if (!input) return;
+    const { home, away } = this.game.timeline;
+    const decision = pre
+      ? await this.within(pre, this.win(4000), () => templateTurn({ ...input, home, away }))
+      : await directorTurn(this.llm, input, home, away);
     this.check(gen);
     if (decision.action === 'silent') return;
+    // A cited fact is never said twice in this room, whoever ends up saying the line.
+    for (const id of decision.cites ?? []) {
+      this.usedFactIds.add(id);
+      const f = this.offeredFacts.get(id);
+      if (f) this.saidKinds.push({ kind: f.kind, qtr: play.qtr, draft: /\bdrafted\b/i.test(f.text) });
+    }
     // Re-check after the model call: the remaining gap has shrunk while it was thinking.
     const again = this.scheduler.canSpeak({ trigger, now: this.now(), qtr: play.qtr, windowOpen: this.windowsOpen > 0 });
     if (again.ok && again.waitMs > 0) await this.pause(gen, again.waitMs);
+
+    if (decision.action === 'insight') {
+      await this.flowInsight(gen, play, trigger, decision);
+      this.touch();
+      return;
+    }
 
     // Grounded detail: after a flag, the card may carry one unlocked quote about the flagged player
     // (e.g. Bradberry's), whether the card came from the model or the template.
@@ -1281,6 +1388,16 @@ export class Room {
     for (const p of this.connectedLearners) addExposure(p.knowledge, decision.conceptId);
     this.knowledgeChanged();
     this.touch();
+  }
+
+  /**
+   * An insight is color, not a rule: Huddle says it directly (no take-it offer, nothing for the fan to teach) and
+   * nobody gets a concept exposure. It uses the talk budget and gap exactly like an explanation.
+   */
+  private async flowInsight(gen: number, play: TimelinePlay, trigger: Trigger, decision: InsightDecision) {
+    this.setCard({ kind: 'explain', title: decision.card.title, body: decision.card.body, by: 'Huddle', source: decision.sourceNote });
+    await this.speak(gen, decision.spoken, 'insight', 1, trigger);
+    this.scheduler.spoke({ now: this.now(), qtr: play.qtr, countsToBudget: trigger === 'play' });
   }
 
   private explainCard(decision: Extract<DirectorDecision, { action: 'explain' | 'handoff' }>, by: string, kind: SnapshotCard['kind'] = 'explain'): Omit<SnapshotCard, 'id'> {

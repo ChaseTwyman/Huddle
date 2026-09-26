@@ -145,6 +145,17 @@ Detection runs on the phone itself (a color check inside your box, no key needed
 
 The ESPN feed is public but unofficial; it's fine for a prototype, and a licensed feed (e.g. Sportradar) would replace it for anything real.
 
+## Game intelligence (smarter Director)
+
+Beyond rule cards, the Director draws on two grounded sources (`server/intel/`):
+
+- **Situational numbers** (`situation.ts`), computed only from plays already revealed: win probability and big swings (nflverse for classic games, ESPN's model for live games), a simple 4th-down / 2-point model and whether the coach followed it, drive stats, player stats so far, and team tendencies. Routine decisions are marked `obvious` so Huddle stays quiet about them; going against the numbers is marked `surprise`.
+- **Knowledge base** (`kb.ts`): sourced one-sentence facts about the players and teams (background, career, matchups, rivalries). Classic games use a prebuilt file (`npm run build-kb -- --game 2022_22_KC_PHI` writes `data/kb/2022_22_KC_PHI.json` from Wikipedia *as it read the day before the game*, nflverse player and schedule data, and the model for extraction). ESPN games build one in the background when the room is created (~10 s). Every fact keeps its source link.
+
+On each play the Director gets the relevant facts and may answer with an **insight** that cites the fact ids it used; anything uncited, or with a number or name not in the facts, is thrown away. A fact is never said twice, and it varies the kind of fact it says. A rule the family has never heard still comes first.
+
+**Team review:** skim `data/kb/*.json` before demoing; these facts are spoken aloud about real people.
+
 ## Voice (ElevenLabs)
 
 By default the TV speaks with the browser's built-in voice. For a realistic voice, add to `.env`:

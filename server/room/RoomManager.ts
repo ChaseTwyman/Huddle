@@ -1,4 +1,6 @@
-import type { Settings } from '../../shared/types';
+import type { League, Settings } from '../../shared/types';
+import type { EspnSummary } from '../live/espn';
+import { makeIntel } from '../intel';
 import { ROOM_IDLE_MS } from '../../shared/constants';
 import type { Clock } from './clock';
 import type { Transport } from './transport';
@@ -28,6 +30,8 @@ export type ManagerDeps = {
   /** Print one line per play to the console (the real server). */
   logPlays?: boolean;
   tts?: TtsService | null;
+  /** false = no game intelligence (rules-only Director). */
+  intel?: boolean;
 };
 
 export class RoomManager {
@@ -37,7 +41,8 @@ export class RoomManager {
 
   constructor(private deps: ManagerDeps) {}
 
-  create(settings: Settings, live?: LiveGame): Room {
+  /** `espn`: the first ESPN summary of a live/replayed ESPN game, used to build its knowledge base. */
+  create(settings: Settings, live?: LiveGame, espn?: { summary: EspnSummary; league: League }): Room {
     let code = makeCode();
     while (this.rooms.has(code)) code = makeCode();
     const llm = this.deps.makeLlm ? this.deps.makeLlm() : new LLM(this.deps.clock, this.deps.llmConfig);
@@ -45,6 +50,7 @@ export class RoomManager {
       clock: this.deps.clock, transport: this.deps.transport, llm,
       families: this.deps.families ?? null, events: this.deps.events, speed: this.deps.speed, tts: this.deps.tts ?? null,
       ...(live ? { game: live.data, live } : {}),
+      intel: this.deps.intel === false ? null : makeIntel({ gameId: live?.data.timeline.gameId ?? settings.gameId, teams: live?.data.timeline.teams, espn, llm }),
     });
     room.logPlays = !!this.deps.logPlays;
     this.rooms.set(code, room);

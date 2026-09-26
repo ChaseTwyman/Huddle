@@ -87,7 +87,7 @@ export function createHttpApp(manager: RoomManager, opts: { prod: boolean; port:
           familyName: b.familyName?.trim() || null, gameId: b.gameId, mode: 'full', pacing: 'live',
           talkativeness: b.talkativeness, voice: b.voice, fanHandicap: b.fanHandicap, practice: b.practice,
         };
-        const room = manager.create(settings, live);
+        const room = manager.create(settings, live, { summary: first, league });
         live.start();
         res.json({ code: room.code, hostToken: room.hostToken });
       } catch (e) {

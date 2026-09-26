@@ -1,6 +1,7 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import { VirtualClock } from '../server/room/clock';
 import { Room } from '../server/room/Room';
+import { makeIntel } from '../server/intel';
 import { LLM, type LlmCallRecord } from '../server/ai/llm';
 import { Bots, BotTransport, DEFAULT_BOTS } from '../server/sim/bots';
 import { concept } from '../server/data/concepts';
@@ -45,7 +46,7 @@ beforeAll(async () => {
   llm.onCall = (c) => llmCalls.push(c);
   room = new Room('SPOL', {
     familyName: null, gameId: '2022_22_KC_PHI', mode: 'full', pacing: 'demo', talkativeness: 'chatty', voice: true, fanHandicap: true,
-  }, { clock, transport, llm, events: { onEngineEvent: (ev, at) => events.push({ ev, at }) } });
+  }, { clock, transport, llm, intel: makeIntel({ gameId: '2022_22_KC_PHI', llm }), events: { onEngineEvent: (ev, at) => events.push({ ev, at }) } });
   room.tvJoined();
   const bots = new Bots(room, clock, transport, 3);
   bots.join(DEFAULT_BOTS.slice(0, 3)); // fan + two learners (drama, underdog/chaos)

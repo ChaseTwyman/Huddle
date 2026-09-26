@@ -24,6 +24,8 @@ export type EspnSummary = {
     }[];
   };
   drives?: { previous?: { plays?: EspnPlay[] }[]; current?: { plays?: EspnPlay[] } };
+  /** ESPN's model: the home team's win chance after each play. */
+  winprobability?: { playId: string; homeWinPercentage: number }[];
 };
 
 export type EspnGameMeta = {
@@ -174,8 +176,14 @@ export function espnToRows(s: EspnSummary, league: League = 'nfl'): MappedRow[] 
   const abbr = new Map(comp.competitors.map((c) => [c.team.id, c.team.abbreviation]));
   const other = (a: string | undefined) => (a === meta.home ? meta.away : a === meta.away ? meta.home : undefined);
   const rows: MappedRow[] = [];
+  // nflverse convention: wp = the possession team's chance before the play, wpa = its change on the play.
+  const homeWpAfter = new Map((s.winprobability ?? []).map((w) => [w.playId, w.homeWinPercentage]));
+  let homeWpBefore: number | null = null;
 
   for (const p of allPlays(s)) {
+    const after = homeWpAfter.get(p.id);
+    const before = homeWpBefore;
+    if (after !== undefined) homeWpBefore = after;
     const t = p.type.text;
     if (SKIP_TYPES.test(t)) continue;
     const pt = playType(t);
@@ -242,11 +250,16 @@ export function espnToRows(s: EspnSummary, league: League = 'nfl'): MappedRow[] 
     };
     if (pt.play_type_nfl === 'TIMEOUT') base.timeout_team = /by ([A-Z]{2,3})/.exec(mainText)?.[1];
     if (base.qb_kneel === '1') base.play_type = 'qb_kneel';
+    if (before !== null && posteam) {
+      const mine = (h: number) => (posteam === meta.home ? h : 1 - h);
+      base.wp = String(mine(before));
+      if (after !== undefined) base.wpa = String(mine(after) - mine(before));
+    }
     const wall = p.wallclock ? String(Date.parse(p.wallclock)) : '';
     rows.push({ ...base, espn_id: p.id, wallclock_ms: wall });
     if (tryText && tryKind && posteam) {
       const tryRow: Row = {
-        ...base, play_id: `${p.sequenceNumber}.5`, desc: tryText, down: '', ydstogo: '', goal_to_go: '0',
+        ...base, wpa: undefined, play_id: `${p.sequenceNumber}.5`, desc: tryText, down: '', ydstogo: '', goal_to_go: '0',
         touchdown: '0', td_team: undefined, first_down: '0', penalty: /PENALTY on/i.test(tryText) ? '1' : '0', penalty_yards: undefined,
         total_home_score: String(p.homeScore), total_away_score: String(p.awayScore), yards_gained: '',
         field_goal_result: undefined, kick_distance: undefined, incomplete_pass: '0', sack: '0', interception: '0', fumble_lost: '0',

@@ -60,7 +60,14 @@ One line per ambiguous choice made during the build.
 - Team colors that are nearly black on the dark UI (Ole Miss navy) are drawn with the team's secondary color on the scorebug chip, end zone and possession arrow.
 - Design refresh (team request, "less vibecoded, more like a Meta product"): Inter as the only typeface, neutral graphite surfaces, one accent blue for actions, flag yellow and turf reserved for football meaning, pill buttons, hairline borders. This replaces BUILD_PROMPT 11.1's Big Shoulders / IBM Plex "stadium night" look; size minimums (TV 24px, phone 18px text and 64px buttons) are kept.
 
+- F6 game intelligence: the Director gains an `insight` action (one line, ≤ 25 words, citing intel fact ids; every number and mid-sentence name must appear in the cited facts or the play/situation text, else the template is used). Insights use the talk budget and minimum gap like explanations, get no "Take it?" offer and give no concept exposure, and a cited fact is never said twice in a room. After a flag the rule still comes first (F5). The Game 1 vs Game 4 fade metric counts rule explanations only, since insights don't depend on what the family knows.
+- F6/F8 ordering: a rule the room has never heard (full depth) comes before an insight, unless the numbers show a surprise; insights replace reminders. Without this, color took the budget and Game 4's fade fell to 0%.
+- F6 timing: muse-spark-1.3 needs ~5-6 s for a Director turn with intel, so the room starts the call when the play's result is shown (non-flagged plays) and waits at most 4 s at dead time before the template (F6's limit is measured from where the family waits).
+- F4/F6: when intel marks a decision as obvious (e.g. punt on 4th & 12 at your own 34), the decision-result turn stays silent unless an insight exists, and the decision rule is never explained on that play. PRD F4 says Huddle explains the decision after the result; the family found that line obvious. Recorded under PRD deviations.
+
 # PRD deviations
+
+- **Obvious decisions (F4).** F4 says Huddle explains the decision after the result. When game intelligence marks the call as routine, Huddle stays silent (or says a genuinely interesting fact) instead.
 
 - **Call It options before the announcement.** PRD F5 says no penalty name appears on the TV or phones before the announcement. The four Call It options necessarily include the real penalty's name, unmarked, among three distractors. Everything else (ticker, cards, speech, status, reveal data, option ids) is checked by `spoilers.test.ts` to never name it. Option ids are opaque letters.
 - **Camera Call It rounds (F14).** When the flag camera opens Call It before the feed names the penalty, the options are the four most common penalties, so the real one may not be among them (F5 says it always is). Feed-driven rounds keep the F5 guarantee.

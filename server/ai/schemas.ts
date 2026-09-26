@@ -11,8 +11,10 @@ export const CallItOut = z.object({ distractors: z.array(z.string()), why: z.str
 export type CallItOut = z.infer<typeof CallItOut>;
 
 export const DirectorOut = z.object({
-  action: z.enum(['silent', 'explain', 'handoff']),
+  action: z.enum(['silent', 'explain', 'handoff', 'insight']),
   conceptId: z.string().optional(),
+  /** Intel fact ids the line relies on; required (non-empty) for "insight". */
+  cites: z.array(z.string()).optional(),
   spoken: z.string().optional(),
   card: z.object({ title: z.string(), body: z.string() }).optional(),
   cheat: z.string().optional(),

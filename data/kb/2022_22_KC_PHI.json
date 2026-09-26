@@ -1,0 +1,4733 @@
+{
+ "gameId": "2022_22_KC_PHI",
+ "gameDate": "2023-02-12",
+ "builtAt": "2026-09-26T22:15:50.374Z",
+ "facts": [
+  {
+   "id": "kb:preview:1",
+   "kind": "matchup",
+   "text": "Super Bowl LVII will be the first Super Bowl featuring brothers Travis Kelce and Jason Kelce on opposite teams.",
+   "about": [
+    "KC",
+    "PHI",
+    "T.Kelce",
+    "J.Kelce"
+   ],
+   "weight": 1,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138653544",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:butker:1",
+   "kind": "bio",
+   "text": "Butker played first-chair tuba for all four years in his school's symphonic band.",
+   "about": [
+    "H.Butker",
+    "KC"
+   ],
+   "weight": 0.95,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138354372",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:smith:1",
+   "kind": "bio",
+   "text": "Smith became the first wide receiver to win the Heisman Trophy since 1991 and only the fourth ever.",
+   "about": [
+    "D.Smith",
+    "PHI"
+   ],
+   "weight": 0.95,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136979809",
+   "asOf": "2023-02-02"
+  },
+  {
+   "id": "kb:smith-schuster:1",
+   "kind": "bio",
+   "text": "Smith-Schuster was coached in youth football by Snoop Dogg, who nicknamed him Sportscenter.",
+   "about": [
+    "J.Smith-Schuster",
+    "KC"
+   ],
+   "weight": 0.95,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137310255",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:mckinnon:1",
+   "kind": "career",
+   "text": "McKinnon set an NFL record with receiving touchdowns in five straight games, never done by a running back.",
+   "about": [
+    "J.McKinnon",
+    "KC"
+   ],
+   "weight": 0.95,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137458230",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:scott:1",
+   "kind": "bio",
+   "text": "Scott signed a multi-year deal with Dignitas as a Rocket League content creator and substitute.",
+   "about": [
+    "B.Scott",
+    "PHI"
+   ],
+   "weight": 0.95,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137228752",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:preview:2",
+   "kind": "matchup",
+   "text": "Super Bowl LVII will be the first Super Bowl between two Black starting quarterbacks, Patrick Mahomes and Jalen Hurts.",
+   "about": [
+    "KC",
+    "PHI",
+    "J.Hurts",
+    "P.Mahomes"
+   ],
+   "weight": 0.95,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138653544",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:hurts:1",
+   "kind": "bio",
+   "text": "Hurts squatted 500 pounds as a high school sophomore powerlifter.",
+   "about": [
+    "J.Hurts",
+    "PHI"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138617659",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:hurts:2",
+   "kind": "bio",
+   "text": "Hurts was benched in the national title game, then relieved an injured Tua Tagovailoa to beat Georgia in the 2018 SEC Championship.",
+   "about": [
+    "J.Hurts",
+    "PHI"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138617659",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:hurts:3",
+   "kind": "bio",
+   "text": "Hurts employs an all-female management team for social media, marketing, communications and agency work.",
+   "about": [
+    "J.Hurts",
+    "PHI"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138617659",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:mahomes:1",
+   "kind": "career",
+   "text": "Mahomes is the only quarterback to throw for over 5,000 yards in a season in both college and the NFL.",
+   "about": [
+    "P.Mahomes",
+    "KC"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138621953",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:mahomes:2",
+   "kind": "bio",
+   "text": "Mahomes signed a 10-year, $503 million extension as the first half-billion-dollar pro athlete.",
+   "about": [
+    "P.Mahomes",
+    "KC"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138621953",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:elliott:1",
+   "kind": "bio",
+   "text": "Elliott began playing football after a coach spotted Elliott at a Homecoming student field-goal contest.",
+   "about": [
+    "J.Elliott",
+    "PHI"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136327933",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:gainwell:1",
+   "kind": "bio",
+   "text": "Gainwell opted out of his final Memphis season after multiple family members died from COVID-19.",
+   "about": [
+    "K.Gainwell",
+    "PHI"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138094855",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:brown:1",
+   "kind": "bio",
+   "text": "Brown became the second player after Kyler Murray to play in both Under Armour All-America Football and Baseball Games.",
+   "about": [
+    "A.Brown",
+    "PHI"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138488758",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:toney:1",
+   "kind": "bio",
+   "text": "Toney also raps under the stage name Yung Joka.",
+   "about": [
+    "K.Toney",
+    "KC"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138328122",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:kelce:1",
+   "kind": "career",
+   "text": "Kelce briefly held the tight-end single-season yardage record in 2018 before losing it later that same day.",
+   "about": [
+    "T.Kelce",
+    "KC"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138557094",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:smith:2",
+   "kind": "bio",
+   "text": "Smith caught the overtime game-winning touchdown as a freshman to win the national championship against Georgia.",
+   "about": [
+    "D.Smith",
+    "PHI"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136979809",
+   "asOf": "2023-02-02"
+  },
+  {
+   "id": "kb:smith-schuster:2",
+   "kind": "bio",
+   "text": "Smith-Schuster legally added Schuster to his last name to honor stepfather Lawrence Schuster.",
+   "about": [
+    "J.Smith-Schuster",
+    "KC"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137310255",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:goedert:1",
+   "kind": "bio",
+   "text": "Goedert was named after the Dallas Cowboys because his father was a huge Cowboys fan.",
+   "about": [
+    "D.Goedert",
+    "PHI"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135295656",
+   "asOf": "2023-01-23"
+  },
+  {
+   "id": "kb:chenal:1",
+   "kind": "bio",
+   "text": "Chenal was named Wisconsin small-school Offensive and Defensive Player of the Year in high school.",
+   "about": [
+    "L.Chenal",
+    "KC"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136873335",
+   "asOf": "2023-02-01"
+  },
+  {
+   "id": "kb:moore:1",
+   "kind": "bio",
+   "text": "Moore converted to wide receiver at Western Michigan despite never playing the position before.",
+   "about": [
+    "S.Moore",
+    "KC"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136955036",
+   "asOf": "2023-02-02"
+  },
+  {
+   "id": "kb:covey:1",
+   "kind": "bio",
+   "text": "Covey is the grandson of author Stephen Covey.",
+   "about": [
+    "B.Covey",
+    "PHI"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137351547",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:suh:1",
+   "kind": "matchup",
+   "text": "Suh won Super Bowl LV against Kansas City, recording 1.5 sacks on Patrick Mahomes.",
+   "about": [
+    "N.Suh",
+    "PHI",
+    "P.Mahomes"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135659771",
+   "asOf": "2023-01-26"
+  },
+  {
+   "id": "kb:suh:2",
+   "kind": "bio",
+   "text": "Suh donated $2.6 million to Nebraska before the draft, the largest gift by a former player.",
+   "about": [
+    "N.Suh",
+    "PHI"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135659771",
+   "asOf": "2023-01-26"
+  },
+  {
+   "id": "kb:clark:1",
+   "kind": "career",
+   "text": "Clark sealed Super Bowl LIV for Kansas City with a fourth-down sack on Jimmy Garoppolo late in the fourth quarter.",
+   "about": [
+    "F.Clark",
+    "KC"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137205370",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:thornhill:1",
+   "kind": "bio",
+   "text": "Thornhill tore his left ACL in the 2019 finale and missed the postseason as Kansas City won Super Bowl LIV.",
+   "about": [
+    "J.Thornhill",
+    "KC"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136309432",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:kelce:2",
+   "kind": "bio",
+   "text": "Kelce's wife Kylie will be 38 weeks pregnant with their third child on Super Bowl Sunday.",
+   "about": [
+    "J.Kelce",
+    "PHI"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138532354",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kc:1",
+   "kind": "team",
+   "text": "The Kansas City Chiefs won Super Bowl LIV in 2020, earning the franchise its first championship in fifty years.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138530031",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kc:2",
+   "kind": "bio",
+   "text": "The Chiefs traded star receiver Tyreek Hill to the Miami Dolphins after six seasons in Kansas City.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138235816",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:phi:1",
+   "kind": "team",
+   "text": "The Eagles started 8-0 for the first time in franchise history.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138585657",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:phi:2",
+   "kind": "team",
+   "text": "The Eagles finished with 14 regular-season wins, a franchise record.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138585657",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:phi:3",
+   "kind": "rivalry",
+   "text": "The Eagles meet the Chiefs in the game nicknamed the Kelce Bowl for Jason and Travis Kelce.",
+   "about": [
+    "PHI",
+    "T.Kelce"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138585657",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:reid:1",
+   "kind": "matchup",
+   "text": "Reid faces his former Philadelphia Eagles in this Super Bowl after coaching them from 1999 to 2012.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138451260",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:sirianni:1",
+   "kind": "matchup",
+   "text": "Sirianni was not retained by new Chiefs coach Andy Reid, whom Sirianni faces in the Super Bowl.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138602988",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:preview:3",
+   "kind": "rivalry",
+   "text": "Super Bowl LVII pits Chiefs coach Andy Reid against his former Eagles team he coached from 1999 to 2012.",
+   "about": [
+    "KC",
+    "PHI"
+   ],
+   "weight": 0.9,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138653544",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:coach:1",
+   "kind": "rivalry",
+   "text": "Andy Reid coached Philadelphia for 14 seasons (1999–2012) before becoming Kansas City's head coach in 2013.",
+   "about": [
+    "KC",
+    "PHI"
+   ],
+   "weight": 0.9,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/schedules/games.csv",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:hurts:4",
+   "kind": "bio",
+   "text": "Hurts became Alabama's first true freshman starting quarterback in 32 years.",
+   "about": [
+    "J.Hurts",
+    "PHI"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138617659",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:hurts:5",
+   "kind": "bio",
+   "text": "Hurts transferred to Oklahoma and shattered the school's single-game debut yardage record with 508 yards.",
+   "about": [
+    "J.Hurts",
+    "PHI"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138617659",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:butker:2",
+   "kind": "bio",
+   "text": "Butker won three state soccer championships as a three-sport high school athlete.",
+   "about": [
+    "H.Butker",
+    "KC"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138354372",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:butker:3",
+   "kind": "career",
+   "text": "Butker broke Kansas City's franchise record with a 62-yard field goal after returning from ankle injury.",
+   "about": [
+    "H.Butker",
+    "KC"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138354372",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:elliott:2",
+   "kind": "matchup",
+   "text": "Elliott made his NFL debut in Week 2 of 2017 against the Kansas City Chiefs.",
+   "about": [
+    "J.Elliott",
+    "PHI"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136327933",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:elliott:3",
+   "kind": "career",
+   "text": "Elliott drilled a 61-yard game-winner against the Giants, the longest field goal in Eagles history.",
+   "about": [
+    "J.Elliott",
+    "PHI"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136327933",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:pacheco:1",
+   "kind": "career",
+   "text": "Pacheco is the all-time season scrimmage yards leader for a seventh-round rookie running back.",
+   "about": [
+    "I.Pacheco",
+    "KC"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138672229",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:toney:2",
+   "kind": "career",
+   "text": "Toney broke Odell Beckham Jr.'s Giants rookie receiving record with 189 yards against Dallas.",
+   "about": [
+    "K.Toney",
+    "KC"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138328122",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:kelce:3",
+   "kind": "career",
+   "text": "Kelce set the tight-end single-season record with 1,416 receiving yards in 2020 despite playing only 15 games.",
+   "about": [
+    "T.Kelce",
+    "KC"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138557094",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:smith:3",
+   "kind": "bio",
+   "text": "Smith earned the nickname Slim Reaper at Alabama for his small frame and athletic ability.",
+   "about": [
+    "D.Smith",
+    "PHI"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136979809",
+   "asOf": "2023-02-02"
+  },
+  {
+   "id": "kb:smith:4",
+   "kind": "career",
+   "text": "Smith set championship-game records with 12 catches and three touchdowns despite leaving with a hand injury.",
+   "about": [
+    "D.Smith",
+    "PHI"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136979809",
+   "asOf": "2023-02-02"
+  },
+  {
+   "id": "kb:smith-schuster:3",
+   "kind": "career",
+   "text": "Smith-Schuster became the youngest player ever to reach 2,500 career receiving yards.",
+   "about": [
+    "J.Smith-Schuster",
+    "KC"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137310255",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:smith-schuster:4",
+   "kind": "career",
+   "text": "Smith-Schuster is the first player ever with two offensive touchdowns of at least 97 yards.",
+   "about": [
+    "J.Smith-Schuster",
+    "KC"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137310255",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:goedert:2",
+   "kind": "bio",
+   "text": "Goedert joined South Dakota State as a walk-on before becoming a star tight end.",
+   "about": [
+    "D.Goedert",
+    "PHI"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135295656",
+   "asOf": "2023-01-23"
+  },
+  {
+   "id": "kb:chenal:2",
+   "kind": "bio",
+   "text": "Chenal rushed for 2,038 yards and 42 touchdowns as a high school senior.",
+   "about": [
+    "L.Chenal",
+    "KC"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136873335",
+   "asOf": "2023-02-01"
+  },
+  {
+   "id": "kb:mckinnon:2",
+   "kind": "bio",
+   "text": "McKinnon tore his ACL in 2018 and missed two full seasons before returning in 2020.",
+   "about": [
+    "J.McKinnon",
+    "KC"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137458230",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:mckinnon:3",
+   "kind": "career",
+   "text": "McKinnon scored the game-winning touchdown against Florida for Georgia Southern's first win over a BCS team.",
+   "about": [
+    "J.McKinnon",
+    "KC"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137458230",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:moore:2",
+   "kind": "career",
+   "text": "Moore tied a Western Michigan school record with four touchdown receptions against Northern Illinois.",
+   "about": [
+    "S.Moore",
+    "KC"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136955036",
+   "asOf": "2023-02-02"
+  },
+  {
+   "id": "kb:saunders:1",
+   "kind": "bio",
+   "text": "Saunders received only one Division I scholarship offer, from Western Illinois.",
+   "about": [
+    "K.Saunders",
+    "KC"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137900409",
+   "asOf": "2023-02-07"
+  },
+  {
+   "id": "kb:covey:2",
+   "kind": "bio",
+   "text": "Covey missed the 2016 and 2017 Utah seasons for an LDS mission in Chile.",
+   "about": [
+    "B.Covey",
+    "PHI"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137351547",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:sweat:1",
+   "kind": "bio",
+   "text": "Sweat missed the Eagles' playoff game after emergency surgery for a life-threatening situation.",
+   "about": [
+    "J.Sweat",
+    "PHI"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135958715",
+   "asOf": "2023-01-27"
+  },
+  {
+   "id": "kb:suh:3",
+   "kind": "bio",
+   "text": "Suh's first name Ndamukong means House of Spears in Cameroon's Ngemba language.",
+   "about": [
+    "N.Suh",
+    "PHI"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135659771",
+   "asOf": "2023-01-26"
+  },
+  {
+   "id": "kb:clark:2",
+   "kind": "career",
+   "text": "Clark sealed an AFC Championship win with a game-ending fourth-down sack on Ryan Tannehill.",
+   "about": [
+    "F.Clark",
+    "KC"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137205370",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:scott:2",
+   "kind": "bio",
+   "text": "Scott was a high school state champion in weightlifting before starring as a rusher.",
+   "about": [
+    "B.Scott",
+    "PHI"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137228752",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:seumalo:1",
+   "kind": "bio",
+   "text": "Seumalo chose Oregon State, where father Joe coached the defensive line, over Oregon, Stanford, and Southern California.",
+   "about": [
+    "I.Seumalo",
+    "PHI"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138073420",
+   "asOf": "2023-02-07"
+  },
+  {
+   "id": "kb:kc:3",
+   "kind": "team",
+   "text": "The Chiefs wore number 16 decals all season honoring Super Bowl IV MVP Len Dawson after his death.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138235816",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:reid:2",
+   "kind": "career",
+   "text": "Reid is the only NFL coach to win 100 games and reach four straight conference championships with two different franchises.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138451260",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:preview:4",
+   "kind": "matchup",
+   "text": "Super Bowl LVII features the youngest starting quarterback pair in history at ages 27 and 24.",
+   "about": [
+    "KC",
+    "PHI"
+   ],
+   "weight": 0.85,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138653544",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:hurts:6",
+   "kind": "bio",
+   "text": "Hurts was coached in high school by his father Averion at Channelview High School.",
+   "about": [
+    "J.Hurts",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138617659",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:hurts:7",
+   "kind": "bio",
+   "text": "Hurts filed to trademark the phrase \"HURTS SO GOOD\" for a clothing line.",
+   "about": [
+    "J.Hurts",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138617659",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:mahomes:3",
+   "kind": "bio",
+   "text": "Mahomes is the son of former MLB pitcher Pat Mahomes and godson of pitcher LaTroy Hawkins.",
+   "about": [
+    "P.Mahomes",
+    "KC"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138621953",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:mahomes:4",
+   "kind": "bio",
+   "text": "Mahomes threw a high school no-hitter with 16 strikeouts as a senior.",
+   "about": [
+    "P.Mahomes",
+    "KC"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138621953",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:elliott:4",
+   "kind": "bio",
+   "text": "Elliott was considered among Illinois' best youth tennis players before switching to football.",
+   "about": [
+    "J.Elliott",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136327933",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:elliott:5",
+   "kind": "career",
+   "text": "Elliott made all three field goals in Super Bowl LII, including a 46-yarder that sealed Philadelphia's first title.",
+   "about": [
+    "J.Elliott",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136327933",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:gainwell:2",
+   "kind": "bio",
+   "text": "Gainwell grew up an Eagles fan and modeled his game after favorite player Darren Sproles.",
+   "about": [
+    "K.Gainwell",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138094855",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:gainwell:3",
+   "kind": "bio",
+   "text": "Gainwell is cousins with fellow Eagles player Fletcher Cox.",
+   "about": [
+    "K.Gainwell",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138094855",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:brown:2",
+   "kind": "bio",
+   "text": "Brown provided vocals on the 2022 Christmas album A Philly Special Christmas.",
+   "about": [
+    "A.Brown",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138488758",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:toney:3",
+   "kind": "rivalry",
+   "text": "Toney was ejected against Dallas for throwing a punch at safety Damontae Kazee.",
+   "about": [
+    "K.Toney",
+    "KC"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138328122",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:kelce:4",
+   "kind": "bio",
+   "text": "Kelce starred in the E! dating show Catching Kelce in January 2016.",
+   "about": [
+    "T.Kelce",
+    "KC"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138557094",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:smith:5",
+   "kind": "career",
+   "text": "Smith broke the all-time SEC career record for receiving touchdowns while at Alabama.",
+   "about": [
+    "D.Smith",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136979809",
+   "asOf": "2023-02-02"
+  },
+  {
+   "id": "kb:sanders:1",
+   "kind": "bio",
+   "text": "Sanders earned the nickname \"Boobie Miles\" long before starring for Philadelphia.",
+   "about": [
+    "M.Sanders",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138663684",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:sanders:2",
+   "kind": "career",
+   "text": "Sanders passed LeSean McCoy and DeSean Jackson for Eagles rookie rushing and all-purpose records.",
+   "about": [
+    "M.Sanders",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138663684",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:sanders:3",
+   "kind": "career",
+   "text": "Sanders scored twice in the NFC title win and was named Nickelodeon Valuable Player.",
+   "about": [
+    "M.Sanders",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138663684",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:mckinnon:4",
+   "kind": "matchup",
+   "text": "McKinnon faced the Philadelphia Eagles in the NFC Championship with 40 rushing yards and 11 catches.",
+   "about": [
+    "J.McKinnon",
+    "KC"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137458230",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:saunders:2",
+   "kind": "bio",
+   "text": "Saunders became the first Western Illinois Leatherneck ever invited to the Senior Bowl.",
+   "about": [
+    "K.Saunders",
+    "KC"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137900409",
+   "asOf": "2023-02-07"
+  },
+  {
+   "id": "kb:saunders:3",
+   "kind": "bio",
+   "text": "Saunders had a daughter born while Saunders was at the 2019 Senior Bowl.",
+   "about": [
+    "K.Saunders",
+    "KC"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137900409",
+   "asOf": "2023-02-07"
+  },
+  {
+   "id": "kb:pascal:1",
+   "kind": "matchup",
+   "text": "Pascal scored a touchdown against the Chiefs by recovering a blocked punt in the endzone in the Divisional Round.",
+   "about": [
+    "Z.Pascal",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136353428",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:covey:3",
+   "kind": "bio",
+   "text": "Covey led his high school to a 26-0 record and back-to-back state championships.",
+   "about": [
+    "B.Covey",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137351547",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:covey:4",
+   "kind": "bio",
+   "text": "Covey finished fourth all-time in Utah high school touchdowns despite starting only two years.",
+   "about": [
+    "B.Covey",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137351547",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:bradberry:1",
+   "kind": "bio",
+   "text": "Bradberry signed a three-year, $45 million Giants deal before joining Philadelphia for $7.5 million.",
+   "about": [
+    "J.Bradberry",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136353692",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:sweat:2",
+   "kind": "bio",
+   "text": "Sweat entered his high school senior season as ESPN's top-rated prospect in the country.",
+   "about": [
+    "J.Sweat",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135958715",
+   "asOf": "2023-01-27"
+  },
+  {
+   "id": "kb:suh:4",
+   "kind": "bio",
+   "text": "Suh's father played for the Cameroon national soccer team and his mother was born in Jamaica.",
+   "about": [
+    "N.Suh",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135659771",
+   "asOf": "2023-01-26"
+  },
+  {
+   "id": "kb:suh:5",
+   "kind": "bio",
+   "text": "Suh became the highest-paid defensive player in NFL history with a $114 million Dolphins contract.",
+   "about": [
+    "N.Suh",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135659771",
+   "asOf": "2023-01-26"
+  },
+  {
+   "id": "kb:scott:3",
+   "kind": "career",
+   "text": "Scott rushed for three touchdowns and 84 receiving yards to clinch a playoff spot against the Giants.",
+   "about": [
+    "B.Scott",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137228752",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:sneed:1",
+   "kind": "career",
+   "text": "Sneed converted to cornerback at Louisiana Tech and scored on an interception return against Western Kentucky in the Conference USA Championship Game.",
+   "about": [
+    "L.Sneed",
+    "KC"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1134840750",
+   "asOf": "2023-01-21"
+  },
+  {
+   "id": "kb:seumalo:2",
+   "kind": "bio",
+   "text": "Seumalo became Oregon State's first true freshman starting center since 1978 and earned Freshman All-American honors.",
+   "about": [
+    "I.Seumalo",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138073420",
+   "asOf": "2023-02-07"
+  },
+  {
+   "id": "kb:kelce:5",
+   "kind": "bio",
+   "text": "Kelce launched weekly podcast New Heights with brother Travis Kelce in September 2022.",
+   "about": [
+    "J.Kelce",
+    "PHI",
+    "T.Kelce"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138532354",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kelce:6",
+   "kind": "bio",
+   "text": "Kelce began at Cincinnati as a walk-on running back before switching to fullback and offensive line.",
+   "about": [
+    "J.Kelce",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138532354",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kc:4",
+   "kind": "team",
+   "text": "The Kansas City Chiefs began as the Dallas Texans in 1959 before relocating to Kansas City in 1963.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138530031",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kc:5",
+   "kind": "team",
+   "text": "The Kansas City Chiefs lost ten of eleven playoff games from 1993 to 2017, including an eight-game losing streak.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138530031",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kc:6",
+   "kind": "team",
+   "text": "The Kansas City Chiefs honored trumpeter Tony DiPardo with a Super Bowl ring for Super Bowl IV.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138530031",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kc:7",
+   "kind": "team",
+   "text": "The Chiefs honored Dawson by using his special huddle on their first preseason play after his death.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138235816",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:phi:4",
+   "kind": "rivalry",
+   "text": "The Eagles rivalry with the New York Giants was ranked number one of all-time by NFL Network.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138555337",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:phi:5",
+   "kind": "bio",
+   "text": "The Eagles drafted Heisman winner DeVonta Smith tenth overall, their first Heisman draftee in over fifty years.",
+   "about": [
+    "PHI",
+    "D.Smith"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138555337",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:phi:6",
+   "kind": "team",
+   "text": "The Eagles once needed a temporary stadium courtroom after fan incidents at Veterans Stadium.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138555337",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:phi:7",
+   "kind": "team",
+   "text": "The Eagles completed a 3-0 sweep of the Giants with a 38-7 playoff rout.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138585657",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:phi:8",
+   "kind": "rivalry",
+   "text": "The Eagles face former longtime head coach Andy Reid, whom they had from 1999 to 2012.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138585657",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:reid:3",
+   "kind": "bio",
+   "text": "Reid worked as a vendor at Dodger Stadium as a teenager in Los Angeles.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138451260",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:reid:4",
+   "kind": "bio",
+   "text": "Reid appeared on Monday Night Football at age 13 for Punt, Pass, and Kick wearing Les Josephson's jersey.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138451260",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:sirianni:2",
+   "kind": "bio",
+   "text": "Sirianni met his wife Brett Ashley while working for the Kansas City Chiefs.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138602988",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:sirianni:3",
+   "kind": "bio",
+   "text": "Sirianni nearly lost his playing career to calf injury and compartment syndrome as a sophomore.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138602988",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:preview:5",
+   "kind": "bio",
+   "text": "Super Bowl LVII halftime show will be headlined by Rihanna in her first live performance in over five years.",
+   "about": [
+    "KC",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138653544",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:coach:2",
+   "kind": "rivalry",
+   "text": "As Kansas City's coach, Andy Reid was 3–0 against his old team, Philadelphia Eagles, before this game (2013, 2017, 2021).",
+   "about": [
+    "KC",
+    "PHI"
+   ],
+   "weight": 0.8,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/schedules/games.csv",
+   "asOf": "2021-10-03"
+  },
+  {
+   "id": "kb:seumalo:3",
+   "kind": "matchup",
+   "text": "Seumalo was benched as the Eagles' starting left guard after a poor Week 2 loss to the Kansas City Chiefs in 2017.",
+   "about": [
+    "I.Seumalo",
+    "PHI"
+   ],
+   "weight": 0.78,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138073420",
+   "asOf": "2023-02-07"
+  },
+  {
+   "id": "kb:butker:4",
+   "kind": "career",
+   "text": "Butker set rookie records for most field goals in a month and multiple five-field-goal games.",
+   "about": [
+    "H.Butker",
+    "KC"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138354372",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:pacheco:2",
+   "kind": "bio",
+   "text": "Pacheco was drafted by Kansas City in the seventh round with the 251st overall pick in 2022.",
+   "about": [
+    "I.Pacheco",
+    "KC"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138672229",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:brown:3",
+   "kind": "career",
+   "text": "Brown led all NFL rookies with 1,051 receiving yards and was called the steal of the 2019 draft.",
+   "about": [
+    "A.Brown",
+    "PHI"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138488758",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:toney:4",
+   "kind": "bio",
+   "text": "Toney was a high school dual-threat quarterback before becoming an NFL wide receiver.",
+   "about": [
+    "K.Toney",
+    "KC"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138328122",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:kelce:7",
+   "kind": "bio",
+   "text": "Kelce missed the 2010 college season for failing a drug test for marijuana.",
+   "about": [
+    "T.Kelce",
+    "KC"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138557094",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:smith:6",
+   "kind": "bio",
+   "text": "Smith was drafted after Philadelphia traded up two spots with Dallas to pick Smith tenth overall.",
+   "about": [
+    "D.Smith",
+    "PHI"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136979809",
+   "asOf": "2023-02-02"
+  },
+  {
+   "id": "kb:smith:7",
+   "kind": "career",
+   "text": "Smith scored his first NFL touchdown on his very first career catch.",
+   "about": [
+    "D.Smith",
+    "PHI"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136979809",
+   "asOf": "2023-02-02"
+  },
+  {
+   "id": "kb:smith-schuster:5",
+   "kind": "bio",
+   "text": "Smith-Schuster attended Long Beach Poly, then the top high school for producing NFL players.",
+   "about": [
+    "J.Smith-Schuster",
+    "KC"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137310255",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:goedert:3",
+   "kind": "career",
+   "text": "Goedert posted two straight 1,000-yard receiving seasons in college at South Dakota State.",
+   "about": [
+    "D.Goedert",
+    "PHI"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135295656",
+   "asOf": "2023-01-23"
+  },
+  {
+   "id": "kb:mckinnon:5",
+   "kind": "bio",
+   "text": "McKinnon was recruited as a quarterback and ran Georgia Southern's triple-option before switching to tailback.",
+   "about": [
+    "J.McKinnon",
+    "KC"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137458230",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:mckinnon:6",
+   "kind": "career",
+   "text": "McKinnon rushed for 316 yards against Central Arkansas, setting the single-game record for quarterback rushing.",
+   "about": [
+    "J.McKinnon",
+    "KC"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137458230",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:saunders:4",
+   "kind": "bio",
+   "text": "Saunders went viral before the draft for a backflip video shared by Adam Schefter.",
+   "about": [
+    "K.Saunders",
+    "KC"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137900409",
+   "asOf": "2023-02-07"
+  },
+  {
+   "id": "kb:covey:5",
+   "kind": "career",
+   "text": "Covey scored on a 97-yard kickoff return touchdown in the Rose Bowl against Ohio State.",
+   "about": [
+    "B.Covey",
+    "PHI"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137351547",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:sweat:3",
+   "kind": "bio",
+   "text": "Sweat dislocated his knee and tore his ACL during his senior high school season.",
+   "about": [
+    "J.Sweat",
+    "PHI"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135958715",
+   "asOf": "2023-01-27"
+  },
+  {
+   "id": "kb:suh:6",
+   "kind": "career",
+   "text": "Suh won the AP College Player of the Year and finished as a Heisman finalist as a tackle.",
+   "about": [
+    "N.Suh",
+    "PHI"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135659771",
+   "asOf": "2023-01-26"
+  },
+  {
+   "id": "kb:clark:3",
+   "kind": "career",
+   "text": "Clark sacked Deshaun Watson three times in a Divisional Round win over Houston.",
+   "about": [
+    "F.Clark",
+    "KC"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137205370",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:scott:4",
+   "kind": "bio",
+   "text": "Scott was drafted 201st overall by the Saints, waived, then signed off their practice squad by Philadelphia.",
+   "about": [
+    "B.Scott",
+    "PHI"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137228752",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:scott:5",
+   "kind": "career",
+   "text": "Scott caught the game-winning 18-yard touchdown from Carson Wentz against the Giants in 2020.",
+   "about": [
+    "B.Scott",
+    "PHI"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137228752",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:seumalo:4",
+   "kind": "career",
+   "text": "Seumalo won his first Super Bowl ring when the Eagles beat the New England Patriots 41-33 in Super Bowl LII.",
+   "about": [
+    "I.Seumalo",
+    "PHI"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138073420",
+   "asOf": "2023-02-07"
+  },
+  {
+   "id": "kb:kc:8",
+   "kind": "team",
+   "text": "The Chiefs finished 14-3, matching the franchise record for regular-season wins.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138235816",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:reid:5",
+   "kind": "bio",
+   "text": "Reid planned to transfer to Stanford but injured his knee and instead followed best friend Randy Tidwell to BYU.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.75,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138451260",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:h2h:1",
+   "kind": "matchup",
+   "text": "Philadelphia and Kansas City last met on October 3, 2021, when Kansas City won 42–30 in Philadelphia, with Patrick Mahomes and Jalen Hurts at quarterback.",
+   "about": [
+    "PHI",
+    "KC",
+    "P.Mahomes",
+    "J.Hurts"
+   ],
+   "weight": 0.75,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/schedules/games.csv",
+   "asOf": "2021-10-03"
+  },
+  {
+   "id": "kb:butker:5",
+   "kind": "career",
+   "text": "Butker led the NFL in scoring in 2019 and won Super Bowl LIV with Kansas City.",
+   "about": [
+    "H.Butker",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138354372",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:butker:6",
+   "kind": "bio",
+   "text": "Butker was drafted 233rd overall in the seventh round as the last kicker taken in 2017.",
+   "about": [
+    "H.Butker",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138354372",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:mahomes:5",
+   "kind": "bio",
+   "text": "Mahomes quit baseball after his sophomore year at Texas Tech to focus solely on football.",
+   "about": [
+    "P.Mahomes",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138621953",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:mahomes:6",
+   "kind": "career",
+   "text": "Mahomes led all NCAA FBS players with 5,052 passing yards and 53 total touchdowns as a junior.",
+   "about": [
+    "P.Mahomes",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138621953",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:mahomes:7",
+   "kind": "career",
+   "text": "Mahomes set the NFL single-season record with 5,608 combined passing and rushing yards in 2022.",
+   "about": [
+    "P.Mahomes",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138621953",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:mahomes:8",
+   "kind": "bio",
+   "text": "Mahomes proposed to high school sweetheart Brittany Matthews in an Arrowhead suite on ring day.",
+   "about": [
+    "P.Mahomes",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138621953",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:elliott:6",
+   "kind": "bio",
+   "text": "Elliott was signed off Cincinnati's practice squad after Philadelphia starter Caleb Sturgis went on injured reserve.",
+   "about": [
+    "J.Elliott",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136327933",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:elliott:7",
+   "kind": "career",
+   "text": "Elliott set a Memphis record with a 56-yard field goal, breaking Stephen Gostkowski's 2005 mark.",
+   "about": [
+    "J.Elliott",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136327933",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:pacheco:3",
+   "kind": "bio",
+   "text": "Pacheco is of Dominican and African American descent with grandfather Julio from Juana Diaz.",
+   "about": [
+    "I.Pacheco",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138672229",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:pacheco:4",
+   "kind": "career",
+   "text": "Pacheco scored his first NFL touchdown on a three-yard run in his debut against Arizona.",
+   "about": [
+    "I.Pacheco",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138672229",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:gainwell:4",
+   "kind": "bio",
+   "text": "Gainwell was a high school quarterback before switching to running back at Memphis.",
+   "about": [
+    "K.Gainwell",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138094855",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:gainwell:5",
+   "kind": "bio",
+   "text": "Gainwell won Class 3A Mr. Football after leading Yazoo County to a 14-1 record.",
+   "about": [
+    "K.Gainwell",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138094855",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:gainwell:6",
+   "kind": "career",
+   "text": "Gainwell rushed for a career-high 112 yards against the Giants, becoming the sixth Eagle with 100 postseason rushing yards.",
+   "about": [
+    "K.Gainwell",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138094855",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:brown:4",
+   "kind": "career",
+   "text": "Brown set the Eagles franchise record for receiving yards in a debut with 155 yards against Detroit.",
+   "about": [
+    "A.Brown",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138488758",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:kelce:8",
+   "kind": "bio",
+   "text": "Kelce was a high-school quarterback who totaled 2,539 yards of offense as a senior.",
+   "about": [
+    "T.Kelce",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138557094",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kelce:9",
+   "kind": "matchup",
+   "text": "Kelce had eight catches for 103 yards and a touchdown against the Philadelphia Eagles in 2017.",
+   "about": [
+    "T.Kelce",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138557094",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:smith:8",
+   "kind": "bio",
+   "text": "Smith fell in the draft over concerns his frame was too small to handle the NFL.",
+   "about": [
+    "D.Smith",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136979809",
+   "asOf": "2023-02-02"
+  },
+  {
+   "id": "kb:smith-schuster:6",
+   "kind": "career",
+   "text": "Smith-Schuster was voted Steelers team MVP by teammates after the 2018 season.",
+   "about": [
+    "J.Smith-Schuster",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137310255",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:smith-schuster:7",
+   "kind": "rivalry",
+   "text": "Smith-Schuster angered opponents by dancing on midfield logos for TikTok before away games.",
+   "about": [
+    "J.Smith-Schuster",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137310255",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:goedert:4",
+   "kind": "career",
+   "text": "Goedert was a two-time first-team FCS All-American and Walter Payton Award finalist.",
+   "about": [
+    "D.Goedert",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135295656",
+   "asOf": "2023-01-23"
+  },
+  {
+   "id": "kb:goedert:5",
+   "kind": "bio",
+   "text": "Goedert was drafted after Philadelphia traded up to pick him just ahead of Dallas.",
+   "about": [
+    "D.Goedert",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135295656",
+   "asOf": "2023-01-23"
+  },
+  {
+   "id": "kb:sanders:4",
+   "kind": "bio",
+   "text": "Sanders grew up in Swissvale, Pennsylvania and won Pennsylvania's Mr. Football at Woodland Hills High.",
+   "about": [
+    "M.Sanders",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138663684",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:sanders:5",
+   "kind": "bio",
+   "text": "Sanders set Penn State's single-season record with 33 kick returns as Saquon Barkley's freshman backup.",
+   "about": [
+    "M.Sanders",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138663684",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:sanders:6",
+   "kind": "bio",
+   "text": "Sanders scored the game-winning overtime touchdown in his first start as Penn State's lead back.",
+   "about": [
+    "M.Sanders",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138663684",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:sanders:7",
+   "kind": "career",
+   "text": "Sanders torched his hometown Steelers for 80 yards and two scores, including a 74-yarder.",
+   "about": [
+    "M.Sanders",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138663684",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:chenal:3",
+   "kind": "bio",
+   "text": "Chenal was also named Wisconsin Gatorade Football Player of the Year in high school.",
+   "about": [
+    "L.Chenal",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136873335",
+   "asOf": "2023-02-01"
+  },
+  {
+   "id": "kb:mckinnon:7",
+   "kind": "bio",
+   "text": "McKinnon led all running backs at the Combine with 32 bench-press reps and a 4.41 dash.",
+   "about": [
+    "J.McKinnon",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137458230",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:moore:3",
+   "kind": "career",
+   "text": "Moore started 12 of 13 games as a true freshman, catching 53 passes for 802 yards.",
+   "about": [
+    "S.Moore",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136955036",
+   "asOf": "2023-02-02"
+  },
+  {
+   "id": "kb:pascal:2",
+   "kind": "bio",
+   "text": "Pascal helped lead Old Dominion to the Bahamas Bowl, the first bowl game in program history.",
+   "about": [
+    "Z.Pascal",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136353428",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:covey:6",
+   "kind": "career",
+   "text": "Covey made a 91-yard touchdown catch, the second longest in Utah school history.",
+   "about": [
+    "B.Covey",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137351547",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:bradberry:2",
+   "kind": "bio",
+   "text": "Bradberry played college football at Samford before Carolina drafted Bradberry in the second round.",
+   "about": [
+    "J.Bradberry",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136353692",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:bradberry:3",
+   "kind": "career",
+   "text": "Bradberry graded as Pro Football Focus's top-ranked rookie cornerback in 2016.",
+   "about": [
+    "J.Bradberry",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136353692",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:gay:1",
+   "kind": "bio",
+   "text": "Gay missed Super Bowl LV after landing on injured reserve February 6, 2021.",
+   "about": [
+    "W.Gay",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136420969",
+   "asOf": "2023-01-30"
+  },
+  {
+   "id": "kb:sweat:4",
+   "kind": "bio",
+   "text": "Sweat underwent knee reconstructive surgery performed by New York Giants physician Russell Warren.",
+   "about": [
+    "J.Sweat",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135958715",
+   "asOf": "2023-01-27"
+  },
+  {
+   "id": "kb:sweat:5",
+   "kind": "bio",
+   "text": "Sweat ranked first among defensive linemen in the 40-yard dash and vertical jump at the combine.",
+   "about": [
+    "J.Sweat",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135958715",
+   "asOf": "2023-01-27"
+  },
+  {
+   "id": "kb:suh:7",
+   "kind": "bio",
+   "text": "Suh was a four-sport high school star and won Oregon's state shot put title.",
+   "about": [
+    "N.Suh",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135659771",
+   "asOf": "2023-01-26"
+  },
+  {
+   "id": "kb:suh:8",
+   "kind": "bio",
+   "text": "Suh earned a Construction Management degree and hopes to become a general contractor.",
+   "about": [
+    "N.Suh",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135659771",
+   "asOf": "2023-01-26"
+  },
+  {
+   "id": "kb:clark:4",
+   "kind": "bio",
+   "text": "Clark was traded from Seattle to Kansas City and then signed a $105 million extension.",
+   "about": [
+    "F.Clark",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137205370",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:clark:5",
+   "kind": "career",
+   "text": "Clark recorded his first career safety by sacking Jimmy Garoppolo in the end zone in 2022.",
+   "about": [
+    "F.Clark",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137205370",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:thornhill:2",
+   "kind": "bio",
+   "text": "Thornhill returned from the torn ACL after starting camp on the physically unable list in 2020.",
+   "about": [
+    "J.Thornhill",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136309432",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:sneed:2",
+   "kind": "career",
+   "text": "Sneed recorded his first career interception in his professional debut against Houston.",
+   "about": [
+    "L.Sneed",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1134840750",
+   "asOf": "2023-01-21"
+  },
+  {
+   "id": "kb:sneed:3",
+   "kind": "bio",
+   "text": "Sneed broke his collarbone against Baltimore as a rookie and returned from injured reserve in November.",
+   "about": [
+    "L.Sneed",
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1134840750",
+   "asOf": "2023-01-21"
+  },
+  {
+   "id": "kb:seumalo:5",
+   "kind": "bio",
+   "text": "Seumalo's father Joe coaches San Jose State's defensive line while sister Jessi leads on-campus recruiting for Washington State football.",
+   "about": [
+    "I.Seumalo",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138073420",
+   "asOf": "2023-02-07"
+  },
+  {
+   "id": "kb:kelce:10",
+   "kind": "bio",
+   "text": "Kelce played baritone saxophone in Symphonic and Jazz Bands at Cleveland Heights High School.",
+   "about": [
+    "J.Kelce",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138532354",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kelce:11",
+   "kind": "bio",
+   "text": "Kelce ran the fastest 40-yard dash among offensive linemen at the 2011 Combine in 4.89 seconds.",
+   "about": [
+    "J.Kelce",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138532354",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kelce:12",
+   "kind": "bio",
+   "text": "Kelce was a sixth-round pick, 191st overall, yet became the first Eagles rookie to start all 16 games at center.",
+   "about": [
+    "J.Kelce",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138532354",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kc:9",
+   "kind": "team",
+   "text": "The Kansas City Chiefs defeated the Minnesota Vikings in Super Bowl IV on January 11, 1970.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138530031",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kc:10",
+   "kind": "bio",
+   "text": "The Kansas City Chiefs honor founder Lamar Hunt, namesake of the AFC Championship trophy.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138530031",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kc:11",
+   "kind": "team",
+   "text": "The Kansas City Chiefs fans yell \"CHIEFS!\" instead of \"brave\" at the end of the national anthem.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138530031",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kc:12",
+   "kind": "team",
+   "text": "The Chiefs reached their third Super Bowl in four years.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138235816",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:phi:9",
+   "kind": "team",
+   "text": "The Eagles won three pre-merger NFL championships in 1948, 1949, and 1960.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138555337",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:phi:10",
+   "kind": "team",
+   "text": "The Eagles won Super Bowl LII at the end of the 2017 season.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138555337",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:phi:11",
+   "kind": "team",
+   "text": "The Eagles started the 2022 season 8-0 and finished 14-3 with the NFC top seed.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138555337",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:phi:12",
+   "kind": "team",
+   "text": "The Eagles won the NFC East for the first time since 2019.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138585657",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:phi:13",
+   "kind": "team",
+   "text": "The Eagles clinched the NFC's No. 1 seed for the first time since 2017.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138585657",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:phi:14",
+   "kind": "team",
+   "text": "The Eagles advanced to their fourth Super Bowl appearance by beating San Francisco 31-7.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138585657",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:phi:15",
+   "kind": "matchup",
+   "text": "The Eagles sacked former quarterback Carson Wentz nine times in a 24-8 win over Washington.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138585657",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:reid:6",
+   "kind": "bio",
+   "text": "Reid once thought of becoming a writer before BYU coach LaVell Edwards suggested coaching as a career.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138451260",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:reid:7",
+   "kind": "team",
+   "text": "Reid led Kansas City to Super Bowl LIV, the franchise's first Super Bowl victory in 50 years.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138451260",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:sirianni:4",
+   "kind": "bio",
+   "text": "Sirianni won national championships in 2000, 2001 and 2002 as a receiver at Mount Union.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138602988",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:sirianni:5",
+   "kind": "bio",
+   "text": "Sirianni got his NFL break after knowing Chiefs coach Todd Haley from the same YMCA.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138602988",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:sirianni:6",
+   "kind": "bio",
+   "text": "Sirianni grew up a fan of the Pittsburgh Steelers, Sirianni told Rich Eisen.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138602988",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:preview:6",
+   "kind": "team",
+   "text": "Super Bowl LVII marks the Chiefs' third Super Bowl appearance in the last four years.",
+   "about": [
+    "KC",
+    "PHI"
+   ],
+   "weight": 0.7,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138653544",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:hurts:8",
+   "kind": "career",
+   "text": "Hurts tied a franchise best with 35 total touchdowns while earning Second Team All-Pro in 2022.",
+   "about": [
+    "J.Hurts",
+    "PHI"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138617659",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:butker:7",
+   "kind": "bio",
+   "text": "Butker was waived by Carolina and signed by Kansas City off the Panthers' practice squad.",
+   "about": [
+    "H.Butker",
+    "KC"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138354372",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:elliott:8",
+   "kind": "career",
+   "text": "Elliott kicked a 54-yarder in the 2014 Miami Beach Bowl, then the fourth-longest bowl field goal ever.",
+   "about": [
+    "J.Elliott",
+    "PHI"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136327933",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:elliott:9",
+   "kind": "career",
+   "text": "Elliott once made a tackle on a kick return against Dallas but left with a head injury.",
+   "about": [
+    "J.Elliott",
+    "PHI"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136327933",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:pacheco:5",
+   "kind": "bio",
+   "text": "Pacheco helped Vineland win the Thanksgiving Day Classic against rival Millville as a senior.",
+   "about": [
+    "I.Pacheco",
+    "KC"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138672229",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:brown:5",
+   "kind": "bio",
+   "text": "Brown was traded to Philadelphia and signed a four-year, $100 million contract with $57 million guaranteed.",
+   "about": [
+    "A.Brown",
+    "PHI"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138488758",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:toney:5",
+   "kind": "bio",
+   "text": "Toney was named Alabama 6A Back of the Year as a high school senior.",
+   "about": [
+    "K.Toney",
+    "KC"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138328122",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:kelce:13",
+   "kind": "career",
+   "text": "Kelce became the fastest tight end to reach 10,000 career receiving yards during the 2022 season.",
+   "about": [
+    "T.Kelce",
+    "KC"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138557094",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:smith:9",
+   "kind": "career",
+   "text": "Smith set the Eagles rookie record with 916 receiving yards in a single season.",
+   "about": [
+    "D.Smith",
+    "PHI"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136979809",
+   "asOf": "2023-02-02"
+  },
+  {
+   "id": "kb:smith-schuster:8",
+   "kind": "rivalry",
+   "text": "Smith-Schuster called the Browns nameless gray faces before a playoff loss to Cleveland.",
+   "about": [
+    "J.Smith-Schuster",
+    "KC"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137310255",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:chenal:4",
+   "kind": "bio",
+   "text": "Chenal finished high school with 3,706 rushing yards and 68 touchdowns on offense.",
+   "about": [
+    "L.Chenal",
+    "KC"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136873335",
+   "asOf": "2023-02-01"
+  },
+  {
+   "id": "kb:mckinnon:8",
+   "kind": "bio",
+   "text": "McKinnon was drafted using the pick Minnesota acquired in the Percy Harvin trade to Seattle.",
+   "about": [
+    "J.McKinnon",
+    "KC"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137458230",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:saunders:5",
+   "kind": "career",
+   "text": "Saunders scored both a rushing and receiving touchdown while mainly playing defense at Western Illinois.",
+   "about": [
+    "K.Saunders",
+    "KC"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137900409",
+   "asOf": "2023-02-07"
+  },
+  {
+   "id": "kb:pascal:3",
+   "kind": "bio",
+   "text": "Pascal signed with Philadelphia to reunite with former Colts coordinator Nick Sirianni, now the Eagles head coach.",
+   "about": [
+    "Z.Pascal",
+    "PHI"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136353428",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:covey:7",
+   "kind": "bio",
+   "text": "Covey joined Philadelphia as an undrafted free agent after going unselected in 2022.",
+   "about": [
+    "B.Covey",
+    "PHI"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137351547",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:sweat:6",
+   "kind": "bio",
+   "text": "Sweat was drafted 130th overall with a pick acquired for quarterback Sam Bradford.",
+   "about": [
+    "J.Sweat",
+    "PHI"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135958715",
+   "asOf": "2023-01-27"
+  },
+  {
+   "id": "kb:mcduffie:1",
+   "kind": "bio",
+   "text": "McDuffie landed on injured reserve on September 13, 2022, then returned November 1, 2022.",
+   "about": [
+    "T.McDuffie",
+    "KC"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136873176",
+   "asOf": "2023-02-01"
+  },
+  {
+   "id": "kb:suh:9",
+   "kind": "career",
+   "text": "Suh was voted the NFL's dirtiest player and least-liked player early in his career.",
+   "about": [
+    "N.Suh",
+    "PHI"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135659771",
+   "asOf": "2023-01-26"
+  },
+  {
+   "id": "kb:clark:6",
+   "kind": "bio",
+   "text": "Clark wanted to play safety in high school, though coach Ted Ginn Sr. saw Clark as a natural defensive end.",
+   "about": [
+    "F.Clark",
+    "KC"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137205370",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:thornhill:3",
+   "kind": "bio",
+   "text": "Thornhill played both safety and quarterback in high school and also played basketball.",
+   "about": [
+    "J.Thornhill",
+    "KC"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136309432",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:thornhill:4",
+   "kind": "career",
+   "text": "Thornhill returned a Derek Carr interception 46 yards for a touchdown against Oakland as a rookie.",
+   "about": [
+    "J.Thornhill",
+    "KC"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136309432",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:kc:13",
+   "kind": "team",
+   "text": "The Chiefs hosted their fifth consecutive AFC Championship Game.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138235816",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:reid:8",
+   "kind": "matchup",
+   "text": "Reid returned to Philadelphia in 2013 to a standing ovation, then earned a Gatorade shower in Kansas City's win.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.65,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138451260",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:butker:8",
+   "kind": "bio",
+   "text": "Harrison Butker was drafted by the Carolina Panthers in round 7 (No. 233 overall) of the 2017 NFL Draft, before landing with the Chiefs.",
+   "about": [
+    "H.Butker",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:elliott:10",
+   "kind": "bio",
+   "text": "Jake Elliott was drafted by the Cincinnati Bengals in round 5 (No. 153 overall) of the 2017 NFL Draft, before landing with the Eagles.",
+   "about": [
+    "J.Elliott",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:brown:6",
+   "kind": "bio",
+   "text": "A.J. Brown was drafted by the Tennessee Titans in round 2 (No. 51 overall) of the 2019 NFL Draft, before landing with the Eagles.",
+   "about": [
+    "A.Brown",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:toney:6",
+   "kind": "bio",
+   "text": "Kadarius Toney was drafted by the New York Giants in round 1 (No. 20 overall) of the 2021 NFL Draft, before landing with the Chiefs.",
+   "about": [
+    "K.Toney",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:smith-schuster:9",
+   "kind": "bio",
+   "text": "JuJu Smith-Schuster was drafted by the Pittsburgh Steelers in round 2 (No. 62 overall) of the 2017 NFL Draft, before landing with the Chiefs.",
+   "about": [
+    "J.Smith-Schuster",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:mckinnon:9",
+   "kind": "bio",
+   "text": "Jerick McKinnon was drafted by the Minnesota Vikings in round 3 (No. 96 overall) of the 2014 NFL Draft, before landing with the Chiefs.",
+   "about": [
+    "J.McKinnon",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:bradberry:4",
+   "kind": "bio",
+   "text": "James Bradberry was drafted by the Carolina Panthers in round 2 (No. 62 overall) of the 2016 NFL Draft, before landing with the Eagles.",
+   "about": [
+    "J.Bradberry",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:suh:10",
+   "kind": "bio",
+   "text": "Ndamukong Suh was drafted by the Detroit Lions in round 1 (No. 2 overall) of the 2010 NFL Draft, before landing with the Eagles.",
+   "about": [
+    "N.Suh",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:clark:7",
+   "kind": "bio",
+   "text": "Frank Clark was drafted by the Seattle Seahawks in round 2 (No. 63 overall) of the 2015 NFL Draft, before landing with the Chiefs.",
+   "about": [
+    "F.Clark",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:scott:6",
+   "kind": "bio",
+   "text": "Boston Scott was drafted by the New Orleans Saints in round 6 (No. 201 overall) of the 2018 NFL Draft, before landing with the Eagles.",
+   "about": [
+    "B.Scott",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:hurts:9",
+   "kind": "bio",
+   "text": "Hurts was selected 53rd overall by Philadelphia in the second round of the 2020 NFL Draft.",
+   "about": [
+    "J.Hurts",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138617659",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:butker:9",
+   "kind": "career",
+   "text": "Butker ranks fourth in NFL history in career field goal percentage at 88.1.",
+   "about": [
+    "H.Butker",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138354372",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:mahomes:9",
+   "kind": "career",
+   "text": "Mahomes returned from a high ankle sprain against Jacksonville to reach Super Bowl LVII.",
+   "about": [
+    "P.Mahomes",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138621953",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:pacheco:6",
+   "kind": "bio",
+   "text": "Pacheco started playing football at a very young age for the Vineland Blitz Pop Warner league.",
+   "about": [
+    "I.Pacheco",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138672229",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:pacheco:7",
+   "kind": "bio",
+   "text": "Pacheco played both quarterback and running back at Vineland High School.",
+   "about": [
+    "I.Pacheco",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138672229",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:pacheco:8",
+   "kind": "career",
+   "text": "Pacheco rushed for a career-high 107 yards against the Los Angeles Chargers in Week 11.",
+   "about": [
+    "I.Pacheco",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138672229",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:gainwell:7",
+   "kind": "career",
+   "text": "Gainwell was named National Freshman of the Year after rushing for 1,459 yards at Memphis.",
+   "about": [
+    "K.Gainwell",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138094855",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:brown:7",
+   "kind": "career",
+   "text": "Brown recorded a career-high three touchdown receptions against Pittsburgh in Week 8.",
+   "about": [
+    "A.Brown",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138488758",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:brown:8",
+   "kind": "bio",
+   "text": "Brown underwent successful surgery on both knees on January 19, 2021 after early-season injuries.",
+   "about": [
+    "A.Brown",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138488758",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:toney:7",
+   "kind": "career",
+   "text": "Toney led Florida with 70 catches for 984 yards and 10 touchdowns in 2020.",
+   "about": [
+    "K.Toney",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138328122",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:toney:8",
+   "kind": "career",
+   "text": "Toney was a finalist for the Paul Hornung Award as college football's most versatile player.",
+   "about": [
+    "K.Toney",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138328122",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:kelce:14",
+   "kind": "bio",
+   "text": "Kelce was a two-star recruit who chose Cincinnati over Akron, Eastern Michigan and Miami (OH).",
+   "about": [
+    "T.Kelce",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138557094",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kelce:15",
+   "kind": "bio",
+   "text": "Kelce started the Eighty-Seven & Running foundation in 2015 to help underprivileged youth.",
+   "about": [
+    "T.Kelce",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138557094",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:bolton:1",
+   "kind": "bio",
+   "text": "Bolton racked up 130 tackles and five interceptions as a senior at Lone Star High School in Frisco, Texas.",
+   "about": [
+    "N.Bolton",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136770442",
+   "asOf": "2023-02-01"
+  },
+  {
+   "id": "kb:bolton:2",
+   "kind": "career",
+   "text": "Bolton earned first-team All-SEC honors after posting 103 tackles as a sophomore starter at Missouri.",
+   "about": [
+    "N.Bolton",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136770442",
+   "asOf": "2023-02-01"
+  },
+  {
+   "id": "kb:bolton:3",
+   "kind": "career",
+   "text": "Bolton repeated as first-team All-SEC and added AP Second-team All-American honors after his junior season.",
+   "about": [
+    "N.Bolton",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136770442",
+   "asOf": "2023-02-01"
+  },
+  {
+   "id": "kb:smith:10",
+   "kind": "bio",
+   "text": "Smith returned to Alabama for his senior year after teammates Ruggs and Jeudy left early for the NFL.",
+   "about": [
+    "D.Smith",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136979809",
+   "asOf": "2023-02-02"
+  },
+  {
+   "id": "kb:smith-schuster:10",
+   "kind": "bio",
+   "text": "Smith-Schuster joined a record Fortnite stream with Ninja, Drake and Travis Scott.",
+   "about": [
+    "J.Smith-Schuster",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137310255",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:goedert:6",
+   "kind": "bio",
+   "text": "Goedert took over as Philadelphia's top tight end after Zach Ertz was traded.",
+   "about": [
+    "D.Goedert",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135295656",
+   "asOf": "2023-01-23"
+  },
+  {
+   "id": "kb:goedert:7",
+   "kind": "career",
+   "text": "Goedert caught a go-ahead touchdown in Philadelphia's 2018 playoff upset at Chicago.",
+   "about": [
+    "D.Goedert",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135295656",
+   "asOf": "2023-01-23"
+  },
+  {
+   "id": "kb:sanders:8",
+   "kind": "bio",
+   "text": "Sanders chose Penn State over hometown Pittsburgh and many other offers after high school.",
+   "about": [
+    "M.Sanders",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138663684",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:sanders:9",
+   "kind": "bio",
+   "text": "Sanders rushed for a college-best 200 yards and three touchdowns against Illinois in 2018.",
+   "about": [
+    "M.Sanders",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138663684",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:sanders:10",
+   "kind": "career",
+   "text": "Sanders ripped a career-long 82-yard touchdown against the Saints during the 2020 season.",
+   "about": [
+    "M.Sanders",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138663684",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:chenal:5",
+   "kind": "bio",
+   "text": "Chenal recorded 385 tackles, 55 tackles for loss, and seven sacks in high school.",
+   "about": [
+    "L.Chenal",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136873335",
+   "asOf": "2023-02-01"
+  },
+  {
+   "id": "kb:mckinnon:10",
+   "kind": "bio",
+   "text": "McKinnon played quarterback, running back and wide receiver in high school and was all-state at quarterback.",
+   "about": [
+    "J.McKinnon",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137458230",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:mckinnon:11",
+   "kind": "team",
+   "text": "McKinnon missed the 49ers' Super Bowl LIV run while on season-ending injured reserve.",
+   "about": [
+    "J.McKinnon",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137458230",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:moore:4",
+   "kind": "bio",
+   "text": "Moore played quarterback and defensive back at Shady Side Academy in Fox Chapel, Pennsylvania.",
+   "about": [
+    "S.Moore",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136955036",
+   "asOf": "2023-02-02"
+  },
+  {
+   "id": "kb:saunders:6",
+   "kind": "bio",
+   "text": "Saunders played running back and defensive lineman in high school at Parkway Central.",
+   "about": [
+    "K.Saunders",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137900409",
+   "asOf": "2023-02-07"
+  },
+  {
+   "id": "kb:saunders:7",
+   "kind": "career",
+   "text": "Saunders recorded the Senior Bowl's first sack on Will Grier, earning praise from Jon Gruden.",
+   "about": [
+    "K.Saunders",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137900409",
+   "asOf": "2023-02-07"
+  },
+  {
+   "id": "kb:pascal:4",
+   "kind": "bio",
+   "text": "Pascal entered the NFL as an undrafted free agent with Washington following the 2017 draft.",
+   "about": [
+    "Z.Pascal",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136353428",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:pascal:5",
+   "kind": "bio",
+   "text": "Pascal switched from No. 11 to No. 3 after the Eagles acquired A. J. Brown.",
+   "about": [
+    "Z.Pascal",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136353428",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:covey:8",
+   "kind": "bio",
+   "text": "Covey tore his ACL in the Pac-12 Championship Game and missed Utah's bowl games.",
+   "about": [
+    "B.Covey",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137351547",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:bradberry:5",
+   "kind": "career",
+   "text": "Bradberry recorded two interceptions off Jameis Winston in one 2019 win over Tampa Bay.",
+   "about": [
+    "J.Bradberry",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136353692",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:gay:2",
+   "kind": "bio",
+   "text": "Gay won the 2015 6A State Championship with Starkville High School.",
+   "about": [
+    "W.Gay",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136420969",
+   "asOf": "2023-01-30"
+  },
+  {
+   "id": "kb:sweat:7",
+   "kind": "career",
+   "text": "Sweat earned his first Pro Bowl nod as a replacement for Nick Bosa.",
+   "about": [
+    "J.Sweat",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135958715",
+   "asOf": "2023-01-27"
+  },
+  {
+   "id": "kb:sweat:8",
+   "kind": "bio",
+   "text": "Sweat drew comparisons to Jadeveon Clowney for athleticism at offseason football camps.",
+   "about": [
+    "J.Sweat",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135958715",
+   "asOf": "2023-01-27"
+  },
+  {
+   "id": "kb:mcduffie:2",
+   "kind": "bio",
+   "text": "McDuffie transferred from Servite High School to St. John Bosco High School in Bellflower, California.",
+   "about": [
+    "T.McDuffie",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136873176",
+   "asOf": "2023-02-01"
+  },
+  {
+   "id": "kb:mcduffie:3",
+   "kind": "bio",
+   "text": "McDuffie earned selection to the All-American Bowl after his senior high school season.",
+   "about": [
+    "T.McDuffie",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136873176",
+   "asOf": "2023-02-01"
+  },
+  {
+   "id": "kb:suh:11",
+   "kind": "bio",
+   "text": "Suh's older sister played soccer for Mississippi State and Cameroon's women's national team.",
+   "about": [
+    "N.Suh",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135659771",
+   "asOf": "2023-01-26"
+  },
+  {
+   "id": "kb:clark:8",
+   "kind": "bio",
+   "text": "Clark recorded 70 tackles and 19 sacks as a high school senior while also catching three touchdowns.",
+   "about": [
+    "F.Clark",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137205370",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:clark:9",
+   "kind": "bio",
+   "text": "Clark added over 60 pounds in his first two years at Michigan without losing any speed.",
+   "about": [
+    "F.Clark",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137205370",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:scott:7",
+   "kind": "career",
+   "text": "Scott scored his first professional touchdown on a four-yard run against the Bills in 2019.",
+   "about": [
+    "B.Scott",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137228752",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:scott:8",
+   "kind": "career",
+   "text": "Scott served as Philadelphia's primary punt returner while starting four games in relief of Miles Sanders.",
+   "about": [
+    "B.Scott",
+    "PHI",
+    "M.Sanders"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137228752",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:thornhill:5",
+   "kind": "bio",
+   "text": "Thornhill graduated from Virginia in December 2018 with a degree in Anthropology.",
+   "about": [
+    "J.Thornhill",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136309432",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:thornhill:6",
+   "kind": "career",
+   "text": "Thornhill played both cornerback and safety at Virginia, totaling 208 tackles and 13 interceptions.",
+   "about": [
+    "J.Thornhill",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136309432",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:sneed:4",
+   "kind": "bio",
+   "text": "Sneed played wide receiver at Minden High School before committing to Louisiana Tech.",
+   "about": [
+    "L.Sneed",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1134840750",
+   "asOf": "2023-01-21"
+  },
+  {
+   "id": "kb:sneed:5",
+   "kind": "career",
+   "text": "Sneed moved to free safety before his senior season and earned second-team all-C-USA honors.",
+   "about": [
+    "L.Sneed",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1134840750",
+   "asOf": "2023-01-21"
+  },
+  {
+   "id": "kb:sneed:6",
+   "kind": "career",
+   "text": "Sneed recorded a sack against Cleveland in the Divisional Round of his rookie playoffs.",
+   "about": [
+    "L.Sneed",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1134840750",
+   "asOf": "2023-01-21"
+  },
+  {
+   "id": "kb:sneed:7",
+   "kind": "career",
+   "text": "Sneed recorded a sack against Buffalo in the AFC Championship during his rookie postseason.",
+   "about": [
+    "L.Sneed",
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1134840750",
+   "asOf": "2023-01-21"
+  },
+  {
+   "id": "kb:seumalo:6",
+   "kind": "career",
+   "text": "Seumalo was named an NFC Pro Bowl alternate on December 21, 2022.",
+   "about": [
+    "I.Seumalo",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138073420",
+   "asOf": "2023-02-07"
+  },
+  {
+   "id": "kb:seumalo:7",
+   "kind": "career",
+   "text": "Seumalo starred against reigning Pac-12 Defensive Lineman of the Year Star Lotulelei in a win over Utah.",
+   "about": [
+    "I.Seumalo",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138073420",
+   "asOf": "2023-02-07"
+  },
+  {
+   "id": "kb:kelce:16",
+   "kind": "bio",
+   "text": "Kelce collaborated with teammates Lane Johnson and Jordan Mailata on A Philly Special Christmas album in December 2022.",
+   "about": [
+    "J.Kelce",
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138532354",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kc:14",
+   "kind": "team",
+   "text": "The Kansas City Chiefs lost Super Bowl LV to the Tampa Bay Buccaneers in February 2021.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138530031",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kc:15",
+   "kind": "team",
+   "text": "The Kansas City Chiefs averaged 77,300 fans per game from 1996 to 2006, second in the NFL.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138530031",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kc:16",
+   "kind": "team",
+   "text": "The Chiefs won the AFC West for the seventh straight year.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138235816",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:phi:16",
+   "kind": "rivalry",
+   "text": "The Eagles share a bitter Pennsylvania rivalry with the Pittsburgh Steelers dating roughly to 1933.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138555337",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:phi:17",
+   "kind": "bio",
+   "text": "The Eagles absorbed a $33.8-million dead-cap hit for trading Carson Wentz to Indianapolis.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138555337",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:phi:18",
+   "kind": "team",
+   "text": "The Eagles put up 363 rushing yards against Green Bay with Hurts and Sanders topping 100 each.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138585657",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:reid:9",
+   "kind": "career",
+   "text": "Reid left Philadelphia with the best win total, winning percentage, and playoff victory total in Eagles history.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138451260",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:sirianni:7",
+   "kind": "bio",
+   "text": "Sirianni played one season for the Canton Legends of the American Indoor Football League.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138602988",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:sirianni:8",
+   "kind": "career",
+   "text": "Sirianni was the only first-year coach to lead a team to the playoffs in 2021.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.6,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138602988",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:pacheco:9",
+   "kind": "bio",
+   "text": "Isiah Pacheco was drafted by the Kansas City Chiefs in round 7 (No. 251 overall) of the 2022 NFL Draft.",
+   "about": [
+    "I.Pacheco",
+    "KC"
+   ],
+   "weight": 0.55,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:gainwell:8",
+   "kind": "bio",
+   "text": "Kenny Gainwell was drafted by the Philadelphia Eagles in round 5 (No. 150 overall) of the 2021 NFL Draft.",
+   "about": [
+    "K.Gainwell",
+    "PHI"
+   ],
+   "weight": 0.55,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:kelce:17",
+   "kind": "bio",
+   "text": "Jason Kelce was drafted by the Philadelphia Eagles in round 6 (No. 191 overall) of the 2011 NFL Draft.",
+   "about": [
+    "J.Kelce",
+    "PHI"
+   ],
+   "weight": 0.55,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:elliott:11",
+   "kind": "career",
+   "text": "Elliott converted all 202 extra-point attempts during his Memphis college career.",
+   "about": [
+    "J.Elliott",
+    "PHI"
+   ],
+   "weight": 0.55,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136327933",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:pacheco:10",
+   "kind": "career",
+   "text": "Pacheco totaled 960 scrimmage yards and returned 29 kickoffs for 597 yards as a rookie.",
+   "about": [
+    "I.Pacheco",
+    "KC"
+   ],
+   "weight": 0.55,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138672229",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:brown:9",
+   "kind": "career",
+   "text": "Brown torched his former Tennessee team for 119 yards and two touchdowns in a Week 13 blowout.",
+   "about": [
+    "A.Brown",
+    "PHI"
+   ],
+   "weight": 0.55,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138488758",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:goedert:8",
+   "kind": "career",
+   "text": "Goedert set career highs with nine catches for 91 yards against Dallas in 2019.",
+   "about": [
+    "D.Goedert",
+    "PHI"
+   ],
+   "weight": 0.55,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135295656",
+   "asOf": "2023-01-23"
+  },
+  {
+   "id": "kb:saunders:8",
+   "kind": "career",
+   "text": "Saunders won Super Bowl LIV when Kansas City defeated San Francisco 31-20.",
+   "about": [
+    "K.Saunders",
+    "KC"
+   ],
+   "weight": 0.55,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137900409",
+   "asOf": "2023-02-07"
+  },
+  {
+   "id": "kb:pascal:6",
+   "kind": "career",
+   "text": "Pascal posted his first 100-yard game with 106 yards and two touchdowns against Houston in 2019.",
+   "about": [
+    "Z.Pascal",
+    "PHI"
+   ],
+   "weight": 0.55,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136353428",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:covey:9",
+   "kind": "career",
+   "text": "Covey returned six punts for 105 yards against Tennessee, among the season's best single games.",
+   "about": [
+    "B.Covey",
+    "PHI"
+   ],
+   "weight": 0.55,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137351547",
+   "asOf": "2023-02-04"
+  },
+  {
+   "id": "kb:gay:3",
+   "kind": "bio",
+   "text": "Gay played in the 2017 U.S. Army All-American Bowl.",
+   "about": [
+    "W.Gay",
+    "KC"
+   ],
+   "weight": 0.55,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136420969",
+   "asOf": "2023-01-30"
+  },
+  {
+   "id": "kb:sweat:9",
+   "kind": "career",
+   "text": "Sweat signed a three-year, $40 million extension with Philadelphia in September 2021.",
+   "about": [
+    "J.Sweat",
+    "PHI"
+   ],
+   "weight": 0.55,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135958715",
+   "asOf": "2023-01-27"
+  },
+  {
+   "id": "kb:mcduffie:4",
+   "kind": "bio",
+   "text": "McDuffie started 11 of 13 games as a true freshman at Washington in 2019.",
+   "about": [
+    "T.McDuffie",
+    "KC"
+   ],
+   "weight": 0.55,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136873176",
+   "asOf": "2023-02-01"
+  },
+  {
+   "id": "kb:clark:10",
+   "kind": "career",
+   "text": "Clark had an interception that set up a Michigan touchdown in the 2012 Sugar Bowl against Virginia Tech.",
+   "about": [
+    "F.Clark",
+    "KC"
+   ],
+   "weight": 0.55,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137205370",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:scott:9",
+   "kind": "bio",
+   "text": "Scott was a Wuerffel Trophy watchlist candidate during his senior season at Louisiana Tech.",
+   "about": [
+    "B.Scott",
+    "PHI"
+   ],
+   "weight": 0.55,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137228752",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:seumalo:8",
+   "kind": "bio",
+   "text": "Seumalo transferred from Santiam Christian School to hometown Corvallis High School for his final two seasons.",
+   "about": [
+    "I.Seumalo",
+    "PHI"
+   ],
+   "weight": 0.55,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138073420",
+   "asOf": "2023-02-07"
+  },
+  {
+   "id": "kb:kc:17",
+   "kind": "team",
+   "text": "The Chiefs clinched the AFC's number one seed with a Week 18 win over the Raiders.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.55,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138235816",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:reid:10",
+   "kind": "career",
+   "text": "Reid waited 15 years between Super Bowls as a head coach, the second-longest gap after Dick Vermeil.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.55,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138451260",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:h2h:2",
+   "kind": "matchup",
+   "text": "Every meeting between Kansas City and Philadelphia since 2001 had been a regular-season game; they had not met in the playoffs in that span.",
+   "about": [
+    "PHI",
+    "KC"
+   ],
+   "weight": 0.55,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/schedules/games.csv",
+   "asOf": "2021-10-03"
+  },
+  {
+   "id": "kb:kc:18",
+   "kind": "team",
+   "text": "On the way here, Kansas City beat Jacksonville 27–20 in the divisional round, then beat Cincinnati 23–20 in the conference championship game.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.55,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/schedules/games.csv",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:phi:19",
+   "kind": "team",
+   "text": "On the way here, Philadelphia beat New York 38–7 in the divisional round, then beat San Francisco 31–7 in the conference championship game.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.55,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/schedules/games.csv",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:hurts:10",
+   "kind": "bio",
+   "text": "Jalen Hurts played college football at Oklahoma and then Alabama.",
+   "about": [
+    "J.Hurts",
+    "PHI"
+   ],
+   "weight": 0.5,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:bradberry:6",
+   "kind": "bio",
+   "text": "James Bradberry played college football at Samford and then Arkansas State.",
+   "about": [
+    "J.Bradberry",
+    "PHI"
+   ],
+   "weight": 0.5,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:pacheco:11",
+   "kind": "career",
+   "text": "Pacheco earned his first career start in Week 7 against the San Francisco 49ers.",
+   "about": [
+    "I.Pacheco",
+    "KC"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138672229",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:gainwell:9",
+   "kind": "bio",
+   "text": "Gainwell was selected in the fifth round, 150th overall, by Philadelphia in 2021.",
+   "about": [
+    "K.Gainwell",
+    "PHI"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138094855",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:gainwell:10",
+   "kind": "career",
+   "text": "Gainwell earned co-AAC Player of the Week with 104 rushing yards and 204 receiving yards against Tulane.",
+   "about": [
+    "K.Gainwell",
+    "PHI"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138094855",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:gainwell:11",
+   "kind": "bio",
+   "text": "Gainwell's younger brother Kory committed to play football at Memphis.",
+   "about": [
+    "K.Gainwell",
+    "PHI"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138094855",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:brown:10",
+   "kind": "matchup",
+   "text": "Brown totaled five receptions for 64 yards as Tennessee's season ended in an AFC Championship loss to Kansas City.",
+   "about": [
+    "A.Brown",
+    "PHI"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138488758",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:bolton:4",
+   "kind": "bio",
+   "text": "Bolton played all 13 games as a true freshman at Missouri, recording 22 tackles and one sack.",
+   "about": [
+    "N.Bolton",
+    "KC"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136770442",
+   "asOf": "2023-02-01"
+  },
+  {
+   "id": "kb:smith-schuster:11",
+   "kind": "bio",
+   "text": "Smith-Schuster signed with the Kansas City Chiefs in March 2022 on a one-year deal.",
+   "about": [
+    "J.Smith-Schuster",
+    "KC"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137310255",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:goedert:9",
+   "kind": "bio",
+   "text": "Goedert missed time in 2022 with a shoulder injury from an uncalled facemask penalty.",
+   "about": [
+    "D.Goedert",
+    "PHI"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135295656",
+   "asOf": "2023-01-23"
+  },
+  {
+   "id": "kb:chenal:6",
+   "kind": "bio",
+   "text": "Chenal joined Wisconsin as an early enrollee before his freshman season.",
+   "about": [
+    "L.Chenal",
+    "KC"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136873335",
+   "asOf": "2023-02-01"
+  },
+  {
+   "id": "kb:saunders:9",
+   "kind": "bio",
+   "text": "Saunders returned in October 2020 after a dislocated elbow landed Saunders on injured reserve.",
+   "about": [
+    "K.Saunders",
+    "KC"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137900409",
+   "asOf": "2023-02-07"
+  },
+  {
+   "id": "kb:pascal:7",
+   "kind": "career",
+   "text": "Pascal scored his first NFL touchdown on a pass from Andrew Luck in 2018.",
+   "about": [
+    "Z.Pascal",
+    "PHI"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136353428",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:bradberry:7",
+   "kind": "bio",
+   "text": "Bradberry missed three games as a rookie with a severe case of turf toe.",
+   "about": [
+    "J.Bradberry",
+    "PHI"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136353692",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:bradberry:8",
+   "kind": "bio",
+   "text": "Bradberry suffered a fractured wrist during 2017 OTAs and missed at least a month.",
+   "about": [
+    "J.Bradberry",
+    "PHI"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136353692",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:gay:4",
+   "kind": "bio",
+   "text": "Gay left Mississippi State early, forgoing his senior season for the 2020 NFL Draft.",
+   "about": [
+    "W.Gay",
+    "KC"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136420969",
+   "asOf": "2023-01-30"
+  },
+  {
+   "id": "kb:sweat:10",
+   "kind": "bio",
+   "text": "Sweat recorded 94 tackles while leading Oscar Smith undefeated to the state championship game.",
+   "about": [
+    "J.Sweat",
+    "PHI"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135958715",
+   "asOf": "2023-01-27"
+  },
+  {
+   "id": "kb:mcduffie:5",
+   "kind": "career",
+   "text": "McDuffie recorded 45 tackles and one interception as a true freshman at Washington.",
+   "about": [
+    "T.McDuffie",
+    "KC"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136873176",
+   "asOf": "2023-02-01"
+  },
+  {
+   "id": "kb:thornhill:7",
+   "kind": "career",
+   "text": "Thornhill recorded his first career interception off Deshaun Watson during his rookie season.",
+   "about": [
+    "J.Thornhill",
+    "KC"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136309432",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:thornhill:8",
+   "kind": "team",
+   "text": "Thornhill helped Kansas City reach Super Bowl LV after his injury comeback.",
+   "about": [
+    "J.Thornhill",
+    "KC"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136309432",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:sneed:8",
+   "kind": "bio",
+   "text": "Sneed was moved back to cornerback by the Chiefs during his rookie training camp.",
+   "about": [
+    "L.Sneed",
+    "KC"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1134840750",
+   "asOf": "2023-01-21"
+  },
+  {
+   "id": "kb:sneed:9",
+   "kind": "career",
+   "text": "Sneed recorded his first career sack against New Orleans in Week 15 of his rookie season.",
+   "about": [
+    "L.Sneed",
+    "KC"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1134840750",
+   "asOf": "2023-01-21"
+  },
+  {
+   "id": "kb:seumalo:9",
+   "kind": "bio",
+   "text": "Seumalo landed on injured reserve with a Lisfranc foot injury in Week 3 of 2021.",
+   "about": [
+    "I.Seumalo",
+    "PHI"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138073420",
+   "asOf": "2023-02-07"
+  },
+  {
+   "id": "kb:kelce:18",
+   "kind": "career",
+   "text": "Kelce missed most of 2012 after tearing his ACL and partially tearing his MCL against Baltimore.",
+   "about": [
+    "J.Kelce",
+    "PHI"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138532354",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kc:19",
+   "kind": "team",
+   "text": "The Chiefs had only three players in the Top 100, their fewest selections since 2018.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138235816",
+   "asOf": "2023-02-08"
+  },
+  {
+   "id": "kb:phi:20",
+   "kind": "team",
+   "text": "The Eagles have sold out every home game since the 1999 season.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138555337",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:sirianni:9",
+   "kind": "career",
+   "text": "Sirianni worked with a different starting quarterback in each of his three Colts seasons.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138602988",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:sirianni:10",
+   "kind": "bio",
+   "text": "Sirianni comes from a coaching family with his father Fran and brother Jay leading the same high school.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138602988",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:preview:7",
+   "kind": "team",
+   "text": "Super Bowl LVII has the Eagles wearing green home jerseys while the Chiefs wear white away jerseys.",
+   "about": [
+    "KC",
+    "PHI"
+   ],
+   "weight": 0.5,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138653544",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:h2h:3",
+   "kind": "matchup",
+   "text": "Since the 2001 season, Kansas City and Philadelphia had met 6 times before this game: Kansas City won 3 and Philadelphia won 3.",
+   "about": [
+    "PHI",
+    "KC"
+   ],
+   "weight": 0.5,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/schedules/games.csv",
+   "asOf": "2021-10-03"
+  },
+  {
+   "id": "kb:pascal:8",
+   "kind": "bio",
+   "text": "Pascal was claimed off waivers by Indianapolis in 2018 and earned a spot on the 53-man roster.",
+   "about": [
+    "Z.Pascal",
+    "PHI"
+   ],
+   "weight": 0.45,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136353428",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:mcduffie:6",
+   "kind": "career",
+   "text": "McDuffie started all four of Washington's games as a sophomore in 2020.",
+   "about": [
+    "T.McDuffie",
+    "KC"
+   ],
+   "weight": 0.45,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136873176",
+   "asOf": "2023-02-01"
+  },
+  {
+   "id": "kb:preview:8",
+   "kind": "bio",
+   "text": "Super Bowl LVII will be televised nationally by Fox with Rihanna headlining halftime.",
+   "about": [
+    "KC",
+    "PHI"
+   ],
+   "weight": 0.45,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138653544",
+   "asOf": "2023-02-10"
+  },
+  {
+   "id": "kb:kc:20",
+   "kind": "team",
+   "text": "Kansas City Chiefs went 14–3 in the 2022 regular season.",
+   "about": [
+    "KC"
+   ],
+   "weight": 0.45,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/schedules/games.csv",
+   "asOf": "2023-01-07"
+  },
+  {
+   "id": "kb:phi:21",
+   "kind": "team",
+   "text": "Philadelphia Eagles went 14–3 in the 2022 regular season.",
+   "about": [
+    "PHI"
+   ],
+   "weight": 0.45,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/schedules/games.csv",
+   "asOf": "2023-01-08"
+  },
+  {
+   "id": "kb:butker:10",
+   "kind": "bio",
+   "text": "Harrison Butker played college football at Georgia Tech.",
+   "about": [
+    "H.Butker",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:mahomes:10",
+   "kind": "bio",
+   "text": "Patrick Mahomes played college football at Texas Tech.",
+   "about": [
+    "P.Mahomes",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:elliott:12",
+   "kind": "bio",
+   "text": "Jake Elliott played college football at Memphis.",
+   "about": [
+    "J.Elliott",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:pacheco:12",
+   "kind": "bio",
+   "text": "Isiah Pacheco played college football at Rutgers.",
+   "about": [
+    "I.Pacheco",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:gainwell:12",
+   "kind": "bio",
+   "text": "Kenny Gainwell played college football at Memphis.",
+   "about": [
+    "K.Gainwell",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:brown:11",
+   "kind": "bio",
+   "text": "A.J. Brown played college football at Mississippi.",
+   "about": [
+    "A.Brown",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:toney:9",
+   "kind": "bio",
+   "text": "Kadarius Toney played college football at Florida.",
+   "about": [
+    "K.Toney",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:kelce:19",
+   "kind": "bio",
+   "text": "Travis Kelce played college football at Cincinnati.",
+   "about": [
+    "T.Kelce",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:kelce:20",
+   "kind": "bio",
+   "text": "Travis Kelce was drafted by the Kansas City Chiefs in round 3 (No. 63 overall) of the 2013 NFL Draft.",
+   "about": [
+    "T.Kelce",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:bolton:5",
+   "kind": "bio",
+   "text": "Nick Bolton played college football at Missouri.",
+   "about": [
+    "N.Bolton",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:bolton:6",
+   "kind": "bio",
+   "text": "Nick Bolton was drafted by the Kansas City Chiefs in round 2 (No. 58 overall) of the 2021 NFL Draft.",
+   "about": [
+    "N.Bolton",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:smith:11",
+   "kind": "bio",
+   "text": "DeVonta Smith played college football at Alabama.",
+   "about": [
+    "D.Smith",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:smith:12",
+   "kind": "bio",
+   "text": "DeVonta Smith was drafted by the Philadelphia Eagles in round 1 (No. 10 overall) of the 2021 NFL Draft.",
+   "about": [
+    "D.Smith",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:smith-schuster:12",
+   "kind": "bio",
+   "text": "JuJu Smith-Schuster played college football at USC.",
+   "about": [
+    "J.Smith-Schuster",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:goedert:10",
+   "kind": "bio",
+   "text": "Dallas Goedert played college football at South Dakota State.",
+   "about": [
+    "D.Goedert",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:goedert:11",
+   "kind": "bio",
+   "text": "Dallas Goedert was drafted by the Philadelphia Eagles in round 2 (No. 49 overall) of the 2018 NFL Draft.",
+   "about": [
+    "D.Goedert",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:sanders:11",
+   "kind": "bio",
+   "text": "Miles Sanders played college football at Penn State.",
+   "about": [
+    "M.Sanders",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:sanders:12",
+   "kind": "bio",
+   "text": "Miles Sanders was drafted by the Philadelphia Eagles in round 2 (No. 53 overall) of the 2019 NFL Draft.",
+   "about": [
+    "M.Sanders",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:chenal:7",
+   "kind": "bio",
+   "text": "Leo Chenal played college football at Wisconsin.",
+   "about": [
+    "L.Chenal",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:chenal:8",
+   "kind": "bio",
+   "text": "Leo Chenal was drafted by the Kansas City Chiefs in round 3 (No. 103 overall) of the 2022 NFL Draft.",
+   "about": [
+    "L.Chenal",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:mckinnon:12",
+   "kind": "bio",
+   "text": "Jerick McKinnon played college football at Georgia Southern.",
+   "about": [
+    "J.McKinnon",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:moore:5",
+   "kind": "bio",
+   "text": "Skyy Moore played college football at Western Michigan.",
+   "about": [
+    "S.Moore",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:moore:6",
+   "kind": "bio",
+   "text": "Skyy Moore was drafted by the Kansas City Chiefs in round 2 (No. 54 overall) of the 2022 NFL Draft.",
+   "about": [
+    "S.Moore",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:saunders:10",
+   "kind": "bio",
+   "text": "Khalen Saunders played college football at Western Illinois.",
+   "about": [
+    "K.Saunders",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:saunders:11",
+   "kind": "bio",
+   "text": "Khalen Saunders was drafted by the Kansas City Chiefs in round 3 (No. 84 overall) of the 2019 NFL Draft.",
+   "about": [
+    "K.Saunders",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:pascal:9",
+   "kind": "bio",
+   "text": "Zach Pascal played college football at Old Dominion.",
+   "about": [
+    "Z.Pascal",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:covey:10",
+   "kind": "bio",
+   "text": "Britain Covey played college football at Utah.",
+   "about": [
+    "B.Covey",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:gay:5",
+   "kind": "bio",
+   "text": "Willie Gay Jr. played college football at Mississippi State.",
+   "about": [
+    "W.Gay",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:gay:6",
+   "kind": "bio",
+   "text": "Willie Gay Jr. was drafted by the Kansas City Chiefs in round 2 (No. 63 overall) of the 2020 NFL Draft.",
+   "about": [
+    "W.Gay",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:sweat:11",
+   "kind": "bio",
+   "text": "Josh Sweat played college football at Florida State.",
+   "about": [
+    "J.Sweat",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:sweat:12",
+   "kind": "bio",
+   "text": "Josh Sweat was drafted by the Philadelphia Eagles in round 4 (No. 130 overall) of the 2018 NFL Draft.",
+   "about": [
+    "J.Sweat",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:mcduffie:7",
+   "kind": "bio",
+   "text": "Trent McDuffie played college football at Washington.",
+   "about": [
+    "T.McDuffie",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:mcduffie:8",
+   "kind": "bio",
+   "text": "Trent McDuffie was drafted by the Kansas City Chiefs in round 1 (No. 21 overall) of the 2022 NFL Draft.",
+   "about": [
+    "T.McDuffie",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:suh:12",
+   "kind": "bio",
+   "text": "Ndamukong Suh played college football at Nebraska.",
+   "about": [
+    "N.Suh",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:clark:11",
+   "kind": "bio",
+   "text": "Frank Clark played college football at Michigan.",
+   "about": [
+    "F.Clark",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:scott:10",
+   "kind": "bio",
+   "text": "Boston Scott played college football at Louisiana Tech.",
+   "about": [
+    "B.Scott",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:thornhill:9",
+   "kind": "bio",
+   "text": "Juan Thornhill played college football at Virginia.",
+   "about": [
+    "J.Thornhill",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:thornhill:10",
+   "kind": "bio",
+   "text": "Juan Thornhill was drafted by the Kansas City Chiefs in round 2 (No. 63 overall) of the 2019 NFL Draft.",
+   "about": [
+    "J.Thornhill",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:sneed:10",
+   "kind": "bio",
+   "text": "L'Jarius Sneed played college football at Louisiana Tech.",
+   "about": [
+    "L.Sneed",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:sneed:11",
+   "kind": "bio",
+   "text": "L'Jarius Sneed was drafted by the Kansas City Chiefs in round 4 (No. 138 overall) of the 2020 NFL Draft.",
+   "about": [
+    "L.Sneed",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:seumalo:10",
+   "kind": "bio",
+   "text": "Isaac Seumalo played college football at Oregon State.",
+   "about": [
+    "I.Seumalo",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:seumalo:11",
+   "kind": "bio",
+   "text": "Isaac Seumalo was drafted by the Philadelphia Eagles in round 3 (No. 79 overall) of the 2016 NFL Draft.",
+   "about": [
+    "I.Seumalo",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://github.com/nflverse/nflverse-data/releases/download/players/players.csv",
+   "asOf": "2023-02-11"
+  },
+  {
+   "id": "kb:toney:10",
+   "kind": "bio",
+   "text": "Toney missed extensive time with oblique and hamstring injuries plus COVID-19 stints.",
+   "about": [
+    "K.Toney",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138328122",
+   "asOf": "2023-02-09"
+  },
+  {
+   "id": "kb:bolton:7",
+   "kind": "bio",
+   "text": "Bolton signed a $5.84 million deal with Kansas City after being drafted 58th overall in 2021.",
+   "about": [
+    "N.Bolton",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136770442",
+   "asOf": "2023-02-01"
+  },
+  {
+   "id": "kb:goedert:12",
+   "kind": "bio",
+   "text": "Goedert played football, soccer, and basketball in high school in Britton, South Dakota.",
+   "about": [
+    "D.Goedert",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1135295656",
+   "asOf": "2023-01-23"
+  },
+  {
+   "id": "kb:chenal:9",
+   "kind": "bio",
+   "text": "Chenal left Wisconsin early to enter the 2022 NFL Draft.",
+   "about": [
+    "L.Chenal",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136873335",
+   "asOf": "2023-02-01"
+  },
+  {
+   "id": "kb:gay:7",
+   "kind": "career",
+   "text": "Gay recorded his first career sack in Week 5 against the Las Vegas Raiders.",
+   "about": [
+    "W.Gay",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136420969",
+   "asOf": "2023-01-30"
+  },
+  {
+   "id": "kb:gay:8",
+   "kind": "career",
+   "text": "Gay totaled 99 tackles, six sacks, three interceptions and a touchdown in college.",
+   "about": [
+    "W.Gay",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136420969",
+   "asOf": "2023-01-30"
+  },
+  {
+   "id": "kb:clark:12",
+   "kind": "career",
+   "text": "Clark earned his third Pro Bowl selection after the 2021 season with Kansas City.",
+   "about": [
+    "F.Clark",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1137205370",
+   "asOf": "2023-02-03"
+  },
+  {
+   "id": "kb:thornhill:11",
+   "kind": "career",
+   "text": "Thornhill started all 16 regular-season games as a rookie before the late ACL injury.",
+   "about": [
+    "J.Thornhill",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1136309432",
+   "asOf": "2023-01-29"
+  },
+  {
+   "id": "kb:sneed:12",
+   "kind": "bio",
+   "text": "Sneed participated in the 2020 NFLPA Collegiate Bowl before entering the NFL Draft.",
+   "about": [
+    "L.Sneed",
+    "KC"
+   ],
+   "weight": 0.4,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1134840750",
+   "asOf": "2023-01-21"
+  },
+  {
+   "id": "kb:seumalo:12",
+   "kind": "bio",
+   "text": "Seumalo missed the final three weeks of the 2018 regular season with a pectoral injury.",
+   "about": [
+    "I.Seumalo",
+    "PHI"
+   ],
+   "weight": 0.4,
+   "source": "https://en.wikipedia.org/w/index.php?oldid=1138073420",
+   "asOf": "2023-02-07"
+  }
+ ]
+}

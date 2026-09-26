@@ -11,6 +11,7 @@ import type { EngineEvent, Mode, Pacing, Settings, Talkativeness } from '../shar
 import { BUDGET } from '../shared/constants';
 import { VirtualClock, RealClock } from '../server/room/clock';
 import { Room, type SpokenRecord } from '../server/room/Room';
+import { makeIntel } from '../server/intel';
 import { LLM } from '../server/ai/llm';
 import { Bots, BotTransport } from '../server/sim/bots';
 
@@ -32,7 +33,7 @@ export async function runSim(o: RunOpts) {
   llm.quiet = !useLlm;
   const events: { ev: EngineEvent; at: number }[] = [];
   const settings: Settings = { familyName: null, gameId: '2022_22_KC_PHI', mode: o.mode, pacing: o.pacing, talkativeness: o.talk, voice: true, fanHandicap: true };
-  const room = new Room('SIMU', settings, { clock, transport, llm, events: { onEngineEvent: (ev, at) => events.push({ ev, at }) } });
+  const room = new Room('SIMU', settings, { clock, transport, llm, intel: makeIntel({ gameId: settings.gameId, llm }), events: { onEngineEvent: (ev, at) => events.push({ ev, at }) } });
   const bots = new Bots(room, clock, transport, o.seed ?? 7);
   bots.join();
   if (o.preset) room.applyPreset(o.preset);
@@ -51,10 +52,17 @@ export async function runSim(o: RunOpts) {
 }
 
 const huddleExplanations = (lines: SpokenRecord[]) => lines.filter((l) => l.kind === 'explain' || l.kind === 'short');
+/**
+ * Budgets and gaps count every Director line, rule explanations and intel insights alike: an insight is still
+ * Huddle talking. The Game 1 vs Game 4 fade metric counts rule explanations only (`huddleExplanations`): the fade
+ * measures what the family has learned, and insights don't depend on knowledge (each fact is said at most once
+ * per room anyway). Simulate runs without an IntelProvider today, so both definitions currently agree.
+ */
+const directorLines = (lines: SpokenRecord[]) => lines.filter((l) => l.kind === 'explain' || l.kind === 'short' || l.kind === 'insight');
 const fmt = (ms: number) => `${Math.floor(ms / 60000)}m ${String(Math.round((ms % 60000) / 1000)).padStart(2, '0')}s`;
 
 function checkBudgets(talk: Talkativeness, lines: SpokenRecord[], shownPlays: number) {
-  const budgeted = huddleExplanations(lines).filter((l) => l.trigger === 'play' && !l.followUp);
+  const budgeted = directorLines(lines).filter((l) => l.trigger === 'play' && !l.followUp);
   const perQ = new Map<number, number>();
   for (const l of budgeted) perQ.set(l.qtr, (perQ.get(l.qtr) ?? 0) + 1);
   if (talk === 'quiet') {
@@ -72,7 +80,7 @@ function checkBudgets(talk: Talkativeness, lines: SpokenRecord[], shownPlays: nu
   }
   if (talk !== 'quiet') {
     const gap = talk === 'chatty' ? BUDGET.chattyGapMs : BUDGET.normalGapMs;
-    const huddle = lines.filter((l) => (l.kind === 'explain' || l.kind === 'short' || l.kind === 'beat') && !l.followUp);
+    const huddle = lines.filter((l) => (l.kind === 'explain' || l.kind === 'short' || l.kind === 'insight' || l.kind === 'beat') && !l.followUp);
     let bad = 0;
     for (let i = 1; i < huddle.length; i++) {
       const prevEnd = huddle[i - 1].endAt ?? huddle[i - 1].at;

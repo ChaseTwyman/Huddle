@@ -17,6 +17,7 @@
     "test": "vitest run",
     "fetch-game": "tsx scripts/fetch-game.ts",
     "simulate": "tsx scripts/simulate.ts",
+    "build-kb": "tsx scripts/build-kb.ts",
     "smoke": "tsx scripts/smoke.ts"
   },
   "dependencies": {
