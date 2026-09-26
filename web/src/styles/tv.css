@@ -186,3 +186,10 @@
 .dock .log .fallback { color: var(--flag); }
 .dock kbd { font-family: var(--mono); background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; font-size: 11px; }
 .yl-label { font-family: var(--body); font-weight: 600; }
+
+.paused-banner {
+  position: fixed; left: 50%; top: 42%; transform: translate(-50%, -50%); z-index: 30;
+  background: rgba(11,18,14,0.94); border: 3px solid var(--chalk); border-radius: var(--radius-lg);
+  font-family: var(--display); font-weight: 800; font-size: calc(var(--u) * 2.4); letter-spacing: 0.04em;
+  padding: calc(var(--u) * 0.6) calc(var(--u) * 1.6); box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}

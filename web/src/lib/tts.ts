@@ -1,7 +1,7 @@
 const PREFERRED = ['Google US English', 'Samantha', 'Microsoft Aria Online (Natural)'];
 const WPS = 2.6;
 
-type Line = { lineId: string; text: string; priority: number };
+type Line = { lineId: string; text: string; priority: number; audioUrl?: string };
 
 /**
  * TV voice (BUILD_PROMPT 11.3): speechSynthesis, one line at a time, lower-priority queued lines are
@@ -13,6 +13,8 @@ export class Speaker {
   private current: Line | null = null;
   private voice: SpeechSynthesisVoice | null = null;
   private timer: ReturnType<typeof setTimeout> | null = null;
+  private audio: HTMLAudioElement | null = null;
+  private usedServerVoice = false;
   muted = false;
   onDone: (lineId: string) => void = () => undefined;
   onSpeaking: (line: Line | null) => void = () => undefined;
@@ -36,7 +38,10 @@ export class Speaker {
     window.speechSynthesis.speak(u);
   }
 
-  get voiceName() { return this.voice?.name ?? (this.supported ? 'default voice' : 'no speech (captions only)'); }
+  get voiceName() {
+    if (this.usedServerVoice) return 'ElevenLabs';
+    return this.voice?.name ?? (this.supported ? 'default voice' : 'no speech (captions only)');
+  }
 
   say(line: Line) {
     if (this.current && line.priority > this.current.priority) {
@@ -64,6 +69,7 @@ export class Speaker {
     if (this.timer) clearTimeout(this.timer);
     this.timer = null;
     if (this.supported) window.speechSynthesis.cancel();
+    if (this.audio) { this.audio.pause(); this.audio = null; }
     const cur = this.current;
     this.current = null;
     if (cur) this.onDone(cur.lineId);
@@ -75,6 +81,7 @@ export class Speaker {
     if (this.current?.lineId !== lineId) return;
     if (this.timer) clearTimeout(this.timer);
     this.timer = null;
+    this.audio = null;
     this.current = null;
     this.onDone(lineId);
     this.onSpeaking(null);
@@ -87,8 +94,34 @@ export class Speaker {
     this.current = line;
     this.onSpeaking(line);
     const estimate = (line.text.split(/\s+/).length / WPS) * 1000 + 400;
-    if (this.muted || !this.supported) {
-      this.timer = setTimeout(() => this.finish(line.lineId), this.muted ? 0 : estimate);
+    if (this.muted) {
+      this.timer = setTimeout(() => this.finish(line.lineId), 0);
+      return;
+    }
+    if (line.audioUrl) {
+      // Server-rendered voice (ElevenLabs); fall back to browser speech if it can't play.
+      const a = new Audio(line.audioUrl);
+      this.audio = a;
+      let fellBack = false;
+      const fallback = () => {
+        if (fellBack || this.current?.lineId !== line.lineId) return;
+        fellBack = true;
+        this.audio = null;
+        this.speakBrowser(line, estimate);
+      };
+      a.onended = () => this.finish(line.lineId);
+      a.onerror = fallback;
+      a.play().then(() => { this.usedServerVoice = true; }).catch(fallback);
+      this.timer = setTimeout(() => this.finish(line.lineId), estimate * 1.8 + 6000);
+      return;
+    }
+    this.speakBrowser(line, estimate);
+  }
+
+  private speakBrowser(line: Line, estimate: number) {
+    if (this.timer) clearTimeout(this.timer);
+    if (!this.supported) {
+      this.timer = setTimeout(() => this.finish(line.lineId), estimate);
       return;
     }
     const u = new SpeechSynthesisUtterance(line.text);

@@ -221,7 +221,8 @@ export type ClientToServer = {
   'player:feedback': (p: { promptId: string; value: 'got_it' | 'confused' }) => void;
 };
 
-export type SpeakLine = { lineId: string; text: string; priority: number };
+/** audioUrl: server-rendered voice (ElevenLabs) to play instead of browser speech; the TV falls back if it fails. */
+export type SpeakLine = { lineId: string; text: string; priority: number; audioUrl?: string };
 
 export type ServerToClient = {
   'room:snapshot': (s: RoomSnapshot) => void;

@@ -29,6 +29,7 @@ import { candidatesFor, Scheduler, triggerFor, type Trigger } from '../director/
 import { directorTurn, situation } from '../director/director';
 import { sourceLine, type DirectorDecision } from '../director/templates';
 import type { FamilyStore, FamilyFile } from '../persistence/families';
+import type { TtsService } from '../ai/tts';
 import { dataPath } from '../paths';
 
 class Aborted extends Error {
@@ -76,6 +77,8 @@ export type RoomDeps = {
   events?: RoomEvents;
   /** Divides every pacing wait and window (smoke test). */
   speed?: number;
+  /** Server-side voice (ElevenLabs). Absent or disabled = browser speech on the TV. */
+  tts?: TtsService | null;
 };
 
 const first = (n: string) => n.trim().split(/\s+/)[0] || n;
@@ -100,6 +103,7 @@ export class Room {
   private families: FamilyStore | null;
   private events: RoomEvents;
   private speed: number;
+  private tts: TtsService | null;
 
   private gen = 0;
   private tvCount = 0;
@@ -143,6 +147,7 @@ export class Room {
     this.families = deps.families ?? null;
     this.events = deps.events ?? {};
     this.speed = deps.speed ?? 1;
+    this.tts = deps.tts ?? null;
     this.lastActivity = this.clock.now();
     this.game = loadGame(settings.gameId);
     this.scheduler = new Scheduler(settings.talkativeness);
@@ -476,9 +481,12 @@ export class Room {
     const rec: SpokenRecord = { lineId, text, kind, at: this.now(), qtr: this.scorebug?.qtr ?? 0, trigger, spoken: this.settings.voice, ...(followUp ? { followUp } : {}) };
     this.spokenLog.push(rec);
     if (this.settings.voice && this.tvCount > 0) {
-      this.transport.speak(this.code, { lineId, text, priority });
+      const audioUrl = this.tts?.register(lineId, text) ?? null;
+      this.transport.speak(this.code, { lineId, text, priority, ...(audioUrl ? { audioUrl } : {}) });
+      // Server-rendered audio adds fetch time before playback starts.
+      const slack = this.win(audioUrl ? 5000 : 2500);
       await new Promise<void>((resolve) => {
-        const t = this.clock.setTimeout(() => { this.pendingSpeech.delete(lineId); resolve(); }, est + this.win(2500));
+        const t = this.clock.setTimeout(() => { this.pendingSpeech.delete(lineId); resolve(); }, est + slack);
         this.pendingSpeech.set(lineId, () => { this.clock.clearTimeout(t); resolve(); });
       });
     } else {
@@ -760,9 +768,19 @@ export class Room {
 
   // ---------------------------------------------------------------- engine events
 
+  /** Last engine event (time and a short description): the watchdog uses it to spot a stalled game. */
+  lastEngine = { at: 0, what: 'not started' };
+  /** Log one line per play to the server console (off in tests and simulate). */
+  logPlays = false;
+
   async onEngineEvent(ev: EngineEvent): Promise<void> {
     const gen = this.gen;
     this.events.onEngineEvent?.(ev, this.now());
+    const what = 'play' in ev ? `${ev.type} #${ev.play.idx} Q${ev.play.qtr} ${ev.play.clock}` : ev.type;
+    this.lastEngine = { at: this.now(), what };
+    if (this.logPlays && (ev.type === 'pre_snap' || ev.type === 'flag' || ev.type === 'summary' || ev.type === 'halftime' || ev.type === 'final')) {
+      console.log(`[room ${this.code}] ${ev.type === 'summary' ? `summary: ${ev.text}` : what}${ev.type === 'pre_snap' && ev.play.decision ? ' (Predict)' : ''}`);
+    }
     try {
       switch (ev.type) {
         case 'pre_snap': return await this.onPreSnap(gen, ev.play);
@@ -1201,6 +1219,14 @@ export class Room {
   }
 
   // ---------------------------------------------------------------- misc
+
+  /** Watchdog: describe a live game whose engine has been quiet for longer than `ms` (null if healthy). */
+  stallReport(ms: number): string | null {
+    if (this.phase !== 'live' || this.engine.paused || !this.started) return null;
+    const quiet = this.now() - this.lastEngine.at;
+    if (quiet < ms) return null;
+    return `quiet ${Math.round(quiet / 1000)}s after "${this.lastEngine.what}"; windows open ${this.windowsOpen}; prompts pending ${this.pendingPrompts.size}; speech pending ${this.pendingSpeech.size}; TVs ${this.tvCount}`;
+  }
 
   /** Simulation only: the concept behind the open Call It round. Never sent to clients. */
   simRoundConcept(promptId: string): string | null {

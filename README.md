@@ -96,6 +96,18 @@ The live-model path was **not** exercised in this build environment (no API key 
 - **The fade:** press **G** before a segment to seed "Game 4" knowledge. The TV shows "Simulated: Game 4 knowledge"; Huddle stays quieter and hands explanations to learners. Knowledge seeds by **learner join order**: have Mom join first (slot 1 knows defensive holding).
 - **Recording:** use Demo pacing, record the TV window with a screen recorder and the couch with a separate camera. Keep a backup take. Don't put broadcast footage in the public video.
 
+## Voice (ElevenLabs)
+
+By default the TV speaks with the browser's built-in voice. For a realistic voice, add to `.env`:
+
+```
+TTS_PROVIDER=elevenlabs
+ELEVENLABS_API_KEY=...
+ELEVENLABS_VOICE_ID=...   # optional: any voice from your ElevenLabs library
+```
+
+The server renders each line with ElevenLabs (`eleven_flash_v2_5`, low latency) and the TV plays it. The key never reaches the browser. Audio is cached in `data/cache/tts/`, so repeated lines (rule cards, announcements) play instantly the second time. If a line fails, the TV falls back to the browser voice for that line. The host dock shows which voice is in use, and the server prints `voice: ElevenLabs` at startup.
+
 ## Video mode, sync tool, vision lab (P1)
 
 - **Vision lab** (`/lab/vision`): upload any broadcast screenshot; Llama 4 Scout reads the scorebug (down, distance, clock, score, FLAG) and the page shows the JSON. Needs a provider in `.env`; in mock mode it answers "no scorebug visible".
@@ -132,6 +144,7 @@ nflverse CSV ─fetch-game─▶ timeline.json + moments.json
 
 ## Troubleshooting
 
+- **Game seems stuck:** if the TV shows **PAUSED**, press Space (Space toggles pause). Otherwise check the server terminal: it prints one line per play (`[room ABCD] pre_snap #8 Q1 12:02`) and a `WARNING engine quiet …` line if a live game stalls for a minute, with what it was waiting on. Please send that line.
 - **No voice:** click "Start Huddle" (browsers need a gesture). Check the voice name in the host dock. Without speech synthesis Huddle still shows every line as a caption and paces lines at 2.6 words per second.
 - **Model 404 / "model not found":** the provider renamed the model. List models with `GET {LLM_BASE_URL}/models` and update `LLM_MODEL_*`. Huddle logs one warning and keeps running on templates.
 - **429 rate limits:** Huddle falls back to templates immediately and backs off that task for 10 s. Lower `LLM_MAX_CONCURRENCY`, or pre-warm the cache by running the demo once.

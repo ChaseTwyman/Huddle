@@ -10,6 +10,7 @@ import { SocketTransport } from './room/transport';
 import { FamilyStore } from './persistence/families';
 import { configFromEnv } from './ai/llm';
 import { registerP1Routes } from './p1';
+import { TtsService } from './ai/tts';
 
 export type StartOptions = { port?: number; prod?: boolean; speed?: number; clock?: Clock; families?: FamilyStore | null; quiet?: boolean };
 
@@ -18,14 +19,26 @@ export async function startServer(opts: StartOptions = {}): Promise<{ http: Http
   const prod = opts.prod ?? process.env.NODE_ENV === 'production';
   // speed (smoke test) divides pacing and windows inside rooms; the clock itself stays real.
   const clock = opts.clock ?? new RealClock();
+  const tts = new TtsService();
   const http = createServer();
   const io = new Server<ClientToServer, ServerToClient>(http, { cors: { origin: true } });
   const manager = new RoomManager({
     clock, transport: new SocketTransport(io),
     families: opts.families === undefined ? new FamilyStore() : opts.families,
     speed: opts.speed,
+    logPlays: !opts.quiet,
+    tts,
   });
-  const app = createHttpApp(manager, { prod, port, extra: (a) => registerP1Routes(a, clock) });
+  const app = createHttpApp(manager, { prod, port, extra: (a) => {
+    registerP1Routes(a, clock);
+    a.get('/api/tts/:lineId', async (req, res) => {
+      const audio = await tts.audioFor(req.params.lineId);
+      if (!audio) { res.status(404).end(); return; }
+      res.setHeader('Content-Type', 'audio/mpeg');
+      res.setHeader('Cache-Control', 'no-store');
+      res.end(audio);
+    });
+  } });
   http.on('request', app);
   attachSockets(io, manager);
   manager.startSweeper();
@@ -34,7 +47,7 @@ export async function startServer(opts: StartOptions = {}): Promise<{ http: Http
   const actual = typeof addr === 'object' && addr ? addr.port : port;
   if (!opts.quiet) {
     const cfg = configFromEnv();
-    console.log(`[huddle] server on :${actual} · LLM provider: ${cfg.provider}${cfg.provider === 'mock' ? ' (no key needed)' : ` · ${cfg.baseURL}`}`);
+    console.log(`[huddle] server on :${actual} · LLM provider: ${cfg.provider}${cfg.provider === 'mock' ? ' (no key needed)' : ` · ${cfg.baseURL}`} · voice: ${tts.enabled ? `ElevenLabs (${tts.config.modelId})` : 'browser speech'}`);
   }
   return {
     http, manager, port: actual,

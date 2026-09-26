@@ -134,6 +134,9 @@ export function Tv() {
           <Ticker snap={snap} />
         </>
       ) : null}
+      {liveLike && snap.demo.paused ? (
+        <div className="paused-banner" role="status">Paused{isHost ? ' · press Space to resume' : ''}</div>
+      ) : null}
       {isHost && dock ? <HostDock snap={snap} aiLog={conn.aiLog} control={control} showJump={jumpOpen} voiceName={speaker.current.voiceName} hasVideo={!!videoUrl} onVideo={pickVideo} vision={vision} /> : null}
       {!conn.connected ? <div className="status-banner" style={{ position: 'fixed', top: 12 }}>Reconnecting…</div> : null}
     </div>
