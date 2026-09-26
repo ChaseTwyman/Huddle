@@ -18,8 +18,8 @@ One line per ambiguous choice made during the build.
 - The preset comparison runs 10 seeded bot runs of segments A–C at demo pacing and compares totals: bot choices (take-its, handoffs, Call It accuracy) are random, and single runs of ~3 lines were too noisy to measure a 50% change.
 - Simulation bots play like their knowledge: a learner at Familiar or better on the flagged concept calls it right 90% of the time and never taps "Still confused".
 - One Director turn per play, at `dead_time`, with trigger = penalty (flag announced), decision (decision play) or play. It is equivalent to running after `penalty_announced` / the decision result, and avoids two turns on one play.
-- Minimum gap: penalty turns wait out the remaining gap (the room never skips the explanation after a reveal); decision and ordinary turns are skipped if the gap isn't met. Referee announcements don't count as Huddle lines for the gap.
-- Order in dead time: storyline beat first (e.g. Toney's return), then the Director. A decision explanation right after a beat is skipped to avoid crowding.
+- Minimum gap: penalty and decision turns wait out the remaining gap (F4 and F5 both promise an explanation after the result); ordinary turns are skipped if the gap isn't met. Referee announcements don't count as Huddle lines for the gap.
+- Order in dead time: storyline beat first (e.g. Toney's return), then the Director; a decision or flag explanation after a beat waits out the gap rather than being dropped (review finding: the Hurts two-point explanation used to vanish when Hurts was someone's storyline).
 - The LLM may choose "silent", except after a flag: F5 says the explanation follows the reveal, so a silent answer after a penalty falls back to the template.
 - Template fallback after a flag adds one unlocked quote about the flagged player to the card (e.g. Bradberry's quote), per the Director's "one provided player fact" rule.
 - Pause takes effect at the next engine step (the current timer finishes first), and open windows keep their timers.
@@ -33,6 +33,7 @@ One line per ambiguous choice made during the build.
 - The spoilers test checks each flagged play's window, from its `pre_snap` to its `penalty_announced`, rather than the whole game before it: earlier plays legitimately announce the same penalty type (e.g. two offside calls).
 - Host "speed" (PRD F3) is the pacing switch (Game night / Demo) plus Next; there is no free speed slider.
 - Screenshots in `docs/` were taken with Playwright run from a scratch folder. Playwright isn't a project dependency.
+- The sync tool (`/sync/:gameId`) lists every play's public text, results included. It's a team authoring tool, not a family screen.
 - The phone countdowns and the TV ring correct for clock skew using `serverNow` sent with every snapshot and view.
 
 # PRD deviations

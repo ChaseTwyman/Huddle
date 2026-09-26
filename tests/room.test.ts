@@ -226,3 +226,39 @@ describe('F12 video mode', () => {
     room.dispose();
   });
 });
+
+describe('review regressions', () => {
+  it('F4: a decision is still explained when a storyline beat fires on the same play (Hurts two-point try)', async () => {
+    const { room, clock } = harness({ gameId: '2022_22_KC_PHI', mode: 'demo', talkativeness: 'normal' });
+    const dad = room.joinPlayer({ name: 'Dad' });
+    room.setProfile(dad.id, learnerProfile);
+    dad.storyline = { playerId: dad.id, storylineId: 'hurts-philly', title: 'Jalen Hurts', hook: 'h', watchFor: 'w' };
+    room.control('jump', { segment: 'B' });
+    await clock.run({ until: () => room.phase === 'recap' || room.spokenLog.some((l) => l.trigger === 'decision' && l.qtr === 4 && /two|2/i.test(l.text)), maxSteps: 2_000_000 });
+    const beat = room.spokenLog.find((l) => l.kind === 'beat' && /Hurts/.test(l.text));
+    const decision = room.spokenLog.find((l) => (l.kind === 'explain' || l.kind === 'short') && l.trigger === 'decision' && /two|2/i.test(l.text));
+    expect(beat).toBeDefined();
+    expect(decision).toBeDefined();
+    expect(decision!.at - beat!.endAt!).toBeGreaterThanOrEqual(19_999); // the gap is still respected
+    room.dispose();
+  });
+
+  it('Next during a person\'s explanation skips the feedback round too', async () => {
+    let feedbackPrompts = 0;
+    let skipped = false;
+    const { room, clock } = harness({}, (id, v, r) => {
+      const p = v.prompt!;
+      if (p.kind === 'takeit') clock.setTimeout(() => r.takeIt(id, p.id, true), 200);
+      if (p.kind === 'done' && !skipped) clock.setTimeout(() => { skipped = true; r.skip(); }, 500);
+      if (p.kind === 'feedback') feedbackPrompts++;
+    });
+    const fan = room.joinPlayer({ name: 'Sam' });
+    room.setProfile(fan.id, { ...learnerProfile, fan: true });
+    room.setProfile(room.joinPlayer({ name: 'Mom' }).id, learnerProfile);
+    room.control('start_game', undefined);
+    await clock.run({ until: () => skipped, maxSteps: 200_000 });
+    await clock.advance(10_000);
+    expect(feedbackPrompts).toBe(0);
+    room.dispose();
+  });
+});
