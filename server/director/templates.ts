@@ -1,4 +1,4 @@
-import type { Concept } from '../../shared/types';
+import type { Concept, League } from '../../shared/types';
 import { concept } from '../data/concepts';
 import type { Candidate } from './scheduler';
 
@@ -35,10 +35,10 @@ export function cardFor(c: Concept, penaltyName?: string): { title: string; body
  * Template fallback (BUILD_PROMPT 8.2): explain the top candidate with `full` or `short` from its card,
  * cheat = short. Prefer a handoff when one exists for that concept.
  */
-export function templateDecision(candidates: Candidate[], handoffs: Record<string, string[]>, rawPenaltyName?: string): DirectorDecision {
+export function templateDecision(candidates: Candidate[], handoffs: Record<string, string[]>, rawPenaltyName?: string, league: League = 'nfl'): DirectorDecision {
   const top = candidates[0];
   if (!top) return { action: 'silent', source: 'fallback' };
-  const c = concept(top.conceptId);
+  const c = concept(top.conceptId, league);
   const name = top.conceptId === 'penalty_other' && rawPenaltyName ? rawPenaltyName : undefined;
   const spokenFull = name ? `That was ${name}. ${c.full}` : c.full;
   const spoken = top.depth === 'full' ? spokenFull : c.short;

@@ -1,13 +1,13 @@
-import type { PromptOption, TimelinePlay } from '../../shared/types';
-import { team } from '../../shared/teams';
+import type { PromptOption, TeamInfo, TimelinePlay } from '../../shared/types';
+import { teamOf } from '../../shared/teams';
 import { ballOn } from '../data/timeline';
 
 export type PredictQuestion = { kind: 'fourth_down' | 'two_point' | 'field_goal'; question: string; options: PromptOption[] };
 
 /** F4: build the Predict question for a decision play from pre-snap information only. */
-export function buildPredict(play: TimelinePlay): PredictQuestion | null {
+export function buildPredict(play: TimelinePlay, teams?: Record<string, TeamInfo>): PredictQuestion | null {
   if (!play.decision) return null;
-  const city = team(play.posteam).city;
+  const city = teamOf(play.posteam, teams).city;
   switch (play.decision.kind) {
     case 'fourth_down': {
       const options: PromptOption[] = [

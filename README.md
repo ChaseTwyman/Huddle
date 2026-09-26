@@ -127,7 +127,7 @@ Uses the official Anthropic SDK with `claude-opus-5` for every job at `effort: l
 
 Watch a real game on your own TV (cable, antenna or any streaming app) with Huddle on the laptop beside it. Huddle never streams the footage: it follows ESPN's public play-by-play feed and holds each play until your TV shows it.
 
-1. On the setup page choose **Live NFL this week** and pick a game marked **LIVE** (finished games show **REPLAY**: they play back ESPN's play-by-play on the original timing, which is good for demos and testing).
+1. On the setup page choose **Live games this week**, pick **NFL** or **College football**, and pick a game marked **LIVE** (finished games show **REPLAY**: they play back ESPN's play-by-play on the original timing, which is good for demos and testing).
 2. Set how far behind live your TV is (cable/antenna ≈ 0–10 s, streaming apps ≈ 30–60 s). Then fine-tune on the TV: press **H**, watch the "newest play from ESPN" line, and press **Sync** (or **S**) the moment that snap happens on your TV.
 3. Huddle joins in-progress games at the current play. Everything else works as usual: Predict, Call It, explanations, the scoreboard and the recap.
 

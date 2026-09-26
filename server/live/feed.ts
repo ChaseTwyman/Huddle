@@ -3,8 +3,11 @@ import { buildTimeline } from '../data/timeline';
 import type { Clock, TimerHandle } from '../room/clock';
 import { allPlays, espnToRows, gameMeta, type EspnGameMeta, type EspnSummary, type MappedRow } from './espn';
 
-const SUMMARY_URL = (id: string) => `https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event=${encodeURIComponent(id)}`;
-const SCOREBOARD_URL = 'https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard';
+import type { League } from '../../shared/types';
+
+const SPORT: Record<League, string> = { nfl: 'nfl', college: 'college-football' };
+const SUMMARY_URL = (id: string, league: League) => `https://site.api.espn.com/apis/site/v2/sports/football/${SPORT[league]}/summary?event=${encodeURIComponent(id)}`;
+const SCOREBOARD_URL = (league: League) => `https://site.api.espn.com/apis/site/v2/sports/football/${SPORT[league]}/scoreboard`;
 
 export interface FeedSource {
   fetch(): Promise<EspnSummary>;
@@ -15,17 +18,17 @@ export interface FeedSource {
   readonly kind: 'live' | 'replay';
 }
 
-export async function fetchSummary(eventId: string): Promise<EspnSummary> {
-  const res = await fetch(SUMMARY_URL(eventId), { signal: AbortSignal.timeout(8000) });
+export async function fetchSummary(eventId: string, league: League = 'nfl'): Promise<EspnSummary> {
+  const res = await fetch(SUMMARY_URL(eventId, league), { signal: AbortSignal.timeout(8000) });
   if (!res.ok) throw new Error(`ESPN summary HTTP ${res.status}`);
   return (await res.json()) as EspnSummary;
 }
 
 export type LiveListing = { eventId: string; name: string; shortName: string; state: 'pre' | 'in' | 'post'; detail: string; date: string };
 
-/** This week's NFL games from ESPN's scoreboard. */
-export async function listLiveGames(): Promise<LiveListing[]> {
-  const res = await fetch(SCOREBOARD_URL, { signal: AbortSignal.timeout(8000) });
+/** This week's games from ESPN's scoreboard (NFL, or college football's featured games). */
+export async function listLiveGames(league: League = 'nfl'): Promise<LiveListing[]> {
+  const res = await fetch(SCOREBOARD_URL(league), { signal: AbortSignal.timeout(8000) });
   if (!res.ok) throw new Error(`ESPN scoreboard HTTP ${res.status}`);
   const j = (await res.json()) as { events?: { id: string; name: string; shortName: string; date: string; status: { type: { state: 'pre' | 'in' | 'post'; shortDetail?: string; detail?: string } } }[] };
   return (j.events ?? []).map((e) => ({
@@ -37,8 +40,8 @@ export async function listLiveGames(): Promise<LiveListing[]> {
 /** Polls ESPN for a game in progress. Feed times are real epoch ms, same as the real clock. */
 export class EspnSource implements FeedSource {
   readonly kind = 'live' as const;
-  constructor(private eventId: string) {}
-  fetch() { return fetchSummary(this.eventId); }
+  constructor(private eventId: string, private league: League = 'nfl') {}
+  fetch() { return fetchSummary(this.eventId, this.league); }
   toLocal(wallMs: number) { return wallMs; }
 }
 
@@ -103,10 +106,13 @@ export class LiveGame {
   /** How many plays the engine has started (set by the room). */
   shownIdx = -1;
 
-  constructor(first: EspnSummary, private source: FeedSource, private clock: Clock, private pollMs = 4000) {
+  constructor(first: EspnSummary, private source: FeedSource, private clock: Clock, private pollMs = 4000, readonly league: League = 'nfl') {
     this.meta = gameMeta(first);
     this.data = {
-      timeline: { gameId: `live_${this.meta.eventId}`, title: this.meta.title, date: this.meta.date, home: this.meta.home, away: this.meta.away, finalScore: { home: 0, away: 0 }, plays: [] },
+      timeline: {
+        gameId: `live_${this.meta.eventId}`, title: this.meta.title, date: this.meta.date, home: this.meta.home, away: this.meta.away,
+        finalScore: { home: 0, away: 0 }, plays: [], league, teams: this.meta.teams,
+      },
       moments: { moments: [], segments: [], keys: {} },
       storylines: { gameFacts: [], storylines: [] },
     };
@@ -163,7 +169,7 @@ export class LiveGame {
     const m = gameMeta(summary);
     this.state = m.state;
     this.detail = m.detail;
-    const rows = espnToRows(summary);
+    const rows = espnToRows(summary, this.league);
     const before = this.ids.length;
     for (const r of rows) {
       if (!this.rowsById.has(r.espn_id)) this.ids.push(r.espn_id);
@@ -177,7 +183,7 @@ export class LiveGame {
 
   private rebuild() {
     const ordered = this.ids.map((id) => this.rowsById.get(id)!);
-    const { timeline } = buildTimeline(ordered, { gameId: this.data.timeline.gameId, title: this.meta.title, date: this.meta.date }, []);
+    const { timeline } = buildTimeline(ordered, { gameId: this.data.timeline.gameId, title: this.meta.title, date: this.meta.date, league: this.league, teams: this.meta.teams }, []);
     const plays = this.data.timeline.plays;
     for (let i = 0; i < timeline.plays.length; i++) {
       if (i >= plays.length) plays.push(timeline.plays[i]);

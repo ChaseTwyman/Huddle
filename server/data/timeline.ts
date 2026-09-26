@@ -1,5 +1,6 @@
 import type { Moment, MomentsFile, PlayKind, Segment, Storyline, Timeline, TimelinePlay } from '../../shared/types';
-import { team } from '../../shared/teams';
+import { teamOf } from '../../shared/teams';
+import type { League, TeamInfo } from '../../shared/types';
 import { concept, hasConcept } from './concepts';
 import { AUTO_FIRST_DOWN_ON_DEFENSE, mapPenaltyType } from './penalties';
 import { tag, type GameCtx } from './tagger';
@@ -78,9 +79,9 @@ function penaltyTypeFromDesc(desc: string): string | null {
 export function buildAnnouncement(p: {
   rawType: string; conceptId: string; team: string; side: 'offense' | 'defense'; yards: number; player?: string;
   autoFirstDown: boolean; status: 'accepted' | 'declined' | 'offsetting'; noPlay: boolean; gainedFirstDown: boolean;
-}, down: number | null): string {
+}, down: number | null, teams?: Record<string, TeamInfo>): string {
   const name = p.conceptId === 'penalty_other' ? p.rawType : concept(p.conceptId).name;
-  const city = team(p.team).city;
+  const city = teamOf(p.team, teams).city;
   if (p.status === 'offsetting') return 'Offsetting fouls. Replay the down.';
   if (p.status === 'declined') return `${name} on ${city}. Declined.`;
   let s = `${name}, ${city}${p.player ? `, ${lastName(p.player)}` : ''}. ${p.yards} ${p.yards === 1 ? 'yard' : 'yards'}`;
@@ -96,7 +97,7 @@ export const WANTED_COLUMNS = 'play_id, game_id, home_team, away_team, posteam, 
 
 export function buildTimeline(
   rowsIn: Row[],
-  meta: { gameId: string; title: string; date: string },
+  meta: { gameId: string; title: string; date: string; league?: League; teams?: Record<string, TeamInfo> },
   storylines: Storyline[] = [],
 ): BuildResult {
   const present = new Set(Object.keys(rowsIn[0] ?? {}));
@@ -176,12 +177,13 @@ export function buildTimeline(
       const rawType = str(row.penalty_type) ?? penaltyTypeFromDesc(desc) ?? 'Penalty';
       const mapped = mapPenaltyType(rawType);
       if (!mapped.known) unknownPenalties.add(rawType);
-      const fromDesc = /penalty on ([A-Z]{2,3})(?:-\d+-([A-Z][A-Za-z.'-]+))?,/i.exec(desc);
+      // "PENALTY on KC-24-J.Bradberry," (NFL) or "PENALTY on TENN-D.Sanders Jr.," (college, normalized)
+      const fromDesc = /penalty on ([A-Z]{2,5})(?:-(?:\d+-)?([A-Z][A-Za-z.' -]*?))?,/i.exec(desc);
       const pteam = str(row.penalty_team) ?? fromDesc?.[1] ?? '';
       if (!players.penaltyPlayer && fromDesc?.[2]) players.penaltyPlayer = fromDesc[2];
       const side: 'offense' | 'defense' = pteam && posteam ? (pteam === posteam ? 'offense' : 'defense') : (mapped.side ?? 'defense');
       const status: 'accepted' | 'declined' | 'offsetting' = /offsetting/i.test(desc) ? 'offsetting' : /declined/i.test(desc) ? 'declined' : 'accepted';
-      const c = hasConcept(mapped.conceptId) ? concept(mapped.conceptId) : null;
+      const c = hasConcept(mapped.conceptId) ? concept(mapped.conceptId, meta.league) : null;
       const autoFirstDown = !!c?.autoFirstDown || (side === 'defense' && AUTO_FIRST_DOWN_ON_DEFENSE.has(mapped.conceptId));
       const yards = num(row.penalty_yards) ?? 0;
       const noPlay = row.play_type === 'no_play';
@@ -190,7 +192,7 @@ export function buildTimeline(
         rawType, conceptId: mapped.conceptId, team: pteam, side, yards, player: players.penaltyPlayer,
         autoFirstDown, status, noPlay, preSnap: !!c?.preSnap,
       };
-      penalty = { ...base, announcement: buildAnnouncement({ ...base, gainedFirstDown }, down) };
+      penalty = { ...base, announcement: buildAnnouncement({ ...base, gainedFirstDown }, down, meta.teams) };
       if (!penalty.player) delete penalty.player;
     }
 
@@ -231,7 +233,7 @@ export function buildTimeline(
     if (wpa !== null) play.wpa = wpa;
     if (kind === 'timeout') {
       const tt = str(row.timeout_team);
-      if (tt) play.publicDesc = `Timeout, ${team(tt).city}.`;
+      if (tt) play.publicDesc = `Timeout, ${teamOf(tt, meta.teams).city}.`;
     }
     if (kind === 'end_of_period') play.publicDesc = play.qtr >= 4 ? 'End of the game.' : `End of quarter ${play.qtr}.`;
 
@@ -288,6 +290,7 @@ export function buildTimeline(
   const last = plays[plays.length - 1];
   const timeline: Timeline = {
     gameId: meta.gameId, title: meta.title, date: meta.date, home, away,
+    ...(meta.league ? { league: meta.league } : {}), ...(meta.teams ? { teams: meta.teams } : {}),
     finalScore: last ? last.scoreAfter : { home: 0, away: 0 },
     plays,
   };

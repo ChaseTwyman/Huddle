@@ -43,9 +43,15 @@ export type TimelinePlay = {
   field: { losAbs: number | null; firstDownAbs: number | null; ballEndAbs: number | null };
 };
 
+export type League = 'nfl' | 'college';
+
 export type Timeline = {
   gameId: string; title: string; date: string;
   home: string; away: string;
+  /** Default 'nfl'. College games use college rule cards and penalty text. */
+  league?: League;
+  /** Team names and colors for this game (college teams come from the feed; NFL uses shared/teams.ts). */
+  teams?: Record<string, TeamInfo>;
   finalScore: { home: number; away: number };
   plays: TimelinePlay[];
 };
@@ -62,6 +68,8 @@ export type Concept = {
   yards?: string; autoFirstDown?: boolean;
   preSnap?: boolean;
   reviewed: false | true;
+  /** Leagues where this rule exists (default: both). */
+  leagues?: ('nfl' | 'college')[];
 };
 
 /** label includes features (server/logs only); publicLabel is spoiler-free (sent to the TV jump list). */

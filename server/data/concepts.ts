@@ -1,8 +1,9 @@
 import fs from 'node:fs';
-import type { Concept } from '../../shared/types';
+import type { Concept, League } from '../../shared/types';
 import { dataPath } from '../paths';
 
 let cache: Map<string, Concept> | null = null;
+let college: Map<string, Concept> | null = null;
 
 export function concepts(): Map<string, Concept> {
   if (!cache) {
@@ -12,14 +13,30 @@ export function concepts(): Map<string, Concept> {
   return cache;
 }
 
-export function concept(id: string): Concept {
-  const c = concepts().get(id);
+/** College cards: the base card with data/concepts.college.json overrides merged in. */
+function collegeConcepts(): Map<string, Concept> {
+  if (!college) {
+    const overrides = JSON.parse(fs.readFileSync(dataPath('concepts.college.json'), 'utf8')) as Record<string, Partial<Concept>>;
+    college = new Map([...concepts()].map(([id, c]) => [id, { ...c, ...(overrides[id] ?? {}) }]));
+  }
+  return college;
+}
+
+/** The rule card for a concept, as it applies in the given league (default NFL). */
+export function concept(id: string, league: League = 'nfl'): Concept {
+  const c = (league === 'college' ? collegeConcepts() : concepts()).get(id);
   if (!c) throw new Error(`Unknown concept id: ${id}`);
   return c;
 }
 
 export function hasConcept(id: string): boolean {
   return concepts().has(id);
+}
+
+/** Does this rule exist in the league? (e.g. illegal contact is NFL-only, targeting college-only.) */
+export function inLeague(id: string, league: League = 'nfl'): boolean {
+  const c = concepts().get(id);
+  return !!c && (!c.leagues || c.leagues.includes(league));
 }
 
 export function priority(id: string): number {

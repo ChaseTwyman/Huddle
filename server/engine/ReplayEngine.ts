@@ -200,7 +200,7 @@ export class ReplayEngine implements GameSource {
       if (!this.shouldShow(p, first)) { i++; continue; }
 
       if (this.mode === 'condensed' && lastShown + 1 < i) {
-        const text = summarizeSkipped(plays.slice(lastShown + 1, i), p, this.timeline.home);
+        const text = summarizeSkipped(plays.slice(lastShown + 1, i), p, this.timeline.home, this.timeline.teams);
         if (text) {
           await this.emit(gen, { type: 'summary', text, skipped: i - lastShown - 1 });
           await this.wait(gen, this.pacing.summaryMs);

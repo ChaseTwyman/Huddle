@@ -52,8 +52,9 @@ export function createHttpApp(manager: RoomManager, opts: { prod: boolean; port:
   app.get('/api/games', (_req, res) => { res.json(gameIndex()); });
 
   // F14: this week's NFL games from ESPN (in progress = live; finished = can be replayed as if live).
-  app.get('/api/live/games', async (_req, res) => {
-    try { res.json(await listLiveGames()); } catch (e) { res.status(502).json({ error: (e as Error).message }); }
+  app.get('/api/live/games', async (req, res) => {
+    const league = req.query.league === 'cfb' ? 'college' : 'nfl';
+    try { res.json(await listLiveGames(league)); } catch (e) { res.status(502).json({ error: (e as Error).message }); }
   });
 
   app.post('/api/rooms', async (req, res) => {
@@ -63,13 +64,15 @@ export function createHttpApp(manager: RoomManager, opts: { prod: boolean; port:
       return;
     }
     const b = parsed.data;
-    const liveMatch = /^(live|replay):(\d+)$/.exec(b.gameId);
+    // "live:<id>" / "replay:<id>" (NFL) or "live:cfb:<id>" / "replay:cfb:<id>" (college football)
+    const liveMatch = /^(live|replay):(?:(nfl|cfb):)?(\d+)$/.exec(b.gameId);
     if (liveMatch) {
       try {
-        const [, kind, eventId] = liveMatch;
-        const first = await fetchSummary(eventId);
-        const source = kind === 'live' ? new EspnSource(eventId) : new ReplaySource(first, opts.clock, b.replaySpeed ?? 1);
-        const live = new LiveGame(first, source, opts.clock);
+        const [, kind, leagueKey, eventId] = liveMatch;
+        const league = leagueKey === 'cfb' ? 'college' : 'nfl';
+        const first = await fetchSummary(eventId, league);
+        const source = kind === 'live' ? new EspnSource(eventId, league) : new ReplaySource(first, opts.clock, b.replaySpeed ?? 1);
+        const live = new LiveGame(first, source, opts.clock, 4000, league);
         if (kind === 'replay') live.data.timeline.title = live.data.timeline.title.replace('(live)', '(replay)');
         // Replays play 30 s behind the feed by default (like a streaming TV), so Predict and Call It fit before each reveal.
         live.delayMs = (b.delaySec ?? (kind === 'replay' ? 30 : 0)) * 1000;

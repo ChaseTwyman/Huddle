@@ -50,6 +50,9 @@ One line per ambiguous choice made during the build.
 
 - AI provider: the team moved to Meta's Model API with Muse Spark 1.3 (`https://api.meta.ai/v1`, OpenAI-compatible) for every job. Meta retired the Llama API (api.llama.com) in July 2026. Same client code path as Groq; only configuration changed.
 
+- College football (team request): same live pipeline via ESPN's college-football feed. College play text is normalized into gamebook form (team nicknames like "OhioSt" resolved to the school, generic "Holding"/"Pass Interference"/"Offside" made specific by who committed it, "UNS:"-style codes stripped, summary-line tries parsed). Rule cards differ only where college rules differ (`data/concepts.college.json`: defensive holding 10 yards with no automatic first down; pass interference 15 yards); targeting is college-only and illegal contact NFL-only. Team names and colors come from the feed per game, so college and NFL abbreviations never collide (HOU, MIA).
+- College rule cards are written from general knowledge of NCAA rules and need the team's review like the NFL cards.
+
 # PRD deviations
 
 - **Call It options before the announcement.** PRD F5 says no penalty name appears on the TV or phones before the announcement. The four Call It options necessarily include the real penalty's name, unmarked, among three distractors. Everything else (ticker, cards, speech, status, reveal data, option ids) is checked by `spoilers.test.ts` to never name it. Option ids are opaque letters.

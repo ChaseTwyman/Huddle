@@ -3,7 +3,8 @@ import type { LLM } from '../ai/llm';
 import { TICKER_SYSTEM } from '../ai/prompts';
 import { TickerOut, words } from '../ai/schemas';
 import { concepts } from '../data/concepts';
-import { team } from '../../shared/teams';
+import { teamOf } from '../../shared/teams';
+import type { TeamInfo } from '../../shared/types';
 
 /**
  * For reviewed plays, keep only the final ruling and note the review, so the ticker doesn't
@@ -27,6 +28,11 @@ export function cleanDesc(desc: string): string {
   s = s.replace(/^\(\s*\d*:\d{2}\s*\)\s*/, '');
   // Formation / tempo tags such as (Shotgun), (No Huddle, Shotgun), (Run formation).
   for (let i = 0; i < 3; i++) s = s.replace(/^\((?:[^)]*(?:Shotgun|Huddle|formation|Pistol)[^)]*)\)\s*/i, '');
+  // College feeds: unparenthesized formation ("No Huddle-Shotgun") and jersey numbers ("#11 F.Brandon").
+  s = s.replace(/^(?:No Huddle-?)?(?:Shotgun|Pistol|Under Center|Wildcat)\s+/i, '').replace(/^No Huddle\s+/i, '');
+  s = s.replace(/#\d{1,2}\s+(?=[A-Z])/g, '');
+  // "to the TENN24" -> "to the TENN 24"
+  s = s.replace(/\b(the|at|to) ([A-Z][A-Za-z]{1,9})(\d{1,2})\b/g, '$1 $2 $3');
   const pen = s.search(/\bpenalty\b/i);
   let flagged = false;
   if (pen >= 0) {
@@ -65,12 +71,12 @@ function penaltyWords(extra: string[] = []): string[] {
  * Rewrite the spoiler-safe play text as one plain sentence. The input is `publicDesc` (penalty clause already
  * removed), so the model never sees the penalty; the output is still checked and falls back to the cleaned text.
  */
-export async function plainTicker(llm: LLM, play: TimelinePlay, home: string, away: string): Promise<string> {
+export async function plainTicker(llm: LLM, play: TimelinePlay, home: string, away: string, teams?: Record<string, TeamInfo>): Promise<string> {
   const text = play.publicDesc;
   if (!text || play.kind === 'timeout' || play.kind === 'end_of_period' || text === 'Flag on the play.') return text;
   const res = await llm.json({
     task: 'ticker', model: 'fast', system: TICKER_SYSTEM,
-    user: JSON.stringify({ text, teams: { [home]: team(home).city, [away]: team(away).city } }),
+    user: JSON.stringify({ text, teams: { [home]: teamOf(home, teams).city, [away]: teamOf(away, teams).city } }),
     schema: TickerOut, timeoutMs: 3000, temperature: 0.2,
     fallback: () => ({ text }),
   });

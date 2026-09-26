@@ -5,7 +5,7 @@ import type {
   RoomPhase, RoomSnapshot, Settings, SnapshotCard, TimelinePlay, StorylinesFile,
 } from '../../shared/types';
 import { PACING, PLAYER_COLORS, WINDOWS, WORDS_PER_SECOND } from '../../shared/constants';
-import { team } from '../../shared/teams';
+import { teamOf } from '../../shared/teams';
 import type { Clock, TimerHandle } from './clock';
 import { sleep } from './clock';
 import type { Transport } from './transport';
@@ -200,6 +200,8 @@ export class Room {
   get revealedKeys() { return new Set(this.revealed); }
 
   private storylineFile(): StorylinesFile { return this.game.storylines; }
+  private get league() { return this.game.timeline.league ?? 'nfl'; }
+  private team(abbr: string | null | undefined) { return teamOf(abbr, this.game.timeline.teams); }
 
   /** Schedule a debounced broadcast (50 ms). */
   touch() {
@@ -227,7 +229,7 @@ export class Room {
       code: this.code,
       phase: this.phase,
       settings: { ...this.settings },
-      game: { id: g.gameId, title: g.title, home: team(g.home), away: team(g.away) },
+      game: { id: g.gameId, title: g.title, home: this.team(g.home), away: this.team(g.away) },
       players: [...this.players.values()].sort((a, b) => a.joinOrder - b.joinOrder).map((p) => ({
         id: p.id, name: p.name, color: p.color, role: p.role, connected: p.connected, points: p.points,
         profileDone: p.profileDone, lockedIn: !!r && r.open && r.answers.has(p.id),
@@ -591,9 +593,15 @@ export class Room {
     this.touch();
     if (this.live) {
       this.live.begin();
-      // Joining a game already in progress: start at the latest play, not at the opening kickoff.
-      const n = this.game.timeline.plays.length;
-      this.engine.start(this.live.isReplay || n === 0 ? undefined : n - 1);
+      // Joining a game already in progress: start at the latest real play (not a timeout or period end), not the opening kickoff.
+      const plays = this.game.timeline.plays;
+      let start = plays.length - 1;
+      while (start > 0 && (plays[start].kind === 'end_of_period' || plays[start].kind === 'timeout')) start--;
+      if (this.live.isReplay || plays.length === 0) this.engine.start();
+      else {
+        this.live.shownIdx = start - 1;
+        this.engine.start(start);
+      }
       return;
     }
     this.engine.start();
@@ -913,8 +921,8 @@ export class Room {
   }
 
   private situationTicker(play: TimelinePlay): string {
-    const city = play.posteam ? team(play.posteam).city : '';
-    if (play.kind === 'kickoff') return `${play.defteam ? team(play.defteam).city : 'Kickoff'} kicks off.`;
+    const city = play.posteam ? this.team(play.posteam).city : '';
+    if (play.kind === 'kickoff') return `${play.defteam ? this.team(play.defteam).city : 'Kickoff'} kicks off.`;
     if (play.kind === 'extra_point') return `${city}: extra point try.`;
     if (play.kind === 'two_point') return `${city}: two-point try.`;
     const dd = downDistance(play);
@@ -944,7 +952,7 @@ export class Room {
     this.prefetchTicker(play);
     this.touch();
     if (play.decision) {
-      const q = buildPredict(play);
+      const q = buildPredict(play, this.game.timeline.teams);
       // Live: the window must close before the family's TV shows the snap; skip it if there isn't time.
       const window = this.liveWindow(this.live?.showAt(play.idx) ?? null, WINDOWS.predictMs, 0);
       if (q && window) {
@@ -989,7 +997,7 @@ export class Room {
     const g = this.game.timeline;
     for (const p of [play, plays[play.idx + 1]]) {
       if (!p || this.tickerCache.has(p.idx)) continue;
-      this.tickerCache.set(p.idx, plainTicker(this.llm, p, g.home, g.away).catch(() => p.publicDesc));
+      this.tickerCache.set(p.idx, plainTicker(this.llm, p, g.home, g.away, g.teams).catch(() => p.publicDesc));
     }
   }
 
@@ -1013,10 +1021,10 @@ export class Room {
 
   private async fetchCallIt(play: TimelinePlay, frame?: string): Promise<CallItRound> {
     const pen = play.penalty!;
-    const catalog = catalogFor(play);
+    const catalog = catalogFor(play, this.league);
     const user = JSON.stringify({
       situation: {
-        quarter: play.qtr, clock: play.clock, possession: play.posteam ? team(play.posteam).city : null,
+        quarter: play.qtr, clock: play.clock, possession: play.posteam ? this.team(play.posteam).city : null,
         downAndDistance: downDistance(play), ballOn: ballOn(play),
         playType: play.kind === 'penalty_only' ? 'before the snap' : play.kind,
       },
@@ -1028,9 +1036,9 @@ export class Room {
       task: 'callit', model: frame ? 'vision' : 'fast', system: CALLIT_SYSTEM,
       user: frame ? `${user}\n\n${CALLIT_VIDEO_NOTE}` : user, ...(frame ? { images: [frame] } : {}),
       schema: CallItOut, timeoutMs: 2500, temperature: 0.3,
-      fallback: () => ({ distractors: fallbackDistractors(play, pen.conceptId) }),
+      fallback: () => ({ distractors: fallbackDistractors(play, pen.conceptId, this.league) }),
     });
-    return buildCallIt(play, res.value.distractors, res.source);
+    return buildCallIt(play, res.value.distractors, res.source, this.league);
   }
 
   private async onFlag(gen: number, play: TimelinePlay) {
@@ -1169,6 +1177,7 @@ export class Room {
       recentLines: this.spokenLog.filter((l) => l.kind === 'explain' || l.kind === 'short' || l.kind === 'beat').slice(-5).map((l) => l.text),
       budget: { remainingThisQuarter: this.scheduler.remaining(play.qtr), exempt: trigger !== 'play' },
       announced: true,
+      league: this.league, teams: this.game.timeline.teams,
     }, this.game.timeline.home, this.game.timeline.away);
     this.check(gen);
     if (decision.action === 'silent') return;
@@ -1193,7 +1202,7 @@ export class Room {
   }
 
   private explainCard(decision: Extract<DirectorDecision, { action: 'explain' | 'handoff' }>, by: string, kind: SnapshotCard['kind'] = 'explain'): Omit<SnapshotCard, 'id'> {
-    const c = concept(decision.conceptId);
+    const c = concept(decision.conceptId, this.league);
     return { kind, title: decision.card.title, body: decision.card.body, by, source: sourceLine(c) };
   }
 
@@ -1269,8 +1278,8 @@ export class Room {
 
   private scoreLine(score: { home: number; away: number }): string {
     const g = this.game.timeline;
-    const h = team(g.home).city;
-    const a = team(g.away).city;
+    const h = this.team(g.home).city;
+    const a = this.team(g.away).city;
     if (score.home === score.away) return `${a} and ${h} are tied ${score.home} to ${score.away}`;
     return score.home > score.away ? `${h} leads ${score.home} to ${score.away}` : `${a} leads ${score.away} to ${score.home}`;
   }
@@ -1296,7 +1305,7 @@ export class Room {
     if (last) this.scorebug = { ...this.scorebugFor(last, last.scoreAfter), clock: '0:00', possession: null, downDistance: null, ballOn: null };
     const f = this.game.timeline.finalScore;
     const g = this.game.timeline;
-    const winner = f.home === f.away ? null : f.home > f.away ? team(g.home).city : team(g.away).city;
+    const winner = f.home === f.away ? null : f.home > f.away ? this.team(g.home).city : this.team(g.away).city;
     const hi = Math.max(f.home, f.away);
     const lo = Math.min(f.home, f.away);
     this.ticker = winner ? `Final: ${winner} wins ${hi}–${lo}.` : `Final: tied ${hi}–${lo}.`;
@@ -1385,7 +1394,7 @@ export class Room {
   }
 
   /** For simulate/tests: situation text used by the Director. */
-  situationOf(play: TimelinePlay) { return situation(play, this.game.timeline.home, this.game.timeline.away); }
+  situationOf(play: TimelinePlay) { return situation(play, this.game.timeline.home, this.game.timeline.away, this.game.timeline.teams); }
 
   dispose() {
     this.live?.stop();

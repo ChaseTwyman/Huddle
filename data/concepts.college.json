@@ -1,0 +1,27 @@
+{
+  "_note": "College football overrides for concept cards whose rules differ from the NFL (2026 NCAA rules, to be reviewed by the team). Only the listed fields change.",
+  "holding_defensive": {
+    "short": "Defender grabbed a player without the ball.",
+    "full": "Defensive holding: a defender grabbed or held a receiver or blocker who didn't have the ball. In college it's 10 yards, with no automatic first down.",
+    "detail": "10 yards (no automatic first down in college).",
+    "yards": "10",
+    "autoFirstDown": false
+  },
+  "pass_interference_defensive": {
+    "full": "Defensive pass interference: a defender blocked a receiver's fair chance to catch a catchable pass. In college: up to 15 yards and an automatic first down.",
+    "detail": "15 yards (or the spot of the foul if that's shorter) + automatic first down.",
+    "yards": "15"
+  },
+  "pass_interference_offensive": {
+    "full": "Offensive pass interference: a receiver pushed off or blocked a defender while the pass was in the air. In college it's 15 yards.",
+    "detail": "15 yards.",
+    "yards": "15"
+  },
+  "offside": {
+    "full": "Offside: a player was across the line of scrimmage when the ball was snapped. It's a 5-yard penalty."
+  },
+  "touchback": {
+    "full": "A touchback is a kick downed in or through the end zone. There's no return; the receiving team starts from a set spot.",
+    "detail": "For punts, that spot is the receiving team's own 20."
+  }
+}

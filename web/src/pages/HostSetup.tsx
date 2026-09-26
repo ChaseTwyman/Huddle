@@ -33,6 +33,7 @@ export function HostSetup() {
   const [liveError, setLiveError] = useState<string | null>(null);
   const [livePick, setLivePick] = useState<string>('');
   const [delaySec, setDelaySec] = useState(0);
+  const [league, setLeague] = useState<'nfl' | 'cfb'>('nfl');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -45,14 +46,18 @@ export function HostSetup() {
 
   useEffect(() => {
     if (source !== 'live' || liveGames) return;
-    fetch('/api/live/games').then(async (r) => {
+    // Ignore a response for a league the user has already switched away from.
+    let current = true;
+    fetch(`/api/live/games?league=${league}`).then(async (r) => {
       const j = await r.json();
       if (!r.ok) throw new Error(j.error ?? 'ESPN unavailable');
+      if (!current) return;
       setLiveGames(j);
       const first = (j as LiveGameRow[]).find((g) => g.state === 'in') ?? (j as LiveGameRow[]).find((g) => g.state === 'post');
-      if (first) setLivePick(`${first.state === 'post' ? 'replay' : 'live'}:${first.eventId}`);
-    }).catch((e) => setLiveError((e as Error).message));
-  }, [source, liveGames]);
+      if (first) setLivePick(`${first.state === 'post' ? 'replay' : 'live'}:${league === 'cfb' ? 'cfb:' : ''}${first.eventId}`);
+    }).catch((e) => { if (current) setLiveError((e as Error).message); });
+    return () => { current = false; };
+  }, [source, liveGames, league]);
 
   const create = async () => {
     setBusy(true);
@@ -89,16 +94,17 @@ export function HostSetup() {
         </div>
         <div className="field-row">
           <label>Watch</label>
-          <Seg value={source} onChange={setSource} options={[['classic', 'Classic game (replay)'], ['live', 'Live NFL this week']]} />
+          <Seg value={source} onChange={setSource} options={[['classic', 'Classic game (replay)'], ['live', 'Live games this week']]} />
         </div>
         {source === 'live' ? (
           <div className="field-row">
+            <Seg value={league} onChange={(v) => { setLeague(v); setLiveGames(null); setLivePick(''); setLiveError(null); }} options={[['nfl', 'NFL'], ['cfb', 'College football']]} />
             <label>Pick a game (from ESPN)</label>
             {liveError ? <div className="error">{liveError}</div> : null}
             {!liveGames && !liveError ? <div className="muted">Loading this week's games…</div> : null}
             <div className="live-list">
               {(liveGames ?? []).map((g) => {
-                const id = `${g.state === 'post' ? 'replay' : 'live'}:${g.eventId}`;
+                const id = `${g.state === 'post' ? 'replay' : 'live'}:${league === 'cfb' ? 'cfb:' : ''}${g.eventId}`;
                 const badge = g.state === 'in' ? 'LIVE' : g.state === 'post' ? 'REPLAY' : 'SOON';
                 return (
                   <button type="button" key={g.eventId} className={`live-row ${livePick === id ? 'on' : ''}`} onClick={() => setLivePick(id)}>

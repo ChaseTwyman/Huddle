@@ -36,6 +36,12 @@ export const TEAMS: Record<string, TeamInfo> = {
   WAS: { abbr: 'WAS', city: 'Washington', name: 'Commanders', primary: '#5A1414', secondary: '#FFB612' },
 };
 
+/** Team info for a game: its own team table first (college), then the NFL table. */
+export function teamOf(abbr: string | null | undefined, teams?: Record<string, TeamInfo>): TeamInfo {
+  if (abbr && teams?.[abbr]) return teams[abbr];
+  return team(abbr);
+}
+
 export function team(abbr: string | null | undefined): TeamInfo {
   if (abbr && TEAMS[abbr]) return TEAMS[abbr];
   return { abbr: abbr ?? '?', city: abbr ?? 'Unknown', name: abbr ?? 'Unknown', primary: '#555555', secondary: '#999999' };

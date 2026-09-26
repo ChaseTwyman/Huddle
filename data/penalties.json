@@ -1,40 +1,195 @@
 {
   "_note": "Maps nflverse penalty_type strings (case-insensitive; text in parentheses ignored) to concept ids. side = who commits it; null = decide from penalty_team vs posteam.",
   "map": [
-    { "match": "Offensive Holding", "conceptId": "holding_offensive", "side": "offense" },
-    { "match": "Defensive Holding", "conceptId": "holding_defensive", "side": "defense" },
-    { "match": "Defensive Pass Interference", "conceptId": "pass_interference_defensive", "side": "defense" },
-    { "match": "Offensive Pass Interference", "conceptId": "pass_interference_offensive", "side": "offense" },
-    { "match": "False Start", "conceptId": "false_start", "side": "offense" },
-    { "match": "Defensive Offside", "conceptId": "offside", "side": "defense" },
-    { "match": "Offside on Free Kick", "conceptId": "offside", "side": null },
-    { "match": "Offensive Offside", "conceptId": "offside", "side": "offense" },
-    { "match": "Encroachment", "conceptId": "encroachment", "side": "defense" },
-    { "match": "Neutral Zone Infraction", "conceptId": "neutral_zone_infraction", "side": "defense" },
-    { "match": "Delay of Game", "conceptId": "delay_of_game", "side": "offense" },
-    { "match": "Illegal Formation", "conceptId": "illegal_formation", "side": "offense" },
-    { "match": "Illegal Shift", "conceptId": "illegal_shift", "side": "offense" },
-    { "match": "Illegal Motion", "conceptId": "illegal_shift", "side": "offense" },
-    { "match": "Too Many Men on Field", "conceptId": "too_many_men", "side": null },
-    { "match": "Defensive Too Many Men on Field", "conceptId": "too_many_men", "side": "defense" },
-    { "match": "Offensive Too Many Men on Field", "conceptId": "too_many_men", "side": "offense" },
-    { "match": "Illegal Substitution", "conceptId": "too_many_men", "side": null },
-    { "match": "Illegal Contact", "conceptId": "illegal_contact", "side": "defense" },
-    { "match": "Illegal Use of Hands", "conceptId": "illegal_use_of_hands", "side": null },
-    { "match": "Roughing the Passer", "conceptId": "roughing_the_passer", "side": "defense" },
-    { "match": "Unnecessary Roughness", "conceptId": "unnecessary_roughness", "side": null },
-    { "match": "Face Mask", "conceptId": "face_mask", "side": null },
-    { "match": "Intentional Grounding", "conceptId": "intentional_grounding", "side": "offense" },
-    { "match": "Illegal Block Above the Waist", "conceptId": "illegal_block_in_the_back", "side": null },
-    { "match": "Tripping", "conceptId": "tripping", "side": null },
-    { "match": "Horse Collar Tackle", "conceptId": "horse_collar", "side": null },
-    { "match": "Unsportsmanlike Conduct", "conceptId": "unsportsmanlike_conduct", "side": null },
-    { "match": "Taunting", "conceptId": "unsportsmanlike_conduct", "side": null },
-    { "match": "Roughing the Kicker", "conceptId": "roughing_the_kicker", "side": "defense" },
-    { "match": "Running Into the Kicker", "conceptId": "running_into_the_kicker", "side": "defense" },
-    { "match": "Fair Catch Interference", "conceptId": "fair_catch_interference", "side": null },
-    { "match": "Illegal Forward Pass", "conceptId": "illegal_forward_pass", "side": "offense" },
-    { "match": "Ineligible Downfield Pass", "conceptId": "ineligible_downfield", "side": "offense" },
-    { "match": "Ineligible Downfield Kick", "conceptId": "ineligible_downfield", "side": null }
+    {
+      "match": "Offensive Holding",
+      "conceptId": "holding_offensive",
+      "side": "offense"
+    },
+    {
+      "match": "Defensive Holding",
+      "conceptId": "holding_defensive",
+      "side": "defense"
+    },
+    {
+      "match": "Defensive Pass Interference",
+      "conceptId": "pass_interference_defensive",
+      "side": "defense"
+    },
+    {
+      "match": "Offensive Pass Interference",
+      "conceptId": "pass_interference_offensive",
+      "side": "offense"
+    },
+    {
+      "match": "False Start",
+      "conceptId": "false_start",
+      "side": "offense"
+    },
+    {
+      "match": "Defensive Offside",
+      "conceptId": "offside",
+      "side": "defense"
+    },
+    {
+      "match": "Offside on Free Kick",
+      "conceptId": "offside",
+      "side": null
+    },
+    {
+      "match": "Offensive Offside",
+      "conceptId": "offside",
+      "side": "offense"
+    },
+    {
+      "match": "Encroachment",
+      "conceptId": "encroachment",
+      "side": "defense"
+    },
+    {
+      "match": "Neutral Zone Infraction",
+      "conceptId": "neutral_zone_infraction",
+      "side": "defense"
+    },
+    {
+      "match": "Delay of Game",
+      "conceptId": "delay_of_game",
+      "side": "offense"
+    },
+    {
+      "match": "Illegal Formation",
+      "conceptId": "illegal_formation",
+      "side": "offense"
+    },
+    {
+      "match": "Illegal Shift",
+      "conceptId": "illegal_shift",
+      "side": "offense"
+    },
+    {
+      "match": "Illegal Motion",
+      "conceptId": "illegal_shift",
+      "side": "offense"
+    },
+    {
+      "match": "Too Many Men on Field",
+      "conceptId": "too_many_men",
+      "side": null
+    },
+    {
+      "match": "Defensive Too Many Men on Field",
+      "conceptId": "too_many_men",
+      "side": "defense"
+    },
+    {
+      "match": "Offensive Too Many Men on Field",
+      "conceptId": "too_many_men",
+      "side": "offense"
+    },
+    {
+      "match": "Illegal Substitution",
+      "conceptId": "too_many_men",
+      "side": null
+    },
+    {
+      "match": "Illegal Contact",
+      "conceptId": "illegal_contact",
+      "side": "defense"
+    },
+    {
+      "match": "Illegal Use of Hands",
+      "conceptId": "illegal_use_of_hands",
+      "side": null
+    },
+    {
+      "match": "Roughing the Passer",
+      "conceptId": "roughing_the_passer",
+      "side": "defense"
+    },
+    {
+      "match": "Unnecessary Roughness",
+      "conceptId": "unnecessary_roughness",
+      "side": null
+    },
+    {
+      "match": "Face Mask",
+      "conceptId": "face_mask",
+      "side": null
+    },
+    {
+      "match": "Intentional Grounding",
+      "conceptId": "intentional_grounding",
+      "side": "offense"
+    },
+    {
+      "match": "Illegal Block Above the Waist",
+      "conceptId": "illegal_block_in_the_back",
+      "side": null
+    },
+    {
+      "match": "Tripping",
+      "conceptId": "tripping",
+      "side": null
+    },
+    {
+      "match": "Horse Collar Tackle",
+      "conceptId": "horse_collar",
+      "side": null
+    },
+    {
+      "match": "Unsportsmanlike Conduct",
+      "conceptId": "unsportsmanlike_conduct",
+      "side": null
+    },
+    {
+      "match": "Taunting",
+      "conceptId": "unsportsmanlike_conduct",
+      "side": null
+    },
+    {
+      "match": "Roughing the Kicker",
+      "conceptId": "roughing_the_kicker",
+      "side": "defense"
+    },
+    {
+      "match": "Running Into the Kicker",
+      "conceptId": "running_into_the_kicker",
+      "side": "defense"
+    },
+    {
+      "match": "Fair Catch Interference",
+      "conceptId": "fair_catch_interference",
+      "side": null
+    },
+    {
+      "match": "Illegal Forward Pass",
+      "conceptId": "illegal_forward_pass",
+      "side": "offense"
+    },
+    {
+      "match": "Ineligible Downfield Pass",
+      "conceptId": "ineligible_downfield",
+      "side": "offense"
+    },
+    {
+      "match": "Ineligible Downfield Kick",
+      "conceptId": "ineligible_downfield",
+      "side": null
+    },
+    {
+      "match": "Illegal Block in Back",
+      "conceptId": "illegal_block_in_the_back",
+      "side": null
+    },
+    {
+      "match": "Targeting",
+      "conceptId": "targeting",
+      "side": null
+    },
+    {
+      "match": "Personal Foul",
+      "conceptId": "unnecessary_roughness",
+      "side": null
+    }
   ]
 }

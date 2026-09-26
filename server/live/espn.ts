@@ -1,11 +1,12 @@
 import type { Row } from '../data/timeline';
+import type { League, TeamInfo } from '../../shared/types';
 
 /**
  * F14 live mode: map ESPN's public NFL game feed (site.api.espn.com .../summary?event=ID) onto the nflverse
  * row shape, so the existing timeline builder, tagger, penalty parser and decisions work unchanged.
  * Only the fields Huddle reads are typed here.
  */
-export type EspnTeam = { id: string; abbreviation: string; displayName?: string; location?: string; name?: string };
+export type EspnTeam = { id: string; abbreviation: string; displayName?: string; location?: string; name?: string; nickname?: string; color?: string; alternateColor?: string };
 export type EspnSide = { down?: number; distance?: number; yardLine?: number; yardsToEndzone?: number; downDistanceText?: string; team?: { id: string } };
 export type EspnPlay = {
   id: string; sequenceNumber: string; type: { id?: string; text: string }; text: string;
@@ -25,17 +26,88 @@ export type EspnSummary = {
   drives?: { previous?: { plays?: EspnPlay[] }[]; current?: { plays?: EspnPlay[] } };
 };
 
-export type EspnGameMeta = { eventId: string; home: string; away: string; title: string; date: string; state: 'pre' | 'in' | 'post'; detail: string };
+export type EspnGameMeta = {
+  eventId: string; home: string; away: string; title: string; date: string; state: 'pre' | 'in' | 'post'; detail: string;
+  /** Names and colors from the feed (needed for college: ~130 schools, some sharing NFL abbreviations). */
+  teams: Record<string, TeamInfo>;
+};
+
+const hex = (c: string | undefined, fallback: string) => (c && /^[0-9a-f]{6}$/i.test(c) ? `#${c}` : fallback);
 
 export function gameMeta(s: EspnSummary): EspnGameMeta {
   const comp = s.header.competitions[0];
   const home = comp.competitors.find((c) => c.homeAway === 'home')!.team;
   const away = comp.competitors.find((c) => c.homeAway === 'away')!.team;
+  const info = (t: EspnTeam): TeamInfo => ({
+    abbr: t.abbreviation, city: t.location ?? t.abbreviation, name: t.name ?? t.displayName ?? t.abbreviation,
+    primary: hex(t.color, '#555555'), secondary: hex(t.alternateColor, '#999999'),
+  });
   return {
     eventId: s.header.id, home: home.abbreviation, away: away.abbreviation,
     title: `${away.abbreviation} at ${home.abbreviation} (live)`, date: (comp.date ?? '').slice(0, 10),
     state: comp.status.type.state, detail: comp.status.type.shortDetail ?? comp.status.type.detail ?? '',
+    teams: { [home.abbreviation]: info(home), [away.abbreviation]: info(away) },
   };
+}
+
+// ---------------------------------------------------------------- college text
+
+const alnum = (x: string) => x.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+/** Resolve a college feed's team token ("TENN", "Illini", "OhioSt") to the team's abbreviation. */
+export function teamResolver(teams: EspnTeam[]): (token: string) => string | null {
+  const cands = teams.map((t) => ({ abbr: t.abbreviation, keys: [t.abbreviation, t.location, t.name, t.nickname, t.displayName].filter(Boolean).map((k) => alnum(k!)) }));
+  return (token: string) => {
+    const k = alnum(token);
+    if (!k) return null;
+    const exact = cands.find((c) => c.keys.includes(k));
+    if (exact) return exact.abbr;
+    const loose = cands.find((c) => c.keys.some((key) => (k.length >= 3 && key.startsWith(k)) || (k.length >= 4 && key.includes(k))));
+    return loose?.abbr ?? null;
+  };
+}
+
+/** Generic college penalty names → the specific names the NFL-based parser knows. */
+function specificType(type: string, committedByOffense: boolean | null): string {
+  const t = type.replace(/^[A-Z]{2,5}:\s*/, '').replace(/\s+/g, ' ').trim();
+  const side = committedByOffense === null ? null : committedByOffense ? 'Offensive' : 'Defensive';
+  if (/^holding$/i.test(t) && side) return `${side} Holding`;
+  if (/^pass interference$/i.test(t) && side) return `${side} Pass Interference`;
+  if (/^offside$/i.test(t) && side) return `${side} Offside`;
+  if (/^personal foul$/i.test(t)) return 'Unnecessary Roughness';
+  return t;
+}
+
+/**
+ * College feeds write penalties as "PENALTY TENN False Start (#56 S.Pendleton) 5 yards from TENN45 to TENN40.
+ * NO PLAY". Rewrite the first penalty clause into the gamebook form the timeline parser reads
+ * ("PENALTY on TENN-S.Pendleton, False Start, 5 yards, enforced at TENN45 - No Play."). Returns the new text and
+ * whether the penalty gave a first down.
+ */
+export function normalizeCollegePenalty(text: string, resolve: (token: string) => string | null, posteam: string | undefined): { text: string; firstDown: boolean } {
+  const at = text.search(/\bPENALTY\s+(?!on\b)/i);
+  if (at < 0) return { text, firstDown: false };
+  const before = text.slice(0, at).trim();
+  const rest = text.slice(at).replace(/^PENALTY\s+/i, '');
+  const m = /^([A-Za-z][\w.&'-]*)\s+(.*)$/.exec(rest);
+  if (!m) return { text, firstDown: false };
+  const abbr = resolve(m[1]) ?? m[1];
+  const body = m[2];
+  const stop = body.search(/\s\(#|\s+declined\b|\s+offsetting\b|\s+\d+\s+yards?\b/i);
+  const rawType = (stop >= 0 ? body.slice(0, stop) : body).replace(/[.,]+$/, '').trim();
+  const player = /\(#\d+\s+([^)]+?)\)/.exec(body)?.[1]?.trim();
+  const declined = /\bdeclined\b/i.test(body);
+  const offsetting = /\boffsetting\b/i.test(body);
+  const yards = /(\d+)\s+yards?\s+from\s+([A-Za-z]+\s?\d{1,2})/i.exec(body);
+  const noPlay = /NO PLAY/i.test(body);
+  const firstDown = /1ST DOWN/i.test(body);
+  const type = specificType(rawType, posteam ? abbr === posteam : null);
+  const who = `${abbr}${player ? `-${player}` : ''}`;
+  let clause: string;
+  if (offsetting) clause = `PENALTY on ${who}, ${type}, offsetting.`;
+  else if (declined || !yards) clause = `PENALTY on ${who}, ${type}, declined.`;
+  else clause = `PENALTY on ${who}, ${type}, ${yards[1]} yards, enforced at ${yards[2]}${noPlay ? ' - No Play' : ''}.`;
+  return { text: `${before ? `${before.replace(/[,\s]+$/, '')}. ` : ''}${clause}`, firstDown };
 }
 
 /** All plays in feed order (previous drives, then the current drive), de-duplicated by id. */
@@ -73,6 +145,15 @@ const clockSecs = (c: string) => {
 export function splitTry(text: string): { play: string; tryText: string | null; kind: 'extra_point' | 'two_point' | null } {
   const two = text.search(/TWO-POINT CONVERSION ATTEMPT/i);
   if (two > 0) return { play: text.slice(0, two).trim(), tryText: text.slice(two).trim(), kind: 'two_point' };
+  if (/TOUCHDOWN|\bTD\b|\d+ Yd (pass|run|return)/i.test(text)) {
+    // College formats: "(Two-Point Pass Conversion Failed)", "#44 G.Spetic kick attempt good (H: …)", "(J.Smith KICK)".
+    const twoC = /\(?\s*(Two-Point [^)]*?Conversion[^)]*)\)?/i.exec(text);
+    if (twoC && twoC.index > 0) return { play: text.slice(0, twoC.index).trim(), tryText: twoC[1].trim(), kind: 'two_point' };
+    const kick = /\s*(?:#\d+\s+)?([A-Z][\w.'-]*(?:\s[A-Z][\w.'-]*)?)\s+kick attempt (good|failed|no good|blocked|missed)[^]*$/i.exec(text);
+    if (kick && kick.index > 0) return { play: text.slice(0, kick.index).trim(), tryText: `${kick[1]} extra point is ${/good$/i.test(kick[2]) && !/no good/i.test(kick[2]) ? 'GOOD' : kick[2].toUpperCase()}.`, kind: 'extra_point' };
+    const paren = /\s*\(([^()]*?)\s+(KICK|PAT)(?:\s+(failed|blocked|missed))?\)/i.exec(text);
+    if (paren && paren.index > 0) return { play: text.slice(0, paren.index).trim(), tryText: `${paren[1]} extra point is ${paren[3] ? paren[3].toUpperCase() : 'GOOD'}.`, kind: 'extra_point' };
+  }
   const xp = /\s+([A-Z][\w.'-]*\.[\w'-]+ extra point .*)$/i.exec(text);
   if (xp && /TOUCHDOWN/i.test(text.slice(0, xp.index))) return { play: text.slice(0, xp.index).trim(), tryText: xp[1].trim(), kind: 'extra_point' };
   return { play: text, tryText: null, kind: null };
@@ -80,13 +161,16 @@ export function splitTry(text: string): { play: string; tryText: string | null; 
 
 export type MappedRow = Row & { espn_id: string; wallclock_ms: string };
 
+const twoPointGood = (t: string) => /ATTEMPT SUCCEEDS|Conversion (Good|Succeeded|Successful)|\bgood\b/i.test(t) && !/fail/i.test(t);
+
 /**
  * ESPN plays → nflverse-style rows. Scores in the feed are after the play, including the try that ESPN folds into
  * the touchdown play, so the touchdown row gets the score minus the try and the synthetic try row gets the full score.
  */
-export function espnToRows(s: EspnSummary): MappedRow[] {
+export function espnToRows(s: EspnSummary, league: League = 'nfl'): MappedRow[] {
   const meta = gameMeta(s);
   const comp = s.header.competitions[0];
+  const resolve = teamResolver(comp.competitors.map((c) => c.team));
   const abbr = new Map(comp.competitors.map((c) => [c.team.id, c.team.abbreviation]));
   const other = (a: string | undefined) => (a === meta.home ? meta.away : a === meta.away ? meta.home : undefined);
   const rows: MappedRow[] = [];
@@ -101,15 +185,24 @@ export function espnToRows(s: EspnSummary): MappedRow[] {
     const qtr = p.period.number;
     const secs = clockSecs(p.clock.displayValue);
     const gsr = Math.max(0, (4 - Math.min(qtr, 4)) * 900 + secs);
-    const { play: mainText, tryText, kind: tryKind } = splitTry(p.text);
+    let raw = p.text;
+    let penaltyFirstDown = false;
+    if (league === 'college') {
+      // College clock prefix "(11:03)" stays; rewrite the penalty clause into gamebook form.
+      const n = normalizeCollegePenalty(raw, resolve, posteam);
+      raw = n.text;
+      penaltyFirstDown = n.firstDown;
+    }
+    const { play: mainText, tryText, kind: tryKind } = splitTry(raw);
     const down = p.start?.down && p.start.down >= 1 && p.start.down <= 4 ? p.start.down : null;
     let yl100 = p.start?.yardsToEndzone;
     if (kickoff) {
       const m = /kicks .* from ([A-Z]{2,3}) (\d+)/.exec(mainText);
       yl100 = m ? Number(m[2]) : 35;
     }
-    const tdInMain = /TOUCHDOWN/i.test(mainText) && !/REVERSED/i.test(mainText.split('TOUCHDOWN').pop() ?? '');
-    const tryPts = !tryText ? 0 : tryKind === 'extra_point' ? (/is GOOD/i.test(tryText) ? 1 : 0) : (/ATTEMPT SUCCEEDS/i.test(tryText) ? 2 : 0);
+    // Type text ("Passing Touchdown") covers college summary lines like "27 Yd pass from X (Y Kick)" that never say TOUCHDOWN.
+    const tdInMain = (/Touchdown/i.test(t) || /TOUCHDOWN/i.test(mainText)) && !/REVERSED/i.test(mainText.split('TOUCHDOWN').pop() ?? '');
+    const tryPts = !tryText ? 0 : tryKind === 'extra_point' ? (/is GOOD/i.test(tryText) ? 1 : 0) : (twoPointGood(tryText) ? 2 : 0);
     const prev = rows[rows.length - 1];
     const prevHome = Number(prev?.total_home_score ?? 0);
     const prevAway = Number(prev?.total_away_score ?? 0);
@@ -118,7 +211,8 @@ export function espnToRows(s: EspnSummary): MappedRow[] {
     const mainHome = tryPts && homeRose ? p.homeScore - tryPts : p.homeScore;
     const mainAway = tryPts && !homeRose ? p.awayScore - tryPts : p.awayScore;
     const scorer = p.homeScore > prevHome ? meta.home : p.awayScore > prevAway ? meta.away : undefined;
-    const fg = pt.play_type === 'field_goal' ? (/is GOOD/i.test(mainText) ? 'made' : /BLOCKED/i.test(mainText) ? 'blocked' : 'missed') : undefined;
+    // The feed's play type is the reliable signal (college text varies: "is GOOD", "FG GOOD", "field goal attempt good").
+    const fg = pt.play_type === 'field_goal' ? (/Blocked/i.test(t) || /BLOCKED/.test(mainText) ? 'blocked' : /Good/i.test(t) || /is GOOD/i.test(mainText) ? 'made' : 'missed') : undefined;
     const pen = /PENALTY on/i.test(mainText);
     const penYards = /PENALTY on [^,]+,[^,]+, (\d+) yards?/i.exec(mainText);
     const firstDown = !!p.end?.down && p.end.down === 1 && p.end?.team?.id === p.start?.team?.id && !tdInMain && !kickoff;
@@ -135,7 +229,7 @@ export function espnToRows(s: EspnSummary): MappedRow[] {
       touchdown: tdInMain ? '1' : '0', td_team: tdInMain ? scorer ?? posteam : undefined,
       field_goal_result: fg, kick_distance: fg ? (/(\d+) yard field goal/i.exec(mainText)?.[1] ?? '') : undefined,
       first_down: firstDown ? '1' : '0',
-      penalty: pen ? '1' : '0', penalty_yards: penYards?.[1],
+      penalty: pen ? '1' : '0', penalty_yards: penYards?.[1], first_down_penalty: penaltyFirstDown ? '1' : '0',
       incomplete_pass: /Incompletion/i.test(t) || /pass incomplete/i.test(mainText) ? '1' : '0',
       sack: /Sack/i.test(t) || /\bsacked\b/i.test(mainText) ? '1' : '0',
       interception: /Interception/i.test(t) ? '1' : '0',
@@ -158,7 +252,7 @@ export function espnToRows(s: EspnSummary): MappedRow[] {
         field_goal_result: undefined, kick_distance: undefined, incomplete_pass: '0', sack: '0', interception: '0', fumble_lost: '0',
         ...(tryKind === 'extra_point'
           ? { play_type: 'extra_point', play_type_nfl: 'XP_KICK', yardline_100: '15', extra_point_result: /is GOOD/i.test(tryText) ? 'good' : /BLOCKED/i.test(tryText) ? 'blocked' : 'failed' }
-          : { play_type: /\bpass\b/i.test(tryText) ? 'pass' : 'run', play_type_nfl: 'PAT2', yardline_100: '2', two_point_attempt: '1', two_point_conv_result: /ATTEMPT SUCCEEDS/i.test(tryText) ? 'success' : 'failure' }),
+          : { play_type: /\bpass\b/i.test(tryText) ? 'pass' : 'run', play_type_nfl: 'PAT2', yardline_100: '2', two_point_attempt: '1', two_point_conv_result: twoPointGood(tryText) ? 'success' : 'failure' }),
       };
       rows.push({ ...tryRow, espn_id: `${p.id}.try`, wallclock_ms: wall });
     }

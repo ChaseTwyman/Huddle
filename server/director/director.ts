@@ -1,5 +1,5 @@
-import type { TimelinePlay } from '../../shared/types';
-import { team } from '../../shared/teams';
+import type { League, TeamInfo, TimelinePlay } from '../../shared/types';
+import { teamOf } from '../../shared/teams';
 import { concept } from '../data/concepts';
 import { ballOn, downDistance } from '../data/timeline';
 import type { LLM } from '../ai/llm';
@@ -19,13 +19,15 @@ export type DirectorInput = {
   recentLines: string[];
   budget: { remainingThisQuarter: number; exempt: boolean };
   announced: boolean;
+  league?: League;
+  teams?: Record<string, TeamInfo>;
 };
 
-export function situation(play: TimelinePlay, home: string, away: string) {
-  const score = `${team(away).city} ${play.scoreAfter.away}, ${team(home).city} ${play.scoreAfter.home}`;
+export function situation(play: TimelinePlay, home: string, away: string, teams?: Record<string, TeamInfo>) {
+  const score = `${teamOf(away, teams).city} ${play.scoreAfter.away}, ${teamOf(home, teams).city} ${play.scoreAfter.home}`;
   return {
     quarter: play.qtr, clock: play.clock, score,
-    possession: play.posteam ? team(play.posteam).city : null,
+    possession: play.posteam ? teamOf(play.posteam, teams).city : null,
     downAndDistance: downDistance(play), ballOn: ballOn(play),
   };
 }
@@ -35,13 +37,14 @@ export function directorUserMessage(input: DirectorInput, home: string, away: st
   const { play } = input;
   const msg = {
     event: input.trigger === 'penalty' ? 'penalty_announced' : input.trigger === 'decision' ? 'decision_result' : 'dead_time',
-    situation: situation(play, home, away),
+    situation: situation(play, home, away, input.teams),
+    league: input.league === 'college' ? 'college football' : 'NFL',
     play: {
       description: play.publicDesc,
       ...(input.announced && play.penalty ? { refereeAnnouncement: play.penalty.announcement } : {}),
     },
     candidates: input.candidates.map((c) => {
-      const card = concept(c.conceptId);
+      const card = concept(c.conceptId, input.league);
       return {
         conceptId: c.conceptId, name: card.name, roomLevel: c.roomLevel,
         ruleCard: { full: card.full, short: card.short, ...(card.detail ? { detail: card.detail } : {}) },
@@ -65,7 +68,7 @@ export function validateDecision(out: DirectorOut, input: DirectorInput): Direct
   if (out.card.title.length > 40 || out.card.body.length > 280 || out.cheat.length > 120) return null;
   if (out.fanNote && out.fanNote.length > 200) return null;
   if (out.action === 'handoff' && (!out.handoffTo || !input.handoffs[cand.conceptId]?.includes(out.handoffTo))) return null;
-  const c = concept(cand.conceptId);
+  const c = concept(cand.conceptId, input.league);
   return {
     action: out.action,
     conceptId: cand.conceptId,
@@ -82,7 +85,7 @@ export function validateDecision(out: DirectorOut, input: DirectorInput): Direct
 
 /** One Director turn (BUILD_PROMPT 8.2). Falls back to the template on timeout, bad JSON, or a rule violation. */
 export async function directorTurn(llm: LLM, input: DirectorInput, home: string, away: string): Promise<DirectorDecision> {
-  const fallback = templateDecision(input.candidates, input.handoffs, input.play.penalty?.conceptId === 'penalty_other' ? input.play.penalty.rawType : undefined);
+  const fallback = templateDecision(input.candidates, input.handoffs, input.play.penalty?.conceptId === 'penalty_other' ? input.play.penalty.rawType : undefined, input.league);
   if (!input.candidates.length) return { action: 'silent', source: 'fallback' };
   const res = await llm.json({
     task: 'director', model: 'smart', system: DIRECTOR_SYSTEM,

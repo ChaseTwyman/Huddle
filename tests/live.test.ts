@@ -136,3 +136,28 @@ describe('F14 camera flag spotter', () => {
     expect(r.callIts).toBe(0);
   }, 60_000);
 });
+
+describe('F14 joining a game in progress', () => {
+  it('starts at the latest real play, not a period break, and nothing counts as queued', async () => {
+    const clock = new VirtualClock();
+    const transport = new BotTransport(() => clock.now(), false);
+    const llm = new LLM(clock, { provider: 'mock' });
+    llm.quiet = true;
+    // A "live" source that already has the first quarter (ends with END QUARTER 1).
+    const allPlays = (await import('../server/live/espn')).allPlays(summary);
+    const q1 = allPlays.findIndex((p) => p.type.text === 'End Period');
+    const partial: EspnSummary = { ...summary, header: { ...summary.header, competitions: [{ ...summary.header.competitions[0], status: { type: { state: 'in' } } }] }, drives: { previous: [{ plays: allPlays.slice(0, q1 + 1) }] } };
+    const live = new LiveGame(partial, { kind: 'live', fetch: async () => partial, toLocal: (w: number) => w }, clock);
+    const room = new Room('MID', { familyName: null, gameId: 'live:1', mode: 'full', pacing: 'live', talkativeness: 'normal', voice: false, fanHandicap: true },
+      { clock, transport, llm, game: live.data, live });
+    live.start();
+    await clock.advance(100);
+    room.control('start_game', undefined);
+    await clock.advance(3000);
+    const snap = room.snapshot();
+    expect(snap.scorebug).not.toBeNull();
+    expect(snap.scorebug!.qtr).toBe(1);
+    expect(snap.live!.queued).toBeLessThanOrEqual(1);
+    room.dispose();
+  });
+});

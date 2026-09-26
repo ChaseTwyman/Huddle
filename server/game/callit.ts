@@ -1,5 +1,5 @@
-import type { PromptOption, TimelinePlay } from '../../shared/types';
-import { concept, concepts } from '../data/concepts';
+import type { League, PromptOption, TimelinePlay } from '../../shared/types';
+import { concept, concepts, inLeague } from '../data/concepts';
 import { shuffle } from './rng';
 
 export type PlayCategory = 'preSnap' | 'pass' | 'run' | 'kick' | 'other';
@@ -22,28 +22,28 @@ export function playCategory(play: TimelinePlay): PlayCategory {
 }
 
 /** Every specific penalty concept (the catalog distractors must come from). */
-export function penaltyCatalog(): string[] {
-  return [...concepts().values()].filter((c) => c.category === 'penalty' && c.priority === 100).map((c) => c.id);
+export function penaltyCatalog(league: League = 'nfl'): string[] {
+  return [...concepts().values()].filter((c) => c.category === 'penalty' && c.priority === 100 && inLeague(c.id, league)).map((c) => c.id);
 }
 
 /** Catalog shown to the LLM: the play-type list first, then the rest. */
-export function catalogFor(play: TimelinePlay): string[] {
-  const cat = FALLBACK[playCategory(play)];
-  return [...cat, ...penaltyCatalog().filter((id) => !cat.includes(id))];
+export function catalogFor(play: TimelinePlay, league: League = 'nfl'): string[] {
+  const cat = FALLBACK[playCategory(play)].filter((id) => inLeague(id, league));
+  return [...cat, ...penaltyCatalog(league).filter((id) => !cat.includes(id))];
 }
 
 /** Validate LLM distractors: exactly 3, distinct, in the catalog, none equal to the correct concept. */
-export function validDistractors(list: unknown, correct: string): list is string[] {
+export function validDistractors(list: unknown, correct: string, league: League = 'nfl'): list is string[] {
   if (!Array.isArray(list) || list.length !== 3) return false;
-  const catalog = new Set(penaltyCatalog());
+  const catalog = new Set(penaltyCatalog(league));
   const set = new Set(list);
   if (set.size !== 3) return false;
   return list.every((id) => typeof id === 'string' && catalog.has(id) && id !== correct);
 }
 
-export function fallbackDistractors(play: TimelinePlay, correct: string): string[] {
-  const pool = FALLBACK[playCategory(play)].filter((id) => id !== correct);
-  const extra = FALLBACK.other.filter((id) => id !== correct && !pool.includes(id));
+export function fallbackDistractors(play: TimelinePlay, correct: string, league: League = 'nfl'): string[] {
+  const pool = FALLBACK[playCategory(play)].filter((id) => id !== correct && inLeague(id, league));
+  const extra = FALLBACK.other.filter((id) => id !== correct && !pool.includes(id) && inLeague(id, league));
   return shuffle([...pool], play.idx * 7919 + 1).concat(extra).slice(0, 3);
 }
 
@@ -58,14 +58,14 @@ export type CallItRound = {
  * F5: four options (correct + 3 distractors), shuffled with a seeded RNG (seed = play idx).
  * Option ids are opaque letters so nothing but the four labels reaches clients.
  */
-export function buildCallIt(play: TimelinePlay, llmDistractors: unknown, source: 'llm' | 'cache' | 'fallback' = 'llm'): CallItRound {
+export function buildCallIt(play: TimelinePlay, llmDistractors: unknown, source: 'llm' | 'cache' | 'fallback' = 'llm', league: League = 'nfl'): CallItRound {
   const pen = play.penalty;
   if (!pen) throw new Error('buildCallIt on a play without a flag');
   const correct = pen.conceptId;
   let distractors: string[];
   let src = source;
-  if (validDistractors(llmDistractors, correct)) distractors = llmDistractors;
-  else { distractors = fallbackDistractors(play, correct); src = 'fallback'; }
+  if (validDistractors(llmDistractors, correct, league)) distractors = llmDistractors;
+  else { distractors = fallbackDistractors(play, correct, league); src = 'fallback'; }
   const label = (id: string) => (id === correct && id === 'penalty_other' ? pen.rawType : concept(id).name);
   const ids = shuffle([correct, ...distractors], play.idx);
   const letters = ['a', 'b', 'c', 'd'];
