@@ -39,6 +39,8 @@ One line per ambiguous choice made during the build.
 - ElevenLabs voice is server-side (`server/ai/tts.ts`): rooms register each line, synthesis starts immediately, the TV fetches `/api/tts/:lineId`. This keeps the key off the TV and lets the audio cache work across rooms. Browser speech stays the default and the per-line fallback.
 - The TV shows a PAUSED banner (Space toggles pause). Before this, an accidental Space froze the game with no visible sign.
 
+- Claude is available as a third provider (`LLM_PROVIDER=anthropic`, official `@anthropic-ai/sdk`) at the team's request. Llama 4 via Groq remains the documented default for the Meta challenge. Claude runs at effort `low` with no temperature (current models reject sampling params).
+
 # PRD deviations
 
 - **Call It options before the announcement.** PRD F5 says no penalty name appears on the TV or phones before the announcement. The four Call It options necessarily include the real penalty's name, unmarked, among three distractors. Everything else (ticker, cards, speech, status, reveal data, option ids) is checked by `spoilers.test.ts` to never name it. Option ids are opaque letters.

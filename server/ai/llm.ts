@@ -1,4 +1,5 @@
 import OpenAI from 'openai';
+import Anthropic from '@anthropic-ai/sdk';
 import type { z } from 'zod';
 import type { AiLogEntry } from '../../shared/types';
 import type { Clock } from '../room/clock';
@@ -18,17 +19,35 @@ export type JsonOpts<T> = {
 
 export type LlmCallRecord = { task: TaskName; model: ModelRole; system: string; user: string; at: number };
 
+export type Effort = 'low' | 'medium' | 'high' | 'xhigh' | 'max';
+
 export type LlmConfig = {
-  provider: 'mock' | 'openai_compatible';
+  provider: 'mock' | 'openai_compatible' | 'anthropic';
   baseURL: string; apiKey: string;
   models: Record<ModelRole, string>;
   cache: boolean; maxConcurrency: number;
+  /** Anthropic only: effort for these short, latency-bound JSON jobs. */
+  effort: Effort;
 };
 
+const DEFAULT_CLAUDE_MODEL = 'claude-opus-5';
+
 export function configFromEnv(env = process.env): LlmConfig {
-  const provider = env.LLM_PROVIDER === 'openai_compatible' ? 'openai_compatible' : 'mock';
+  const provider = env.LLM_PROVIDER === 'openai_compatible' ? 'openai_compatible' : env.LLM_PROVIDER === 'anthropic' ? 'anthropic' : 'mock';
+  const shared = { cache: (env.LLM_CACHE ?? 'on') !== 'off', maxConcurrency: Number(env.LLM_MAX_CONCURRENCY || 4) };
+  const effort = (['low', 'medium', 'high', 'xhigh', 'max'] as const).find((e) => e === env.ANTHROPIC_EFFORT) ?? 'low';
+  if (provider === 'anthropic') {
+    return {
+      provider, baseURL: env.ANTHROPIC_BASE_URL || 'https://api.anthropic.com', apiKey: env.ANTHROPIC_API_KEY || '', effort, ...shared,
+      models: {
+        smart: env.ANTHROPIC_MODEL_SMART || DEFAULT_CLAUDE_MODEL,
+        fast: env.ANTHROPIC_MODEL_FAST || DEFAULT_CLAUDE_MODEL,
+        vision: env.ANTHROPIC_MODEL_VISION || env.ANTHROPIC_MODEL_FAST || DEFAULT_CLAUDE_MODEL,
+      },
+    };
+  }
   return {
-    provider,
+    provider, effort, ...shared,
     baseURL: env.LLM_BASE_URL || 'https://api.groq.com/openai/v1',
     apiKey: env.LLM_API_KEY || '',
     models: {
@@ -36,10 +55,10 @@ export function configFromEnv(env = process.env): LlmConfig {
       fast: env.LLM_MODEL_FAST || '',
       vision: env.LLM_MODEL_VISION || env.LLM_MODEL_FAST || '',
     },
-    cache: (env.LLM_CACHE ?? 'on') !== 'off',
-    maxConcurrency: Number(env.LLM_MAX_CONCURRENCY || 4),
   };
 }
+
+type Turn = { role: 'user' | 'assistant'; text: string };
 
 const PRIORITY: Record<TaskName, number> = { callit: 3, director: 3, beat: 2, storylines: 2, recap: 2, ticker: 1, scorebug: 1 };
 
@@ -77,6 +96,7 @@ class Timeout extends Error {}
 export class LLM {
   readonly config: LlmConfig;
   private client: OpenAI | null = null;
+  private anthropic: Anthropic | null = null;
   private cache: LlmCache;
   private limiter: Limiter;
   private backoffUntil = new Map<TaskName, number>();
@@ -96,6 +116,11 @@ export class LLM {
     if (this.config.provider === 'openai_compatible') {
       if (!this.config.apiKey) console.warn('[llm] LLM_PROVIDER=openai_compatible but LLM_API_KEY is empty; calls will fall back to templates.');
       this.client = new OpenAI({ baseURL: this.config.baseURL, apiKey: this.config.apiKey || 'missing', maxRetries: 0 });
+    }
+    if (this.config.provider === 'anthropic') {
+      if (!this.config.apiKey) console.warn('[llm] LLM_PROVIDER=anthropic but ANTHROPIC_API_KEY is empty; calls will fall back to templates.');
+      // maxRetries 0: every job has its own short timeout and a template fallback.
+      this.anthropic = new Anthropic({ apiKey: this.config.apiKey || 'missing', baseURL: this.config.baseURL, maxRetries: 0 });
     }
   }
 
@@ -118,7 +143,7 @@ export class LLM {
     };
     this.onCall?.({ task: opts.task, model: opts.model, system: opts.system, user: opts.user, at: started });
 
-    if (this.isMock || !this.client) {
+    if (this.isMock || (!this.client && !this.anthropic)) {
       const delay = 50 + ((this.mockSeq++ * 37) % 101);
       await sleep(this.clock, Math.min(delay, opts.timeoutMs));
       return done(opts.fallback(), 'fallback', this.isMock ? 'mock' : 'no client');
@@ -166,32 +191,26 @@ export class LLM {
     if (e?.status === 404 || /model.*(not found|does not exist)|not_found/i.test(msg)) {
       if (!this.warnedModels.has(model)) {
         this.warnedModels.add(model);
-        console.warn(`[llm] Model "${model}" was not found. Check the provider's model list: GET ${this.config.baseURL}/models and update LLM_MODEL_* in .env. Continuing with template fallbacks.`);
+        console.warn(`[llm] Model "${model}" was not found. Check the provider's model list: GET ${this.config.baseURL}/${this.anthropic ? 'v1/' : ''}models and update the model settings in .env. Continuing with template fallbacks.`);
       }
       return 'model not found';
     }
-    if (e?.status === 401) return 'HTTP 401: check LLM_API_KEY';
+    if (e?.status === 401) return `HTTP 401: check ${this.anthropic ? 'ANTHROPIC_API_KEY' : 'LLM_API_KEY'}`;
     return msg.slice(0, 120);
   }
 
   private async callWithRetry<T>(opts: JsonOpts<T>, model: string, deadline: number, signal: AbortSignal): Promise<T> {
-    const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
-      { role: 'system', content: opts.system },
-      {
-        role: 'user',
-        content: opts.images?.length
-          ? [{ type: 'text', text: opts.user }, ...opts.images.map((url) => ({ type: 'image_url' as const, image_url: { url } }))]
-          : opts.user,
-      },
-    ];
+    const turns: Turn[] = [{ role: 'user', text: opts.user }];
     let lastError = '';
     for (let attempt = 0; attempt < 2; attempt++) {
       if (attempt > 0) {
         if (this.clock.now() >= deadline - 300) break;
-        messages.push({ role: 'user', content: `Your previous reply was not valid: ${lastError}. Return corrected JSON only.` });
+        turns.push({ role: 'user', text: `Your previous reply was not valid: ${lastError}. Return corrected JSON only.` });
       }
-      const text = await this.complete(model, messages, opts.temperature ?? 0.3, signal, !!opts.images?.length);
-      if (attempt === 0) messages.push({ role: 'assistant', content: text });
+      const text = this.anthropic
+        ? await this.completeAnthropic(model, opts.system, turns, opts.images, signal)
+        : await this.complete(model, this.openAiMessages(opts.system, turns, opts.images), opts.temperature ?? 0.3, signal, !!opts.images?.length);
+      if (attempt === 0) turns.push({ role: 'assistant', text });
       let raw: unknown;
       try {
         raw = extractJson(text);
@@ -204,6 +223,50 @@ export class LLM {
       lastError = parsed.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ').slice(0, 300);
     }
     throw new Error(`invalid JSON after retry: ${lastError}`);
+  }
+
+  private openAiMessages(system: string, turns: Turn[], images?: string[]): OpenAI.Chat.Completions.ChatCompletionMessageParam[] {
+    return [
+      { role: 'system', content: system },
+      ...turns.map((t, i): OpenAI.Chat.Completions.ChatCompletionMessageParam => (t.role === 'assistant'
+        ? { role: 'assistant', content: t.text }
+        : {
+            role: 'user',
+            content: i === 0 && images?.length
+              ? [{ type: 'text', text: t.text }, ...images.map((url) => ({ type: 'image_url' as const, image_url: { url } }))]
+              : t.text,
+          })),
+    ];
+  }
+
+  /**
+   * Claude via the official Anthropic SDK. The prompts already demand "JSON only", and zod + one corrective
+   * retry validate the reply, same as the OpenAI-compatible path. No temperature (current Claude models reject
+   * sampling parameters); effort defaults to low for these short, latency-bound jobs. Server-side refusal
+   * fallback is on; a refusal that survives it is thrown so the job uses its template.
+   */
+  private async completeAnthropic(model: string, system: string, turns: Turn[], images: string[] | undefined, signal: AbortSignal): Promise<string> {
+    const imageBlocks = (images ?? []).map((url) => {
+      const m = /^data:(image\/(?:jpeg|png|webp|gif));base64,(.+)$/.exec(url);
+      if (!m) throw new Error('images must be base64 data URLs');
+      return { type: 'image' as const, source: { type: 'base64' as const, media_type: m[1] as 'image/jpeg' | 'image/png' | 'image/webp' | 'image/gif', data: m[2] } };
+    });
+    const res = await this.anthropic!.beta.messages.create(
+      {
+        model,
+        max_tokens: 16000,
+        system,
+        messages: turns.map((t, i) => (i === 0 && imageBlocks.length
+          ? { role: t.role, content: [...imageBlocks, { type: 'text' as const, text: t.text }] }
+          : { role: t.role, content: t.text })),
+        output_config: { effort: this.config.effort },
+        betas: ['server-side-fallback-2026-07-01'],
+        fallbacks: 'default',
+      },
+      { signal },
+    );
+    if (res.stop_reason === 'refusal') throw new Error(`refusal${res.stop_details?.category ? ` (${res.stop_details.category})` : ''}`);
+    return res.content.map((b) => (b.type === 'text' ? b.text : '')).join('');
   }
 
   private async complete(model: string, messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[], temperature: number, signal: AbortSignal, hasImages: boolean): Promise<string> {

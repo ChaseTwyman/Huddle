@@ -96,6 +96,15 @@ The live-model path was **not** exercised in this build environment (no API key 
 - **The fade:** press **G** before a segment to seed "Game 4" knowledge. The TV shows "Simulated: Game 4 knowledge"; Huddle stays quieter and hands explanations to learners. Knowledge seeds by **learner join order**: have Mom join first (slot 1 knows defensive holding).
 - **Recording:** use Demo pacing, record the TV window with a screen recorder and the couch with a separate camera. Keep a backup take. Don't put broadcast footage in the public video.
 
+### Claude instead of Llama
+
+```
+LLM_PROVIDER=anthropic
+ANTHROPIC_API_KEY=sk-ant-...
+```
+
+Uses the official Anthropic SDK with `claude-opus-5` for every job at `effort: low` (the jobs are short JSON replies with 2.5–8 s limits), server-side refusal fallback, and the same validation, retry, cache and template fallbacks as the Llama path. If calls time out in the AI log, try `ANTHROPIC_EFFORT` or a faster model for the quick jobs (`ANTHROPIC_MODEL_FAST=claude-haiku-4-5`). Note: the hackathon brief is built around Meta's Llama 4; check the rules before demoing on Claude.
+
 ## Voice (ElevenLabs)
 
 By default the TV speaks with the browser's built-in voice. For a realistic voice, add to `.env`:
