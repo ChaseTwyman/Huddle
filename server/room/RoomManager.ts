@@ -6,6 +6,7 @@ import { Room, type RoomEvents } from './Room';
 import { LLM, type LlmConfig } from '../ai/llm';
 import type { FamilyStore } from '../persistence/families';
 import type { TtsService } from '../ai/tts';
+import type { LiveGame } from '../live/feed';
 
 const LETTERS = 'ABCDEFGHJKMNPQRSTUVWXYZ'; // no I, O, L
 
@@ -36,13 +37,14 @@ export class RoomManager {
 
   constructor(private deps: ManagerDeps) {}
 
-  create(settings: Settings): Room {
+  create(settings: Settings, live?: LiveGame): Room {
     let code = makeCode();
     while (this.rooms.has(code)) code = makeCode();
     const llm = this.deps.makeLlm ? this.deps.makeLlm() : new LLM(this.deps.clock, this.deps.llmConfig);
     const room = new Room(code, settings, {
       clock: this.deps.clock, transport: this.deps.transport, llm,
       families: this.deps.families ?? null, events: this.deps.events, speed: this.deps.speed, tts: this.deps.tts ?? null,
+      ...(live ? { game: live.data, live } : {}),
     });
     room.logPlays = !!this.deps.logPlays;
     this.rooms.set(code, room);

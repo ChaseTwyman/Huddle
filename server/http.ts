@@ -6,13 +6,19 @@ import { z } from 'zod';
 import type { Settings } from '../shared/types';
 import { gameIndex } from './data/loadGame';
 import type { RoomManager } from './room/RoomManager';
+import type { Clock } from './room/clock';
+import { EspnSource, LiveGame, ReplaySource, fetchSummary, listLiveGames } from './live/feed';
 import { ROOT } from './paths';
 
 export const CreateRoomBody = z.object({
   familyName: z.string().max(40).optional().nullable(),
   gameId: z.string(),
   mode: z.enum(['full', 'condensed', 'demo']).default('condensed'),
-  pacing: z.enum(['gameNight', 'demo']).default('gameNight'),
+  pacing: z.enum(['gameNight', 'demo', 'live']).default('gameNight'),
+  /** F14: replay speed for "replay:<eventId>" games (1 = original timing). */
+  replaySpeed: z.number().min(0.5).max(60).optional(),
+  /** F14: the family's broadcast delay in seconds for "live:<eventId>" games. */
+  delaySec: z.number().min(0).max(180).optional(),
   talkativeness: z.enum(['quiet', 'normal', 'chatty']).default('normal'),
   voice: z.boolean().default(true),
   fanHandicap: z.boolean().default(true),
@@ -36,20 +42,46 @@ export function lanHost(): string {
   return candidates[0]?.address ?? 'localhost';
 }
 
-export function createHttpApp(manager: RoomManager, opts: { prod: boolean; port: number; extra?: (app: express.Express) => void }) {
+export function createHttpApp(manager: RoomManager, opts: { prod: boolean; port: number; clock: Clock; extra?: (app: express.Express) => void }) {
   const app = express();
   app.use(express.json({ limit: '8mb' }));
 
   app.get('/api/health', (_req, res) => { res.json({ ok: true }); });
   app.get('/api/games', (_req, res) => { res.json(gameIndex()); });
 
-  app.post('/api/rooms', (req, res) => {
+  // F14: this week's NFL games from ESPN (in progress = live; finished = can be replayed as if live).
+  app.get('/api/live/games', async (_req, res) => {
+    try { res.json(await listLiveGames()); } catch (e) { res.status(502).json({ error: (e as Error).message }); }
+  });
+
+  app.post('/api/rooms', async (req, res) => {
     const parsed = CreateRoomBody.safeParse(req.body ?? {});
     if (!parsed.success) {
       res.status(400).json({ error: parsed.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ') });
       return;
     }
     const b = parsed.data;
+    const liveMatch = /^(live|replay):(\d+)$/.exec(b.gameId);
+    if (liveMatch) {
+      try {
+        const [, kind, eventId] = liveMatch;
+        const first = await fetchSummary(eventId);
+        const source = kind === 'live' ? new EspnSource(eventId) : new ReplaySource(first, opts.clock, b.replaySpeed ?? 1);
+        const live = new LiveGame(first, source, opts.clock);
+        // Replays play 30 s behind the feed by default (like a streaming TV), so Predict and Call It fit before each reveal.
+        live.delayMs = (b.delaySec ?? (kind === 'replay' ? 30 : 0)) * 1000;
+        const settings: Settings = {
+          familyName: b.familyName?.trim() || null, gameId: b.gameId, mode: b.mode === 'demo' ? 'full' : b.mode, pacing: 'live',
+          talkativeness: b.talkativeness, voice: b.voice, fanHandicap: b.fanHandicap,
+        };
+        const room = manager.create(settings, live);
+        live.start();
+        res.json({ code: room.code, hostToken: room.hostToken });
+      } catch (e) {
+        res.status(502).json({ error: `Could not load that game from ESPN: ${(e as Error).message}` });
+      }
+      return;
+    }
     if (!gameIndex().some((g) => g.id === b.gameId) && b.gameId !== 'fixture_mini') {
       res.status(404).json({ error: `Unknown game ${b.gameId}` });
       return;

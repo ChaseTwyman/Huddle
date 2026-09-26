@@ -90,7 +90,7 @@ export type EngineEvent =
 
 // Settings
 export type Mode = 'full' | 'condensed' | 'demo';
-export type Pacing = 'gameNight' | 'demo';
+export type Pacing = 'gameNight' | 'demo' | 'live';
 export type Talkativeness = 'quiet' | 'normal' | 'chatty';
 export type Settings = {
   familyName: string | null;
@@ -175,6 +175,8 @@ export type RoomSnapshot = {
     idx: number; total: number; paused: boolean; mode: string; pacing: string;
   };
   status: string | null; // short engine status line, e.g. "Whistle. Flag before the snap."
+  /** F14 live mode: feed state and the family's broadcast delay (null for replays of committed games). */
+  live: { kind: 'live' | 'replay'; state: 'pre' | 'in' | 'post'; detail: string; delaySec: number; lastUpdateAgoSec: number | null; queued: number; error: string | null; latest: string | null; latestIdx: number | null } | null;
   /** F12 video mode: whether the TV shows the local video, and a seek request after a jump. */
   video: { enabled: boolean; synced: number; seek: { id: string; t: number } | null };
   /** Server clock at send time; clients use it to correct countdowns for clock skew. */
@@ -205,7 +207,7 @@ export type AiLogEntry = { at: number; task: string; source: 'llm' | 'cache' | '
 export type HostAction =
   | 'start_profiles' | 'start_game' | 'play' | 'pause' | 'next' | 'jump' | 'mode' | 'pacing'
   | 'talkativeness' | 'voice' | 'preset' | 'reroll_storyline' | 'advance' | 'set_role'
-  | 'video' | 'video_time' | 'frame';
+  | 'video' | 'video_time' | 'frame' | 'live_delay' | 'live_sync';
 
 // Socket payloads
 export type ClientToServer = {

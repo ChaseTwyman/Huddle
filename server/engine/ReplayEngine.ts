@@ -36,6 +36,8 @@ export class ReplayEngine implements GameSource {
    * play's synced snap time, or null to use normal pacing.
    */
   beforeSnap: ((play: TimelinePlay) => Promise<void> | null) | null = null;
+  /** F14 live mode: the timeline grows while the game runs; the loop waits for more plays until the feed ends. */
+  feed: { waitForMore(): Promise<void>; readonly ended: boolean } | null = null;
 
   constructor(
     private timeline: Timeline,
@@ -172,8 +174,13 @@ export class ReplayEngine implements GameSource {
     let first = true;
     // Halftime fires only when play crosses from Q2 into Q3, never when a run starts in the second half.
     let halftimeDone = (plays[startIdx]?.qtr ?? 1) >= 3;
-    while (i < plays.length) {
+    while (true) {
       this.check(gen);
+      if (i >= plays.length) {
+        if (!this.feed || this.feed.ended) break;
+        await this.guard(gen, this.feed.waitForMore());
+        continue;
+      }
       if (this.mode === 'demo') {
         const segs = this.moments.segments;
         const seg = segs[this.demoSegmentIdx];

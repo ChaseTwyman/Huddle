@@ -30,6 +30,7 @@ import { directorTurn, situation } from '../director/director';
 import { sourceLine, type DirectorDecision } from '../director/templates';
 import type { FamilyStore, FamilyFile } from '../persistence/families';
 import type { TtsService } from '../ai/tts';
+import type { LiveGame } from '../live/feed';
 import { dataPath } from '../paths';
 
 class Aborted extends Error {
@@ -79,6 +80,9 @@ export type RoomDeps = {
   speed?: number;
   /** Server-side voice (ElevenLabs). Absent or disabled = browser speech on the TV. */
   tts?: TtsService | null;
+  /** F14 live mode: game data and feed for a live (or replayed-as-live) ESPN game instead of a committed file. */
+  game?: GameData;
+  live?: LiveGame | null;
 };
 
 const first = (n: string) => n.trim().split(/\s+/)[0] || n;
@@ -104,6 +108,7 @@ export class Room {
   private events: RoomEvents;
   private speed: number;
   private tts: TtsService | null;
+  readonly live: LiveGame | null;
 
   private gen = 0;
   private tvCount = 0;
@@ -149,12 +154,24 @@ export class Room {
     this.speed = deps.speed ?? 1;
     this.tts = deps.tts ?? null;
     this.lastActivity = this.clock.now();
-    this.game = loadGame(settings.gameId);
+    this.game = deps.game ?? loadGame(settings.gameId);
+    this.live = deps.live ?? null;
     this.scheduler = new Scheduler(settings.talkativeness);
     this.engine = new ReplayEngine(this.game.timeline, this.game.moments, this.clock, (ev) => this.onEngineEvent(ev), {
       mode: settings.mode, pacing: settings.pacing,
     });
     this.engine.speed = this.speed;
+    if (this.live) {
+      const live = this.live;
+      this.engine.feed = live;
+      // Hold each snap until the family's TV shows it (feed time + their broadcast delay).
+      this.engine.beforeSnap = (play) => {
+        const at = live.showAt(play.idx);
+        const wait = at === null ? 0 : at - this.now();
+        return wait > 0 ? sleep(this.clock, wait) : null;
+      };
+      live.onUpdate = () => this.touch();
+    }
     if (settings.familyName && this.families) this.family = this.families.load(settings.familyName);
     const prev = this.llm.onLog;
     this.llm.onLog = (log) => {
@@ -238,6 +255,7 @@ export class Room {
         mode: this.engine.modeName, pacing: this.engine.pacingKey,
       },
       status: this.status,
+      live: this.live ? this.live.status() : null,
       video: { enabled: this.videoMode, synced: this.videoSync ? Object.keys(this.videoSync.snaps).length : 0, seek: this.videoSeek },
       serverNow: this.now(),
     };
@@ -523,6 +541,11 @@ export class Room {
         const p = this.players.get(a.playerId);
         if (p) p.storyline = a;
       }
+      if (!assignments.length) {
+        // No curated storylines (e.g. a live game): go straight to kickoff.
+        this.startGame();
+        return;
+      }
       this.phase = 'storylines';
       this.storylineReveal = 0;
       this.touch();
@@ -564,6 +587,13 @@ export class Room {
     this.phase = 'live';
     for (const p of this.players.values()) p.knowledgeStart = structuredClone(p.knowledge);
     this.touch();
+    if (this.live) {
+      this.live.begin();
+      // Joining a game already in progress: start at the latest play, not at the opening kickoff.
+      const n = this.game.timeline.plays.length;
+      this.engine.start(this.live.isReplay || n === 0 ? undefined : n - 1);
+      return;
+    }
     this.engine.start();
   }
 
@@ -616,6 +646,10 @@ export class Room {
         break;
       }
       case 'video': this.setVideoMode(value === true); break;
+      case 'live_delay':
+        if (this.live && typeof value === 'number' && Number.isFinite(value)) this.live.delayMs = Math.max(0, Math.min(180, value)) * 1000;
+        break;
+      case 'live_sync': this.live?.syncNow(typeof value === 'number' ? value : undefined); break;
       case 'video_time': if (typeof value === 'number' && Number.isFinite(value)) this.onVideoTime(value); break;
       case 'frame': {
         const f = value as { kind?: string; image?: string } | undefined;
@@ -838,14 +872,17 @@ export class Room {
       possession: play.posteam ? (play.posteam === home ? 'home' : 'away') : null, animateMs: this.win(500),
     };
     this.ticker = this.situationTicker(play);
+    if (this.live) this.live.shownIdx = Math.max(this.live.shownIdx, play.idx);
     this.scheduler.notePlay();
     this.prefetchCallIt(play);
     this.prefetchTicker(play);
     this.touch();
     if (play.decision) {
       const q = buildPredict(play);
-      if (q) {
-        this.pendingPredict = await this.openRound('predict', play, q.question, q.options, WINDOWS.predictMs);
+      // Live: the window must close before the family's TV shows the snap; skip it if there isn't time.
+      const window = this.liveWindow(this.live?.showAt(play.idx) ?? null, WINDOWS.predictMs, 0);
+      if (q && window) {
+        this.pendingPredict = await this.openRound('predict', play, q.question, q.options, window);
         this.check(gen);
       }
     }
@@ -883,6 +920,17 @@ export class Room {
       if (!p || this.tickerCache.has(p.idx)) continue;
       this.tickerCache.set(p.idx, plainTicker(this.llm, p, g.home, g.away).catch(() => p.publicDesc));
     }
+  }
+
+  /**
+   * Window length for Predict / Call It. Replays: the full window. Live: whatever fits before `deadline`
+   * (local ms) minus `reserve`, or null (skip the round) if under 5 s remain: the TV would give it away.
+   */
+  private liveWindow(deadline: number | null, full: number, reserve: number): number | null {
+    if (!this.live || deadline === null) return full;
+    const left = deadline - this.now() - reserve - 500;
+    if (left < 5000 / this.speed) return null;
+    return Math.min(full, left);
   }
 
   private prefetchCallIt(play: TimelinePlay) {
@@ -930,7 +978,15 @@ export class Room {
     const callit = await this.callItCache.get(play.idx)!;
     this.check(gen);
     this.callItRounds.set(play.idx, callit);
-    const r = await this.openRound('callit', play, 'Flag! What was the call?', callit.options, WINDOWS.callItMs);
+    // Live: the referee announces roughly 20 s after the snap on the family's TV; close the window before that.
+    const showAt = this.live?.showAt(play.idx) ?? null;
+    const window = this.liveWindow(showAt === null ? null : showAt + 20_000, WINDOWS.callItMs, this.pace.announceMs);
+    if (!window) {
+      this.status = 'Flag on the play!';
+      this.touch();
+      return;
+    }
+    const r = await this.openRound('callit', play, 'Flag! What was the call?', callit.options, window);
     this.check(gen);
     r.correctOptionId = callit.correctOptionId;
     this.status = 'The referee is announcing…';
@@ -1008,6 +1064,8 @@ export class Room {
 
   private async runDirector(gen: number, play: TimelinePlay, afterBeat: boolean) {
     const trigger = triggerFor(play);
+    // Live: when the feed is running ahead of us, keep up rather than explain everyday plays.
+    if (this.live && trigger === 'play' && this.live.status().queued >= 3) return;
     const learners = this.connectedLearners;
     if (!learners.length) return;
     const candidates = candidatesFor(play, learners.map((l) => l.knowledge), trigger);
@@ -1249,6 +1307,7 @@ export class Room {
   situationOf(play: TimelinePlay) { return situation(play, this.game.timeline.home, this.game.timeline.away); }
 
   dispose() {
+    this.live?.stop();
     this.gen++;
     this.engine.stop();
     this.cancelPrompts();

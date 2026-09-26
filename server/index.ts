@@ -29,7 +29,7 @@ export async function startServer(opts: StartOptions = {}): Promise<{ http: Http
     logPlays: !opts.quiet,
     tts,
   });
-  const app = createHttpApp(manager, { prod, port, extra: (a) => {
+  const app = createHttpApp(manager, { prod, port, clock, extra: (a) => {
     registerP1Routes(a, clock);
     a.get('/api/tts/:lineId', async (req, res) => {
       const audio = await tts.audioFor(req.params.lineId);

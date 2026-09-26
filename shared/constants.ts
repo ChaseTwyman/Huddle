@@ -2,6 +2,8 @@ export const PACING = {
   // Tuned so a condensed Super Bowl LVII lasts 20–30 minutes (npm run simulate prints the estimate).
   gameNight: { preSnapMs: 7000, playMs: 4000, postPlayMs: 5500, announceMs: 4000, summaryMs: 4000, halftimeMs: 15000 },
   demo: { preSnapMs: 2500, playMs: 2500, postPlayMs: 2500, announceMs: 2500, summaryMs: 2000, halftimeMs: 5000 },
+  // Live games: the feed and the TV set the pace; keep Huddle's own waits short so it never falls behind.
+  live: { preSnapMs: 1500, playMs: 3000, postPlayMs: 1500, announceMs: 2000, summaryMs: 1500, halftimeMs: 5000 },
 };
 export type PacingValues = (typeof PACING)['gameNight'];
 
