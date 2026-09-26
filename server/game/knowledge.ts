@@ -48,7 +48,8 @@ function expand(ids: string[]): string[] {
 
 const SEED: Record<'seen' | 'familiar' | 'mastered', KnowledgeEntry> = {
   seen: { exposures: 1, recalls: 0, explainedToRoom: false },
-  familiar: { exposures: 2, recalls: 0, explainedToRoom: false },
+  // "Familiar" from past games: heard it twice and called it once ("you called this last time").
+  familiar: { exposures: 2, recalls: 1, explainedToRoom: false },
   mastered: { exposures: 3, recalls: 1, explainedToRoom: false },
 };
 

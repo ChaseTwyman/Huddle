@@ -59,6 +59,12 @@ export class VirtualClock implements Clock {
     this.timers = this.timers.filter((x) => x.id !== h.id);
   }
   get pending() { return this.timers.length; }
+  private external = new Set<Promise<unknown>>();
+  /** Register real async work (e.g. a live LLM call) that run() must wait for before going idle. */
+  track(p: Promise<unknown>) {
+    const q = p.finally(() => this.external.delete(q));
+    this.external.add(q);
+  }
   elapsedSince(start: number) { return this.t - start; }
 
   /** Fire the next timer (after flushing pending microtasks). Returns false when idle. */
@@ -82,6 +88,7 @@ export class VirtualClock implements Clock {
       if (opts.maxSteps !== undefined && steps++ > opts.maxSteps) throw new Error('VirtualClock: step limit hit');
       const more = await this.step();
       if (!more) {
+        if (this.external.size) { await Promise.race(this.external); continue; }
         for (let i = 0; i < 5; i++) await flushMicrotasks();
         if (!this.timers.length) return;
       }

@@ -165,7 +165,8 @@ export class ReplayEngine implements GameSource {
     let i = startIdx;
     let lastShown = startIdx - 1;
     let first = true;
-    let halftimeDone = jumped ? plays[startIdx]?.qtr >= 3 : false;
+    // Halftime fires only when play crosses from Q2 into Q3, never when a run starts in the second half.
+    let halftimeDone = (plays[startIdx]?.qtr ?? 1) >= 3;
     while (i < plays.length) {
       this.check(gen);
       if (this.mode === 'demo') {

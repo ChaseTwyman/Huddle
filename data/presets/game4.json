@@ -1,22 +1,77 @@
 {
   "id": "game4",
   "label": "Simulated: Game 4 knowledge",
-  "_note": "Knowledge seeded by learner join order. Slots past the end reuse the last slot. \"basics\" means every concept with category basics.",
+  "_note": "Knowledge seeded by learner join order. Slots past the end reuse the last slot. \"basics\" means every concept with category basics. Starts from BUILD_PROMPT 6.8 and adds everyday concepts three games of watching would cover, so the demo segments show the fade (tuned with npm run simulate; thresholds untouched).",
   "slots": [
     {
-      "mastered": ["basics", "touchdown", "extra_point", "field_goal", "punt", "holding_offensive", "false_start"],
-      "familiar": ["holding_defensive", "pass_interference_defensive", "automatic_first_down", "two_point_conversion", "fourth_down_decision", "running_out_the_clock"],
+      "mastered": [
+        "basics",
+        "touchdown",
+        "extra_point",
+        "field_goal",
+        "punt",
+        "punt_return",
+        "holding_offensive",
+        "false_start",
+        "third_down",
+        "incomplete_pass",
+        "timeout",
+        "kneel_down",
+        "two_minute_warning"
+      ],
+      "familiar": [
+        "holding_defensive",
+        "pass_interference_defensive",
+        "automatic_first_down",
+        "two_point_conversion",
+        "fourth_down_decision",
+        "running_out_the_clock"
+      ],
       "seen": []
     },
     {
-      "mastered": [],
-      "familiar": ["basics", "touchdown", "field_goal", "punt"],
-      "seen": ["holding_defensive", "two_point_conversion", "extra_point"]
+      "mastered": [
+        "basics",
+        "touchdown",
+        "punt",
+        "third_down",
+        "incomplete_pass",
+        "timeout"
+      ],
+      "familiar": [
+        "field_goal",
+        "punt_return",
+        "kneel_down",
+        "two_minute_warning"
+      ],
+      "seen": [
+        "holding_defensive",
+        "two_point_conversion",
+        "extra_point",
+        "fourth_down_decision"
+      ]
     },
     {
-      "mastered": [],
-      "familiar": [],
-      "seen": ["basics"]
+      "mastered": [
+        "basics",
+        "touchdown",
+        "third_down",
+        "incomplete_pass",
+        "timeout"
+      ],
+      "familiar": [
+        "punt",
+        "field_goal",
+        "kneel_down"
+      ],
+      "seen": [
+        "punt_return",
+        "two_minute_warning",
+        "fourth_down_decision",
+        "two_point_conversion",
+        "running_out_the_clock",
+        "holding_defensive"
+      ]
     }
   ]
 }
