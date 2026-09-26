@@ -179,3 +179,25 @@ describe('F11 plain-English ticker', () => {
     expect(await plainTicker(make(), flagged, 'DAL', 'NYG')).toBe("Prescott's deep pass to Lamb falls incomplete. Flag on the play.");
   });
 });
+
+describe('F13 scorebug reader', () => {
+  const png = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+  it('sends the frame as an image to the vision model and parses the scorebug', async () => {
+    const { readScorebug, scorebugChip } = await import('../server/ai/vision');
+    queue = [{ body: JSON.stringify({ visible: true, awayTeam: 'KC', homeTeam: 'PHI', awayScore: 35, homeScore: 35, quarter: 4, clock: '1:54', down: 3, distance: 8, flag: true, replayReview: false, confidence: 0.9 }) }];
+    requests.length = 0;
+    const r = await readScorebug(make(), png);
+    expect(r.source).toBe('llm');
+    expect(scorebugChip(r.value)).toBe('3rd & 8 · 1:54 Q4 · KC 35–PHI 35 · FLAG');
+    const user = requests[0].body.messages[1].content as { type: string }[];
+    expect(user.map((c) => c.type)).toEqual(['text', 'image_url']);
+    expect(requests[0].body.response_format).toBeUndefined();
+  });
+  it('rejects non-image input and falls back to "not visible" when the model fails', async () => {
+    const { readScorebug } = await import('../server/ai/vision');
+    await expect(readScorebug(make(), 'https://example.com/x.png')).rejects.toThrow();
+    queue = [{ status: 500 }];
+    const r = await readScorebug(make(), png);
+    expect(r).toMatchObject({ source: 'fallback', value: { visible: false, confidence: 0 } });
+  });
+});

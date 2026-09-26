@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { HostSetup } from './pages/HostSetup';
 import { Tv } from './pages/Tv';
 import { Play } from './pages/Play';
+import { VisionLab } from './pages/VisionLab';
 
 export function App() {
   return (
@@ -10,6 +11,7 @@ export function App() {
       <Route path="/tv/:code" element={<Tv />} />
       <Route path="/play/:code" element={<Play />} />
       <Route path="/play" element={<Play />} />
+      <Route path="/lab/vision" element={<VisionLab />} />
       <Route path="*" element={<HostSetup />} />
     </Routes>
   );
