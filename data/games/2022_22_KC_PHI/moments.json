@@ -39,7 +39,7 @@
    "id": "m12",
    "idx": 12,
    "label": "Q1 10:09 · Score",
-   "publicLabel": "Q1 10:09 · PHI · Extra point",
+   "publicLabel": "Q1 10:09 · PHI",
    "qtr": 1,
    "clock": "10:09",
    "features": [
@@ -85,7 +85,7 @@
    "id": "m20",
    "idx": 20,
    "label": "Q1 6:57 · Score",
-   "publicLabel": "Q1 6:57 · KC · Extra point",
+   "publicLabel": "Q1 6:57 · KC",
    "qtr": 1,
    "clock": "6:57",
    "features": [
@@ -176,7 +176,7 @@
    "id": "m41",
    "idx": 41,
    "label": "Q2 14:52 · Score",
-   "publicLabel": "Q2 14:52 · PHI · Extra point",
+   "publicLabel": "Q2 14:52 · PHI",
    "qtr": 2,
    "clock": "14:52",
    "features": [
@@ -222,7 +222,7 @@
    "id": "m54",
    "idx": 54,
    "label": "Q2 9:39 · Score",
-   "publicLabel": "Q2 9:39 · KC · Extra point",
+   "publicLabel": "Q2 9:39 · KC",
    "qtr": 2,
    "clock": "9:39",
    "features": [
@@ -269,7 +269,7 @@
    "id": "m69",
    "idx": 69,
    "label": "Q2 2:20 · Score",
-   "publicLabel": "Q2 2:20 · PHI · Extra point",
+   "publicLabel": "Q2 2:20 · PHI",
    "qtr": 2,
    "clock": "2:20",
    "features": [
@@ -337,7 +337,7 @@
    "id": "halftime",
    "idx": 90,
    "label": "Q3 15:00 · kickoff",
-   "publicLabel": "Q3 15:00 · KC · Kickoff",
+   "publicLabel": "Q3 15:00 · KC",
    "qtr": 3,
    "clock": "15:00",
    "features": []
@@ -357,7 +357,7 @@
    "id": "m101",
    "idx": 101,
    "label": "Q3 9:30 · Score",
-   "publicLabel": "Q3 9:30 · KC · Extra point",
+   "publicLabel": "Q3 9:30 · KC",
    "qtr": 3,
    "clock": "9:30",
    "features": [
@@ -447,7 +447,7 @@
    "id": "m134",
    "idx": 134,
    "label": "Q4 12:04 · Score",
-   "publicLabel": "Q4 12:04 · KC · Extra point",
+   "publicLabel": "Q4 12:04 · KC",
    "qtr": 4,
    "clock": "12:04",
    "features": [
@@ -482,7 +482,7 @@
    "id": "m143",
    "idx": 143,
    "label": "Q4 9:22 · Score",
-   "publicLabel": "Q4 9:22 · KC · Extra point",
+   "publicLabel": "Q4 9:22 · KC",
    "qtr": 4,
    "clock": "9:22",
    "features": [
@@ -516,7 +516,7 @@
    "id": "hurts-2pt",
    "idx": 153,
    "label": "Q4 5:15 · Decision, Score",
-   "publicLabel": "Q4 5:15 · PHI · Try after touchdown",
+   "publicLabel": "Q4 5:15 · PHI",
    "qtr": 4,
    "clock": "5:15",
    "features": [
@@ -575,7 +575,7 @@
    "id": "final",
    "idx": 174,
    "label": "Q4 0:00 · end_of_period",
-   "publicLabel": "Q4 0:00 · end_of_period",
+   "publicLabel": "Q4 0:00",
    "qtr": 4,
    "clock": "0:00",
    "features": []

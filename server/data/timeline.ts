@@ -330,11 +330,11 @@ export function leadIn(plays: TimelinePlay[], idx: number, n: number): number {
   return i;
 }
 
+/** Spoiler-free label for the TV jump list: time, possession, and down & distance only. */
 export function publicMomentLabel(p: TimelinePlay): string {
   const dd = downDistance(p);
   const on = ballOn(p);
-  const sit = p.kind === 'kickoff' ? 'Kickoff' : p.kind === 'extra_point' ? 'Extra point' : p.kind === 'two_point' ? 'Try after touchdown' : dd && on ? `${dd} at ${on}` : p.kind;
-  return `Q${p.qtr} ${p.clock} · ${p.posteam ?? ''} · ${sit}`.replace(' ·  ·', ' ·');
+  return [`Q${p.qtr} ${p.clock}`, p.posteam, dd && on ? `${dd} at ${on}` : null].filter(Boolean).join(' · ');
 }
 
 export function detectMoments(plays: TimelinePlay[], storylines: Storyline[]): MomentsFile {

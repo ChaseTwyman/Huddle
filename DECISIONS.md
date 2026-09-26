@@ -29,6 +29,13 @@ One line per ambiguous choice made during the build.
 - `gameNight` pacing raised (preSnap 7 s, play 4 s, postPlay 5.5 s, announce 4 s, summary 4 s, halftime 15 s) so a condensed Super Bowl LVII runs ~25 minutes in `simulate`.
 - An LLM client is created per room (sharing the disk cache) so each host's AI log only shows its own room.
 
+- TV jump-list entries use opaque ids (`m164`) and labels with only time, possession and down & distance. Internal keys like `bradberry-flag` and labels like "Try after touchdown" gave away future events (caught by `spoilers.test.ts`).
+- The spoilers test checks each flagged play's window, from its `pre_snap` to its `penalty_announced`, rather than the whole game before it: earlier plays legitimately announce the same penalty type (e.g. two offside calls).
+- Host "speed" (PRD F3) is the pacing switch (Game night / Demo) plus Next; there is no free speed slider.
+- Screenshots in `docs/` were taken with Playwright run from a scratch folder. Playwright isn't a project dependency.
+- The phone countdowns and the TV ring correct for clock skew using `serverNow` sent with every snapshot and view.
+
 # PRD deviations
 
-- None yet.
+- **Call It options before the announcement.** PRD F5 says no penalty name appears on the TV or phones before the announcement. The four Call It options necessarily include the real penalty's name, unmarked, among three distractors. Everything else (ticker, cards, speech, status, reveal data, option ids) is checked by `spoilers.test.ts` to never name it. Option ids are opaque letters.
+- **Director timing.** PRD 8 lists the flag and decision windows as separate Director moments; Huddle runs one Director turn per play in dead time, right after the announcement or decision result (see Decisions). The behavior the PRD describes (explanation follows the reveal) is kept.

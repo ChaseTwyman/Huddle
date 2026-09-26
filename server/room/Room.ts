@@ -226,7 +226,8 @@ export class Room {
       explaining: this.explaining,
       demo: {
         segments: this.game.moments.segments.map((s) => ({ id: s.id, label: s.label })),
-        moments: this.game.moments.moments.map((m) => ({ id: m.id, label: m.publicLabel })),
+        // Opaque ids: internal keys like "bradberry-flag" would spoil the jump list.
+        moments: this.game.moments.moments.map((m) => ({ id: `m${m.idx}`, label: m.publicLabel })),
         idx: this.engine.currentIdx, total: g.plays.length, paused: this.engine.paused,
         mode: this.engine.modeName, pacing: this.engine.pacingKey,
       },
@@ -629,7 +630,10 @@ export class Room {
     const v = (value ?? {}) as { idx?: number; segment?: string; moment?: string };
     let idx: number | undefined;
     if (v.segment) idx = this.game.moments.segments.find((s) => s.id === v.segment)?.startIdx;
-    else if (v.moment) idx = this.game.moments.moments.find((m) => m.id === v.moment)?.idx;
+    else if (v.moment) {
+      const opaque = /^m(\d+)$/.exec(v.moment);
+      idx = opaque ? Number(opaque[1]) : this.game.moments.keys[v.moment] ?? this.game.moments.moments.find((m) => m.id === v.moment)?.idx;
+    }
     else if (typeof v.idx === 'number') idx = v.idx;
     if (idx === undefined) return;
     this.gen++;
@@ -923,6 +927,7 @@ export class Room {
   private async huddleSays(gen: number, play: TimelinePlay, trigger: Trigger, text: string, decision: Extract<DirectorDecision, { action: 'explain' | 'handoff' }>, kind: 'explain' | 'short', followUp = false) {
     this.setCard(this.explainCard(decision, 'Huddle'));
     await this.speak(gen, text, kind, 1, trigger, followUp);
+    this.scheduler.spoke({ now: this.now(), qtr: play.qtr, countsToBudget: trigger === 'play' && !followUp });
   }
 
   private async flowExplain(gen: number, play: TimelinePlay, trigger: Trigger, decision: Extract<DirectorDecision, { action: 'explain' | 'handoff' }>) {

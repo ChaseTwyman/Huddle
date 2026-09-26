@@ -134,6 +134,24 @@ describe('F7 "I got this" and handoffs', () => {
   });
 });
 
+describe('F6 budgets inside a real room', () => {
+  it('every Huddle explanation is recorded by the scheduler (budget and gap), not just by the speech log', async () => {
+    const { room, clock } = harness({ gameId: '2022_22_KC_PHI', mode: 'condensed', talkativeness: 'normal' });
+    room.setProfile(room.joinPlayer({ name: 'Mom' }).id, learnerProfile);
+    room.control('start_game', undefined);
+    await clock.run({ until: () => room.phase === 'recap', maxSteps: 2_000_000 });
+    const lines = room.spokenLog.filter((l) => (l.kind === 'explain' || l.kind === 'short') && !l.followUp);
+    expect(lines.length).toBeGreaterThan(10);
+    for (const q of [1, 2, 3, 4]) {
+      const budgeted = lines.filter((l) => l.qtr === q && l.trigger === 'play').length;
+      expect(room.scheduler.usedThisQuarter(q), `Q${q}`).toBe(budgeted);
+      expect(budgeted).toBeLessThanOrEqual(6);
+    }
+    const huddle = room.spokenLog.filter((l) => (l.kind === 'explain' || l.kind === 'short' || l.kind === 'beat') && !l.followUp);
+    for (let i = 1; i < huddle.length; i++) expect(huddle[i].at - huddle[i - 1].endAt!).toBeGreaterThanOrEqual(19_999);
+  });
+});
+
 describe('F6 mute', () => {
   it('mute takes effect immediately: the TV is told and no further lines are sent to speech', async () => {
     const { room, clock, transport } = harness({ gameId: '2022_22_KC_PHI', mode: 'demo' });
