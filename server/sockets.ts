@@ -18,6 +18,7 @@ export function attachSockets(io: Server<ClientToServer, ServerToClient>, manage
   io.on('connection', (socket: S) => {
     let tvCode: string | null = null;
     let isHost = false;
+    let isCamera = false;
     let player: { code: string; id: string } | null = null;
 
     socket.on('tv:join', (p, ack) => {
@@ -25,6 +26,16 @@ export function attachSockets(io: Server<ClientToServer, ServerToClient>, manage
       if (!room) { ack?.({ ok: false, error: 'Room not found' }); return; }
       tvCode = room.code;
       isHost = !!p.hostToken && p.hostToken === room.hostToken;
+      if (p.role === 'camera') {
+        // Camera flag spotter: host-only, gets snapshots, never counts as a TV (it doesn't speak).
+        if (!isHost) { ack?.({ ok: false, error: 'Open the camera link from the host dock' }); return; }
+        isCamera = true;
+        void socket.join(tvRoom(room.code));
+        room.cameraJoined();
+        socket.emit('room:snapshot', room.snapshot());
+        ack?.({ ok: true, host: true });
+        return;
+      }
       void socket.join(tvRoom(room.code));
       if (isHost) void socket.join(hostRoom(room.code));
       room.tvJoined();
@@ -72,7 +83,8 @@ export function attachSockets(io: Server<ClientToServer, ServerToClient>, manage
     socket.on('player:feedback', (p) => withPlayer((room, id) => room.feedback(id, String(p?.promptId), p?.value === 'confused' ? 'confused' : 'got_it')));
 
     socket.on('disconnect', () => {
-      if (tvCode) manager.get(tvCode)?.tvLeft();
+      if (tvCode && isCamera) manager.get(tvCode)?.cameraLeft();
+      else if (tvCode) manager.get(tvCode)?.tvLeft();
       if (player) {
         const room = manager.get(player.code);
         const id = player.id;

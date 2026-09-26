@@ -97,7 +97,9 @@ export function createHttpApp(manager: RoomManager, opts: { prod: boolean; port:
 
   app.get('/api/lan', (_req, res) => {
     const port = opts.prod ? opts.port : 5173;
-    res.json({ phoneUrlBase: `http://${lanHost()}:${port}` });
+    // DEV_HTTPS=1 (vite serves HTTPS so phones may use the camera): QR codes must point at https too.
+    const proto = !opts.prod && process.env.DEV_HTTPS === '1' ? 'https' : 'http';
+    res.json({ phoneUrlBase: `${proto}://${lanHost()}:${port}` });
   });
 
   opts.extra?.(app);

@@ -80,3 +80,59 @@ describe('F14 live mode (ESPN feed replayed as if live)', () => {
     live.stop();
   });
 });
+
+describe('F14 camera flag spotter', () => {
+  async function run(opts: { camera: 'at-flags' | 'none' | 'false-alarm' }) {
+    const clock = new VirtualClock();
+    const transport = new BotTransport(() => clock.now(), false);
+    const llm = new LLM(clock, { provider: 'mock' });
+    llm.quiet = true;
+    // A TV in sync with live, and a feed that posts each play 30 s late (after the referee's announcement).
+    const source = new ReplaySource(summary, clock, 1, 3000, 30_000);
+    const live = new LiveGame(summary, source, clock);
+    const room = new Room('CAM', { familyName: null, gameId: 'replay:401872948', mode: 'full', pacing: 'live', talkativeness: 'quiet', voice: true, fanHandicap: true },
+      { clock, transport, llm, game: live.data, live });
+    live.start();
+    const bots = new Bots(room, clock, transport, 9);
+    bots.join(DEFAULT_BOTS);
+    room.startProfiles();
+    bots.submitProfiles();
+    await clock.run({ until: () => room.phase === 'live', maxSteps: 100_000 });
+    const flagged = (await import('../server/live/espn')).allPlays(summary).filter((p) => p.isPenalty);
+    if (opts.camera === 'at-flags') {
+      // The camera sees the FLAG box 3 s after each flagged snap on the (live) TV.
+      for (const p of flagged) clock.setTimeout(() => room.control('flag_seen', undefined), source.toLocal(Date.parse(p.wallclock!)) + 3000 - clock.now());
+    }
+    let falseAlarmStatus: string | null = null;
+    if (opts.camera === 'false-alarm') {
+      const clean = (await import('../server/live/espn')).allPlays(summary).find((p) => p.type.text === 'Rush' && Number(p.period.number) === 1)!;
+      const at = source.toLocal(Date.parse(clean.wallclock!)) + 3000;
+      clock.setTimeout(() => room.control('flag_seen', undefined), at - clock.now());
+      for (let t = 1000; t <= 90_000; t += 1000) {
+        clock.setTimeout(() => { const st = room.snapshot().status; if (st && /No flag|No penalty/.test(st)) falseAlarmStatus ??= st; }, at + t - clock.now());
+      }
+    }
+    await clock.run({ until: () => room.phase === 'recap', maxSteps: 3_000_000 });
+    const callIts = [...room.players.values()].reduce((n, p) => n + p.callItTotal, 0);
+    return { room, callIts, flags: flagged.length, falseAlarmStatus };
+  }
+
+  it('without the camera, a late feed means Call It never fits', async () => {
+    const r = await run({ camera: 'none' });
+    expect(r.callIts).toBe(0);
+  }, 60_000);
+
+  it('with the camera, the family guesses as the flag appears and scoring waits for the feed', async () => {
+    const r = await run({ camera: 'at-flags' });
+    // Flags less than a minute apart share one round; most flags get their own.
+    expect(r.callIts).toBeGreaterThanOrEqual(Math.floor(r.flags * 0.7) * 4);
+    const scored = [...r.room.players.values()].some((p) => p.callItCorrect > 0);
+    expect(scored).toBe(true);
+  }, 60_000);
+
+  it('a false alarm is cancelled when the next clean play comes through', async () => {
+    const r = await run({ camera: 'false-alarm' });
+    expect(r.falseAlarmStatus).toBe('No flag on that play after all.');
+    expect(r.callIts).toBe(0);
+  }, 60_000);
+});

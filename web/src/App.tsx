@@ -4,6 +4,7 @@ import { Tv } from './pages/Tv';
 import { Play } from './pages/Play';
 import { VisionLab } from './pages/VisionLab';
 import { SyncTool } from './pages/SyncTool';
+import { Camera } from './pages/Camera';
 
 export function App() {
   return (
@@ -14,6 +15,7 @@ export function App() {
       <Route path="/play" element={<Play />} />
       <Route path="/lab/vision" element={<VisionLab />} />
       <Route path="/sync/:gameId" element={<SyncTool />} />
+      <Route path="/cam/:code" element={<Camera />} />
       <Route path="*" element={<HostSetup />} />
     </Routes>
   );

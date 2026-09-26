@@ -176,7 +176,9 @@ export type RoomSnapshot = {
   };
   status: string | null; // short engine status line, e.g. "Whistle. Flag before the snap."
   /** F14 live mode: feed state and the family's broadcast delay (null for replays of committed games). */
-  live: { kind: 'live' | 'replay'; state: 'pre' | 'in' | 'post'; detail: string; delaySec: number; lastUpdateAgoSec: number | null; queued: number; error: string | null; latest: string | null; latestIdx: number | null } | null;
+  live: { kind: 'live' | 'replay'; state: 'pre' | 'in' | 'post'; detail: string; delaySec: number; lastUpdateAgoSec: number | null; queued: number; error: string | null; latest: string | null; latestIdx: number | null;
+    /** Camera flag spotter: connected phones/webcams and when it last saw a flag (seconds ago). */
+    camera: { connected: number; lastFlagAgoSec: number | null } } | null;
   /** F12 video mode: whether the TV shows the local video, and a seek request after a jump. */
   video: { enabled: boolean; synced: number; seek: { id: string; t: number } | null };
   /** Server clock at send time; clients use it to correct countdowns for clock skew. */
@@ -207,11 +209,11 @@ export type AiLogEntry = { at: number; task: string; source: 'llm' | 'cache' | '
 export type HostAction =
   | 'start_profiles' | 'start_game' | 'play' | 'pause' | 'next' | 'jump' | 'mode' | 'pacing'
   | 'talkativeness' | 'voice' | 'preset' | 'reroll_storyline' | 'advance' | 'set_role'
-  | 'video' | 'video_time' | 'frame' | 'live_delay' | 'live_sync';
+  | 'video' | 'video_time' | 'frame' | 'live_delay' | 'live_sync' | 'flag_seen';
 
 // Socket payloads
 export type ClientToServer = {
-  'tv:join': (p: { code: string; hostToken?: string }, ack?: (r: { ok: boolean; error?: string; host?: boolean }) => void) => void;
+  'tv:join': (p: { code: string; hostToken?: string; role?: 'tv' | 'camera' }, ack?: (r: { ok: boolean; error?: string; host?: boolean }) => void) => void;
   'tv:spoken': (p: { lineId: string }) => void;
   'host:control': (p: { action: HostAction; value?: unknown }) => void;
   'player:join': (p: { code: string; name: string; color: string; playerId?: string }, ack?: (r: { ok: boolean; error?: string; playerId?: string }) => void) => void;

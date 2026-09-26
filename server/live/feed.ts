@@ -50,7 +50,11 @@ export class ReplaySource implements FeedSource {
   readonly kind = 'replay' as const;
   private t0: number | null = null;
   private wall0: number;
-  constructor(private full: EspnSummary, private clock: Clock, private speed = 1, private lead = 3000) {
+  /**
+   * @param postLagMs how long after a play happens the feed posts it. Real feeds lag (often until after the
+   * referee's announcement); 0 = optimistic. Tests use it to show why the camera flag spotter matters.
+   */
+  constructor(private full: EspnSummary, private clock: Clock, private speed = 1, private lead = 3000, private postLagMs = 0) {
     const walls = allPlays(full).map((p) => Date.parse(p.wallclock ?? '')).filter(Number.isFinite);
     this.wall0 = walls.length ? Math.min(...walls) : 0;
   }
@@ -60,7 +64,7 @@ export class ReplaySource implements FeedSource {
   async fetch(): Promise<EspnSummary> {
     const now = this.clock.now();
     const plays = allPlays(this.full);
-    const visible = plays.filter((p) => this.toLocal(Date.parse(p.wallclock ?? '')) <= now);
+    const visible = plays.filter((p) => this.toLocal(Date.parse(p.wallclock ?? '')) + this.postLagMs <= now);
     const done = visible.length === plays.length;
     const comp = this.full.header.competitions[0];
     return {

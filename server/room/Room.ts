@@ -255,7 +255,7 @@ export class Room {
         mode: this.engine.modeName, pacing: this.engine.pacingKey,
       },
       status: this.status,
-      live: this.live ? this.live.status() : null,
+      live: this.live ? { ...this.live.status(), camera: { connected: this.cameras, lastFlagAgoSec: this.lastCameraFlagAt === null ? null : Math.round((this.now() - this.lastCameraFlagAt) / 1000) } } : null,
       video: { enabled: this.videoMode, synced: this.videoSync ? Object.keys(this.videoSync.snaps).length : 0, seek: this.videoSeek },
       serverNow: this.now(),
     };
@@ -395,13 +395,13 @@ export class Room {
   }
 
   /** Open a Predict or Call It round for everyone and resolve when it closes. */
-  private async openRound(kind: 'predict' | 'callit', play: TimelinePlay, question: string, options: PromptOption[], windowMs: number): Promise<Round> {
+  private async openRound(kind: 'predict' | 'callit', playIdx: number, question: string, options: PromptOption[], windowMs: number): Promise<Round> {
     const id = nanoid(8);
     const ms = this.win(windowMs);
     const closesAt = this.now() + ms;
     let closeFn: () => void = () => undefined;
     const closed = new Promise<void>((r) => { closeFn = r; });
-    const round: Round = { id, kind, playIdx: play.idx, question, options, closesAt, answers: new Map(), open: true, close: () => undefined };
+    const round: Round = { id, kind, playIdx, question, options, closesAt, answers: new Map(), open: true, close: () => undefined };
     const t = this.clock.setTimeout(() => round.close(), ms);
     round.close = () => {
       if (!round.open) return;
@@ -466,7 +466,9 @@ export class Room {
     const answers = [...r.answers.entries()].map(([playerId, a]) => ({ playerId, ...a }));
     const results = scoreCallIt(answers, correctId, this.participants(), this.settings.fanHandicap);
     r.reveal = { correctOptionId: correctId, results };
-    const label = r.options.find((o) => o.id === correctId)?.label ?? '';
+    const pen = play.penalty!;
+    const label = r.options.find((o) => o.id === correctId)?.label ?? (pen.conceptId === 'penalty_other' ? pen.rawType : concept(pen.conceptId).name);
+    const offList = correctId === '__none__';
     for (const x of results) {
       const p = this.players.get(x.playerId);
       if (!p) continue;
@@ -478,7 +480,7 @@ export class Room {
         p.log.push({ text: `Called ${label} before the referee`, points: x.points });
         this.gameLog.push({ text: `${first(p.name)} called ${label} before the referee said it (Q${play.qtr} ${play.clock}).`, weight: x.points + (play.momentKeys.length ? 100 : 0) });
       }
-      p.lastResult = { id: nanoid(6), correct: x.correct, points: x.points, label: x.correct ? `You called it: ${label}` : `It was ${label}` };
+      p.lastResult = { id: nanoid(6), correct: x.correct, points: x.points, label: x.correct ? `You called it: ${label}` : offList ? `It was ${label}: not on the list this time` : `It was ${label}` };
     }
     this.round = r;
     this.knowledgeChanged();
@@ -650,6 +652,7 @@ export class Room {
         if (this.live && typeof value === 'number' && Number.isFinite(value)) this.live.delayMs = Math.max(0, Math.min(180, value)) * 1000;
         break;
       case 'live_sync': this.live?.syncNow(typeof value === 'number' ? value : undefined); break;
+      case 'flag_seen': this.onCameraFlag(); break;
       case 'video_time': if (typeof value === 'number' && Number.isFinite(value)) this.onVideoTime(value); break;
       case 'frame': {
         const f = value as { kind?: string; image?: string } | undefined;
@@ -800,6 +803,67 @@ export class Room {
     return this.flagFrame;
   }
 
+  // ---------------------------------------------------------------- F14 camera flag spotter
+
+  /** Most common NFL penalties: the Call It options when the camera sees a flag before the feed says which. */
+  static readonly CAMERA_OPTIONS = ['holding_offensive', 'false_start', 'pass_interference_defensive', 'holding_defensive'];
+
+  cameras = 0;
+  private lastCameraFlagAt: number | null = null;
+  private cameraFlag: { round: Round; done: Promise<Round>; seenAt: number; resolved: boolean; timer: TimerHandle | null } | null = null;
+
+  cameraJoined() { this.cameras++; this.touch(); }
+  cameraLeft() { this.cameras = Math.max(0, this.cameras - 1); this.touch(); }
+
+  /**
+   * The camera saw the broadcast's FLAG box. The feed won't say which penalty until after the referee announces it,
+   * so open Call It right away with the four most common penalties; the round is tied to the flagged play when the
+   * feed posts it (revealed with the real answer) or cancelled if no flagged play turns up.
+   */
+  onCameraFlag() {
+    if (!this.live || this.phase !== 'live') return;
+    const now = this.now();
+    this.lastCameraFlagAt = now;
+    if (this.cameraFlag && !this.cameraFlag.resolved && now - this.cameraFlag.seenAt < 60_000) return;
+    if (this.round?.open) return; // a Predict window is open: it wins
+    const options = Room.CAMERA_OPTIONS.map((id, i) => ({ id: 'abcd'[i], label: concept(id).name }));
+    if (this.scorebug) this.scorebug = { ...this.scorebug, flag: true };
+    this.status = 'Flag on the play! (spotted on your TV)';
+    const done = this.openRound('callit', -1, 'Flag! What was the call?', options, WINDOWS.callItMs); // not tied to a play yet
+    const round = this.round!;
+    const timer = this.clock.setTimeout(() => this.cancelCameraRound('No penalty came through: maybe a flag was picked up.'), 90_000);
+    this.cameraFlag = { round, done, seenAt: now, resolved: false, timer };
+    this.touch();
+  }
+
+  private cancelCameraRound(status: string) {
+    const c = this.cameraFlag;
+    if (!c || c.resolved) return;
+    c.resolved = true;
+    this.clock.clearTimeout(c.timer);
+    if (c.round.open) c.round.close();
+    c.round.voided = true;
+    c.round.reveal = { correctOptionId: '', results: [] };
+    if (this.scorebug) this.scorebug = { ...this.scorebug, flag: false };
+    this.status = status;
+    this.touch();
+  }
+
+  /** The feed posted a flagged play: adopt the camera round if the flag was seen around this play's snap on TV. */
+  private async adoptCameraRound(play: TimelinePlay): Promise<Round | null> {
+    const c = this.cameraFlag;
+    if (!c || c.resolved) return null;
+    const showAt = this.live?.showAt(play.idx) ?? null;
+    if (showAt !== null && Math.abs(c.seenAt - showAt) > 75_000) return null;
+    c.resolved = true;
+    this.clock.clearTimeout(c.timer);
+    const r = await c.done;
+    const name = play.penalty?.conceptId === 'penalty_other' ? play.penalty.rawType : concept(play.penalty!.conceptId).name;
+    r.playIdx = play.idx;
+    r.correctOptionId = r.options.find((o) => o.label === name)?.id ?? '__none__';
+    return r;
+  }
+
   // ---------------------------------------------------------------- engine events
 
   /** Last engine event (time and a short description): the watchdog uses it to spot a stalled game. */
@@ -861,11 +925,13 @@ export class Room {
   private async onPreSnap(gen: number, play: TimelinePlay) {
     if (this.phase === 'halftime' || this.phase === 'storylines') this.phase = 'live';
     if (play.qtr !== this.lastQtr) this.lastQtr = play.qtr;
-    this.round = null;
+    const cameraPending = !!this.cameraFlag && !this.cameraFlag.resolved;
+    if (!cameraPending) this.round = null;
     this.card = null;
-    this.status = null;
+    if (!cameraPending) this.status = null;
     this.explaining = null;
     this.scorebug = this.scorebugFor(play, play.scoreBefore);
+    if (cameraPending) this.scorebug = { ...this.scorebug, flag: true }; // the flag is still out on the family's TV
     const home = this.game.timeline.home;
     this.field = {
       losAbs: play.field.losAbs, firstDownAbs: play.field.firstDownAbs, ballAbs: play.field.losAbs,
@@ -882,13 +948,18 @@ export class Room {
       // Live: the window must close before the family's TV shows the snap; skip it if there isn't time.
       const window = this.liveWindow(this.live?.showAt(play.idx) ?? null, WINDOWS.predictMs, 0);
       if (q && window) {
-        this.pendingPredict = await this.openRound('predict', play, q.question, q.options, window);
+        this.pendingPredict = await this.openRound('predict', play.idx, q.question, q.options, window);
         this.check(gen);
       }
     }
   }
 
   private onPlayResult(play: TimelinePlay) {
+    const c = this.cameraFlag;
+    if (c && !c.resolved && !play.penalty) {
+      const showAt = this.live?.showAt(play.idx) ?? null;
+      if (showAt !== null && showAt > c.seenAt + 5000) this.cancelCameraRound('No flag on that play after all.');
+    }
     const f = this.field;
     if (f) this.field = { ...f, ballAbs: play.field.ballEndAbs ?? f.losAbs, animateMs: this.win(this.pace.playMs * 0.8) };
     this.scorebug = { ...this.scorebugFor(play, play.scoreAfter), review: !!play.challenge };
@@ -963,6 +1034,16 @@ export class Room {
   }
 
   private async onFlag(gen: number, play: TimelinePlay) {
+    const camera = await this.adoptCameraRound(play);
+    this.check(gen);
+    if (camera) {
+      // The family already guessed when the flag appeared on their TV; now we know the answer.
+      this.round = camera;
+      if (this.scorebug) this.scorebug = { ...this.scorebug, flag: true };
+      this.status = 'The referee is announcing…';
+      this.touch();
+      return;
+    }
     if (this.scorebug) this.scorebug = { ...this.scorebug, flag: true };
     this.status = play.kind === 'penalty_only' ? 'Whistle. Flag before the snap.' : 'Flag on the play!';
     if (play.kind === 'penalty_only') this.ticker = 'Flag on the play.';
@@ -986,7 +1067,7 @@ export class Room {
       this.touch();
       return;
     }
-    const r = await this.openRound('callit', play, 'Flag! What was the call?', callit.options, window);
+    const r = await this.openRound('callit', play.idx, 'Flag! What was the call?', callit.options, window);
     this.check(gen);
     r.correctOptionId = callit.correctOptionId;
     this.status = 'The referee is announcing…';
@@ -1289,14 +1370,14 @@ export class Room {
   /** Simulation only: the concept behind the open Call It round. Never sent to clients. */
   simRoundConcept(promptId: string): string | null {
     const r = this.round;
-    if (!r || r.id !== promptId || r.kind !== 'callit') return null;
+    if (!r || r.id !== promptId || r.kind !== 'callit' || r.playIdx < 0) return null; // camera rounds: answer not known yet
     return this.game.timeline.plays[r.playIdx].penalty?.conceptId ?? null;
   }
 
   /** Simulation only (server-side bots): the correct option of the open round, if known. Never sent to clients. */
   simCorrectOption(promptId: string): string | null {
     const r = this.round;
-    if (!r || r.id !== promptId) return null;
+    if (!r || r.id !== promptId || r.playIdx < 0) return null;
     const play = this.game.timeline.plays[r.playIdx];
     if (r.kind === 'callit') return this.callItRounds.get(r.playIdx)?.correctOptionId ?? null;
     const res = resolvePredict(play);

@@ -1,5 +1,8 @@
 import type { AiLogEntry, HostAction, RoomSnapshot } from '../../../../shared/types';
 import type { VisionChip } from './VideoPane';
+import { useEffect, useState } from 'react';
+import QRCode from 'qrcode';
+import { storage } from '../../lib/socket';
 
 type Props = {
   snap: RoomSnapshot;
@@ -54,6 +57,7 @@ export function HostDock({ snap, aiLog, control, showJump, voiceName, hasVideo, 
             <b style={{ minWidth: 48, textAlign: 'center' }}>{snap.live.delaySec}s</b>
             <button onClick={() => control('live_delay', snap.live!.delaySec + 5)}>+5</button>
           </div>
+          <CameraLink code={snap.code} camera={snap.live.camera} />
           {snap.live.kind === 'live' && snap.live.latest ? (
             <div style={{ fontSize: 13 }}>
               <div className="muted">Newest play from ESPN. Press <b>Sync</b> the moment its snap happens on your TV:</div>
@@ -105,5 +109,25 @@ export function HostDock({ snap, aiLog, control, showJump, voiceName, hasVideo, 
       </div>
       <div className="muted" style={{ fontSize: 12 }}><kbd>H</kbd> dock · <kbd>T</kbd> talkativeness · <kbd>1</kbd>–<kbd>9</kbd> segments</div>
     </aside>
+  );
+}
+
+/** F14: link + QR for the camera flag spotter (host token included, so only the host's devices can send flags). */
+function CameraLink({ code, camera }: { code: string; camera: { connected: number; lastFlagAgoSec: number | null } }) {
+  const [base, setBase] = useState('');
+  const [qr, setQr] = useState('');
+  const token = storage.session.get(`huddle:host:${code}`) ?? '';
+  useEffect(() => { fetch('/api/lan').then((r) => r.json()).then((j) => setBase(j.phoneUrlBase)).catch(() => setBase(window.location.origin)); }, []);
+  const url = base && token ? `${base}/cam/${code}?host=${token}` : '';
+  useEffect(() => { if (url) QRCode.toDataURL(url, { margin: 1, width: 240 }).then(setQr).catch(() => setQr('')); }, [url]);
+  return (
+    <div style={{ fontSize: 13, display: 'flex', gap: 10, alignItems: 'center' }}>
+      {qr ? <img src={qr} alt="Camera link QR" style={{ width: 88, height: 88, background: '#fff', borderRadius: 6 }} /> : null}
+      <div>
+        <div><b>Flag camera</b>: {camera.connected ? `${camera.connected} connected` : 'not connected'}{camera.lastFlagAgoSec !== null ? ` · last flag ${camera.lastFlagAgoSec}s ago` : ''}</div>
+        <div className="muted">Scan with a phone pointed at the TV (or open on a laptop webcam) so Call It opens the moment a flag appears.</div>
+        {url ? <a href={url} target="_blank" rel="noreferrer" style={{ color: 'var(--muted)' }}>Open camera page</a> : null}
+      </div>
+    </div>
   );
 }
