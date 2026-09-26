@@ -46,7 +46,8 @@ export function attachSockets(io: Server<ClientToServer, ServerToClient>, manage
       const room = manager.get(p?.code);
       if (!room) { ack?.({ ok: false, error: 'Room not found. Check the code on the TV.' }); return; }
       const name = String(p.name ?? '').trim();
-      if (!name && !p.playerId) { ack?.({ ok: false, error: 'Enter your name' }); return; }
+      const known = !!p.playerId && room.players.has(p.playerId);
+      if (!name && !known) { ack?.({ ok: false, error: p.playerId ? 'Please join again' : 'Enter your name' }); return; }
       const pl = room.joinPlayer({ name, color: p.color, playerId: p.playerId });
       player = { code: room.code, id: pl.id };
       void socket.join(playerRoom(pl.id));

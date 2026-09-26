@@ -18,14 +18,22 @@ export const CreateRoomBody = z.object({
   fanHandicap: z.boolean().default(true),
 });
 
+const VIRTUAL = /vethernet|wsl|hyper-v|virtualbox|vmware|docker|vbox|utun|bridge|loopback|tailscale|zerotier/i;
+
 export function lanHost(): string {
   if (process.env.PUBLIC_HOST) return process.env.PUBLIC_HOST;
-  for (const list of Object.values(os.networkInterfaces())) {
+  const candidates: { name: string; address: string }[] = [];
+  for (const [name, list] of Object.entries(os.networkInterfaces())) {
     for (const a of list ?? []) {
-      if (a.family === 'IPv4' && !a.internal) return a.address;
+      if (a.family === 'IPv4' && !a.internal) candidates.push({ name, address: a.address });
     }
   }
-  return 'localhost';
+  // Prefer real Wi-Fi/Ethernet adapters and typical home-LAN ranges over virtual adapters (WSL, Hyper-V, Docker).
+  const score = (c: { name: string; address: string }) =>
+    (VIRTUAL.test(c.name) ? -10 : 0) + (/wi-?fi|wlan|en0|eth|ethernet/i.test(c.name) ? 3 : 0)
+    + (/^192\.168\./.test(c.address) ? 2 : /^10\./.test(c.address) ? 1 : /^172\.(1[6-9]|2\d|3[01])\./.test(c.address) ? -1 : 0);
+  candidates.sort((a, b) => score(b) - score(a));
+  return candidates[0]?.address ?? 'localhost';
 }
 
 export function createHttpApp(manager: RoomManager, opts: { prod: boolean; port: number; extra?: (app: express.Express) => void }) {

@@ -5,7 +5,7 @@ import type { ClientToServer, ServerToClient } from '../shared/types';
 import { createHttpApp } from './http';
 import { attachSockets } from './sockets';
 import { RoomManager } from './room/RoomManager';
-import { RealClock, ScaledClock, type Clock } from './room/clock';
+import { RealClock, type Clock } from './room/clock';
 import { SocketTransport } from './room/transport';
 import { FamilyStore } from './persistence/families';
 import { configFromEnv } from './ai/llm';
@@ -16,7 +16,8 @@ export type StartOptions = { port?: number; prod?: boolean; speed?: number; cloc
 export async function startServer(opts: StartOptions = {}): Promise<{ http: HttpServer; manager: RoomManager; port: number; close: () => Promise<void> }> {
   const port = opts.port ?? Number(process.env.PORT ?? 8787);
   const prod = opts.prod ?? process.env.NODE_ENV === 'production';
-  const clock = opts.clock ?? (opts.speed && opts.speed !== 1 ? new ScaledClock(opts.speed) : new RealClock());
+  // speed (smoke test) divides pacing and windows inside rooms; the clock itself stays real.
+  const clock = opts.clock ?? new RealClock();
   const http = createServer();
   const io = new Server<ClientToServer, ServerToClient>(http, { cors: { origin: true } });
   const manager = new RoomManager({

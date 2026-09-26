@@ -231,6 +231,7 @@ export class Room {
         mode: this.engine.modeName, pacing: this.engine.pacingKey,
       },
       status: this.status,
+      serverNow: this.now(),
     };
   }
 
@@ -246,6 +247,7 @@ export class Room {
       lastResult: p.lastResult,
       buzz: p.buzz,
       recap: this.recap ? { me, family: this.recap } : null,
+      serverNow: this.now(),
     };
   }
 

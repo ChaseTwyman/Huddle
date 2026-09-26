@@ -24,16 +24,6 @@ export class RealClock implements Clock {
   }
 }
 
-/** Real timers divided by `speed` (smoke test: 20x). now() still advances at the scaled rate. */
-export class ScaledClock implements Clock {
-  private inner = new RealClock();
-  private start = Date.now();
-  constructor(private speed: number) {}
-  now() { return this.start + (Date.now() - this.start) * this.speed; }
-  setTimeout(fn: () => void, ms: number) { return this.inner.setTimeout(fn, ms / this.speed); }
-  clearTimeout(h: TimerHandle | null | undefined) { this.inner.clearTimeout(h); }
-}
-
 type VTimer = { id: number; at: number; seq: number; fn: () => void };
 
 const flushMicrotasks = () => new Promise<void>((r) => setImmediate(r));

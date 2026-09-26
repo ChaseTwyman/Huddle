@@ -175,6 +175,8 @@ export type RoomSnapshot = {
     idx: number; total: number; paused: boolean; mode: string; pacing: string;
   };
   status: string | null; // short engine status line, e.g. "Whistle. Flag before the snap."
+  /** Server clock at send time; clients use it to correct countdowns for clock skew. */
+  serverNow: number;
 };
 
 export type PlayerPrompt =
@@ -193,6 +195,7 @@ export type PlayerView = {
   lastResult: { id: string; correct: boolean; points: number; label: string } | null;
   buzz: { id: string; text: string } | null;
   recap: { me: PersonRecap | null; family: FamilyRecap } | null;
+  serverNow: number;
 };
 
 export type AiLogEntry = { at: number; task: string; source: 'llm' | 'cache' | 'fallback'; ms: number; note?: string };

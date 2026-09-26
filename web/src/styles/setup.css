@@ -1,0 +1,17 @@
+.setup { min-height: 100%; display: grid; place-items: center; padding: 32px 16px; background: radial-gradient(100% 70% at 50% 0%, #143023 0%, var(--bg) 60%); }
+.setup-card { width: min(640px, 100%); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 32px; display: grid; gap: 20px; }
+.setup h1 { font-size: 64px; line-height: 0.9; }
+.setup h1 span { color: var(--flag); }
+.setup .tagline { color: var(--muted); margin-top: 10px; }
+.field-row { display: grid; gap: 8px; }
+.field-row label { font-weight: 600; }
+.field-row input, .field-row select { min-height: 52px; border-radius: var(--radius); border: 2px solid var(--line); background: var(--surface-2); color: var(--chalk); padding: 0 14px; }
+.seg { display: flex; flex-wrap: wrap; gap: 8px; }
+.seg button { min-height: 48px; padding: 0 16px; border-radius: 999px; border: 2px solid var(--line); background: var(--surface-2); font-weight: 600; }
+.seg button.on { background: var(--chalk); color: #0B120E; border-color: var(--chalk); }
+.toggles { display: flex; gap: 24px; flex-wrap: wrap; }
+.toggles label { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+.toggles input { width: 22px; height: 22px; accent-color: var(--flag); }
+.error { color: var(--bad); }
+.setup .foot { color: var(--muted); font-size: 14px; }
+.setup .foot a { color: var(--muted); }
