@@ -30,7 +30,7 @@ Status: **done** = implemented and verified by the named test or script. "Manual
 | F8 | Knowledge tracking and fade | P0 | done | `server/game/knowledge.ts`, `server/persistence/families.ts`, `data/presets/game1.json`, `game4.json` | `knowledge.test.ts` (every threshold, room level, handoff candidates, presets); `npm run simulate` (Game 4 preset: 58% fewer Huddle lines over segments A–C, 10 seeded runs); TV shows "Simulated: Game 4 knowledge". |
 | F9 | Family scoreboard | P0 | done | `server/game/scoring.ts`, `web/src/components/tv/Rail.tsx` | `scoring.test.ts` (points, contrarian bonus, first-correct bonus, fan handicap, tie-break); `room.test.ts` "F9/F10" (board updates ≤ 0.5 s after a reveal). |
 | F10 | Post-game recap | P0 | done | `server/game/recap.ts`, `Room.onFinal`, `web/src/components/phone/PhoneRecap.tsx`, `Stages.tsx` | `room.test.ts` "F9/F10" (ready ≤ 8 s after the final whistle, lists concepts learned tonight); `npm run simulate` and `npm run smoke` (recap reached). Manual: Copy for group chat on a real phone. |
-| F11 | Plain-English ticker | P1 | not started | | |
+| F11 | Plain-English ticker | P1 | done | `server/game/ticker.ts` (`plainTicker`), `Room.prefetchTicker` | `llm.test.ts` "F11" (rewrite used; a rewrite naming a penalty is rejected; "Flag on the play" kept; model sees only cleaned text); `spoilers.test.ts` covers ticker model inputs. |
 | F12 | Video mode and sync tool | P1 | not started | | |
 | F13 | Vision: scorebug reader and flag context | P1 | not started | | |
 

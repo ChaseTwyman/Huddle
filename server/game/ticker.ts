@@ -1,4 +1,9 @@
 import type { TimelinePlay } from '../../shared/types';
+import type { LLM } from '../ai/llm';
+import { TICKER_SYSTEM } from '../ai/prompts';
+import { TickerOut, words } from '../ai/schemas';
+import { concepts } from '../data/concepts';
+import { team } from '../../shared/teams';
 
 /**
  * For reviewed plays, keep only the final ruling and note the review, so the ticker doesn't
@@ -42,4 +47,37 @@ export function tickerText(play: TimelinePlay, announced: boolean): string {
     return base ? `${base} ${play.penalty.announcement}` : play.penalty.announcement;
   }
   return play.publicDesc;
+}
+
+// ---------- F11 plain-English ticker (P1) ----------
+
+
+/** Every penalty name and id Huddle knows, lowercased: a rewrite containing one is rejected. */
+function penaltyWords(extra: string[] = []): string[] {
+  const out = new Set<string>(extra.map((s) => s.toLowerCase()));
+  for (const c of concepts().values()) if (c.category === 'penalty' && c.priority >= 90) { out.add(c.name.toLowerCase()); out.add(c.id.replace(/_/g, ' ')); }
+  out.add('holding');
+  out.add('interference');
+  return [...out];
+}
+
+/**
+ * Rewrite the spoiler-safe play text as one plain sentence. The input is `publicDesc` (penalty clause already
+ * removed), so the model never sees the penalty; the output is still checked and falls back to the cleaned text.
+ */
+export async function plainTicker(llm: LLM, play: TimelinePlay, home: string, away: string): Promise<string> {
+  const text = play.publicDesc;
+  if (!text || play.kind === 'timeout' || play.kind === 'end_of_period' || text === 'Flag on the play.') return text;
+  const res = await llm.json({
+    task: 'ticker', model: 'fast', system: TICKER_SYSTEM,
+    user: JSON.stringify({ text, teams: { [home]: team(home).city, [away]: team(away).city } }),
+    schema: TickerOut, timeoutMs: 3000, temperature: 0.2,
+    fallback: () => ({ text }),
+  });
+  const out = res.value.text.trim();
+  if (!out || words(out) > 26) return text;
+  const lower = out.toLowerCase();
+  if (penaltyWords(play.penalty ? [play.penalty.rawType] : []).some((w) => lower.includes(w))) return text;
+  if (/flag on the play/i.test(text) && !/flag/i.test(out)) return `${out.replace(/\.?$/, '.')} Flag on the play.`;
+  return out;
 }

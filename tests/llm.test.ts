@@ -6,6 +6,7 @@ import { RealClock, VirtualClock } from '../server/room/clock';
 import { directorTurn, validateDecision, type DirectorInput } from '../server/director/director';
 import { candidatesFor } from '../server/director/scheduler';
 import { loadFixture } from '../server/data/loadGame';
+import { plainTicker } from '../server/game/ticker';
 
 // A fake OpenAI-compatible server: each test queues how the next responses behave.
 type Reply = { status?: number; body?: string; delayMs?: number; rejectFormat?: boolean };
@@ -157,4 +158,24 @@ describe('F6 Director validation', () => {
     expect(slow.source).toBe('fallback');
     expect(Date.now() - t0).toBeLessThan(4400);
   }, 10000);
+});
+
+describe('F11 plain-English ticker', () => {
+  const P = loadFixture().timeline.plays;
+  const byId = (id: number) => P.find((p) => p.playId === id)!;
+  it('uses the rewrite when it is short and clean', async () => {
+    queue = [{ body: JSON.stringify({ text: "Prescott hits Lamb for 8 yards to Dallas's 37-yard line." }) }];
+    requests.length = 0;
+    expect(await plainTicker(make(), byId(30), 'DAL', 'NYG')).toBe("Prescott hits Lamb for 8 yards to Dallas's 37-yard line.");
+    // The model only ever sees the cleaned text.
+    expect(JSON.stringify(requests[0].body.messages[1].content)).not.toMatch(/Shotgun|\(14:25\)/);
+  });
+  it('never lets a rewrite name a penalty, and keeps "Flag on the play"', async () => {
+    const flagged = byId(40);
+    expect(JSON.stringify(flagged.publicDesc)).not.toMatch(/holding/i);
+    queue = [{ body: JSON.stringify({ text: 'Prescott throws deep to Lamb, incomplete, and a defender was holding.' }) }];
+    expect(await plainTicker(make(), flagged, 'DAL', 'NYG')).toBe(flagged.publicDesc);
+    queue = [{ body: JSON.stringify({ text: "Prescott's deep pass to Lamb falls incomplete." }) }];
+    expect(await plainTicker(make(), flagged, 'DAL', 'NYG')).toBe("Prescott's deep pass to Lamb falls incomplete. Flag on the play.");
+  });
 });

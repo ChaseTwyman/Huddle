@@ -23,7 +23,7 @@ import { addExposure, addRecall, countKnown, handoffCandidates, learnedSince, le
 import { assignStorylines, unlockedFacts, writeBeat, type Assignment } from '../game/storylines';
 import { involvement } from '../game/involvement';
 import { buildRecap, type PersonStats } from '../game/recap';
-import { tickerText } from '../game/ticker';
+import { plainTicker, tickerText } from '../game/ticker';
 import { candidatesFor, Scheduler, triggerFor, type Trigger } from '../director/scheduler';
 import { directorTurn, situation } from '../director/director';
 import { sourceLine, type DirectorDecision } from '../director/templates';
@@ -739,6 +739,7 @@ export class Room {
     this.ticker = this.situationTicker(play);
     this.scheduler.notePlay();
     this.prefetchCallIt(play);
+    this.prefetchTicker(play);
     this.touch();
     if (play.decision) {
       const q = buildPredict(play);
@@ -754,11 +755,33 @@ export class Room {
     if (f) this.field = { ...f, ballAbs: play.field.ballEndAbs ?? f.losAbs, animateMs: this.win(this.pace.playMs * 0.8) };
     this.scorebug = { ...this.scorebugFor(play, play.scoreAfter), review: !!play.challenge };
     this.ticker = tickerText(play, false);
+    // F11: swap in the plain-English sentence when it's ready (unless the call has been announced since).
+    const pending = this.tickerCache.get(play.idx);
+    if (pending) {
+      const gen = this.gen;
+      void pending.then((text) => {
+        if (gen !== this.gen || this.announcedIdx === play.idx || this.engine.currentIdx !== play.idx) return;
+        if (text && text !== this.ticker) { this.ticker = text; this.touch(); }
+      });
+    }
     if (!play.penalty) {
       for (const k of play.momentKeys) this.revealed.add(k);
       this.revealPredict(play);
     }
     this.touch();
+  }
+
+  private tickerCache = new Map<number, Promise<string>>();
+  private announcedIdx = -1;
+
+  /** F11: rewrite this play and the next one ahead of time; results stay on the server until play_result. */
+  private prefetchTicker(play: TimelinePlay) {
+    const plays = this.game.timeline.plays;
+    const g = this.game.timeline;
+    for (const p of [play, plays[play.idx + 1]]) {
+      if (!p || this.tickerCache.has(p.idx)) continue;
+      this.tickerCache.set(p.idx, plainTicker(this.llm, p, g.home, g.away).catch(() => p.publicDesc));
+    }
   }
 
   private prefetchCallIt(play: TimelinePlay) {
@@ -809,6 +832,7 @@ export class Room {
     if (this.scorebug) this.scorebug = { ...this.scorebug, flag: false };
     this.status = null;
     for (const k of play.momentKeys) this.revealed.add(k);
+    this.announcedIdx = play.idx;
     this.ticker = tickerText(play, true);
     this.setCard({ kind: 'announcement', title: 'The call', body: pen.announcement, by: 'Referee', source: 'Referee announcement' });
     const r = this.round;
