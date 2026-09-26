@@ -32,6 +32,7 @@ export function Scorebug({ snap }: { snap: RoomSnapshot }) {
       {sb?.downDistance ? <span className="pill dd">{sb.downDistance}</span> : null}
       {sb?.ballOn ? <span className="pill">{sb.ballOn}</span> : null}
       <div className="sb-status">
+        {snap.live ? <span className={`pill ${snap.live.kind === 'live' ? 'live' : ''}`}>{snap.live.kind === 'live' ? `LIVE${snap.live.delaySec ? ` −${snap.live.delaySec}s` : ''}` : 'REPLAY'}</span> : null}
         {snap.presetLabel ? <span className="preset-label">{snap.presetLabel}</span> : null}
         {sb?.flag ? <span className="pill flag">FLAG</span> : null}
         {sb?.review ? <span className="pill review">REVIEW</span> : null}

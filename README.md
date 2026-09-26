@@ -38,6 +38,7 @@ Status: **done** = implemented and verified by the named test or script. "Manual
 | F10 | Post-game recap | P0 | done | `server/game/recap.ts`, `Room.onFinal`, `web/src/components/phone/PhoneRecap.tsx`, `Stages.tsx` | `room.test.ts` "F9/F10" (ready ≤ 8 s after the final whistle, lists concepts learned tonight); `npm run simulate` and `npm run smoke` (recap reached). Manual: Copy for group chat on a real phone. |
 | F11 | Plain-English ticker | P1 | done | `server/game/ticker.ts` (`plainTicker`), `Room.prefetchTicker` | `llm.test.ts` "F11" (rewrite used; a rewrite naming a penalty is rejected; "Flag on the play" kept; model sees only cleaned text); `spoilers.test.ts` covers ticker model inputs. |
 | F12 | Video mode and sync tool | P1 | done | `web/src/components/tv/VideoPane.tsx`, `web/src/pages/SyncTool.tsx`, `Room.setVideoMode` / `videoHold`, `ReplayEngine.beforeSnap`, `server/data/videoSync.ts`, `server/p1.ts` | `room.test.ts` "F12 video mode" (snap waits for the synced video time; jump seeks the video). Playwright walkthrough (not in the suite): local video plays in place of the field, pauses during Call It, flag frame reaches the Call It call. Manual: record snaps for a real broadcast with the sync tool. |
+| F14 | Live broadcast mode | P2 | in progress (data-feed live mode done; camera flag detection next) | `server/live/espn.ts`, `server/live/feed.ts`, `Room` live hooks, `ReplayEngine.feed`, `HostSetup.tsx` live picker, host dock | `espn.test.ts` (real ATL–GB feed maps to a correct timeline: score, tries split from touchdowns, 13 flags, decisions); `live.test.ts` (feed replayed through a room: whole game to recap, never ahead of the TV, Predict/Call It windows vs delay, Sync). Browser walkthrough of a replayed game. Manual: a real live game with the TV delay synced. |
 | F13 | Vision: scorebug reader and flag context | P1 | done | `server/ai/vision.ts`, `server/p1.ts`, `web/src/pages/VisionLab.tsx`, `VideoPane.tsx`, `Room.onFlag` | `llm.test.ts` "F13" (frame sent as image to the vision model, chip text, bad input rejected, failure → not visible). In video mode the TV reads the scorebug every 2 s ("Huddle sees" chip in the host dock, warning on disagreement) and sends the flag frame to the Call It call (vision model + video note). |
 
 ## Setup
@@ -104,6 +105,18 @@ ANTHROPIC_API_KEY=sk-ant-...
 ```
 
 Uses the official Anthropic SDK with `claude-opus-5` for every job at `effort: low` (the jobs are short JSON replies with 2.5–8 s limits), server-side refusal fallback, and the same validation, retry, cache and template fallbacks as the Llama path. If calls time out in the AI log, try `ANTHROPIC_EFFORT` or a faster model for the quick jobs (`ANTHROPIC_MODEL_FAST=claude-haiku-4-5`). Note: the hackathon brief is built around Meta's Llama 4; check the rules before demoing on Claude.
+
+## Live NFL games (F14, first version)
+
+Watch a real game on your own TV (cable, antenna or any streaming app) with Huddle on the laptop beside it. Huddle never streams the footage: it follows ESPN's public play-by-play feed and holds each play until your TV shows it.
+
+1. On the setup page choose **Live NFL this week** and pick a game marked **LIVE** (finished games show **REPLAY**: they play back ESPN's play-by-play on the original timing, which is good for demos and testing).
+2. Set how far behind live your TV is (cable/antenna ≈ 0–10 s, streaming apps ≈ 30–60 s). Then fine-tune on the TV: press **H**, watch the "newest play from ESPN" line, and press **Sync** (or **S**) the moment that snap happens on your TV.
+3. Huddle joins in-progress games at the current play. Everything else works as usual: Predict, Call It, explanations, the scoreboard and the recap.
+
+How timing works: Predict has to close before the snap reaches your TV, and Call It before the referee's announcement (about 20 s after the snap). With a streaming delay of 30 s or more, every flag gets Call It and decisions get Predict. With a TV in sync with the feed, Call It still usually fits, but Predict doesn't, so Huddle skips it rather than spoil anything. Next step: read the FLAG box off the broadcast with a camera (the vision reader), so flags are caught the moment they're thrown.
+
+The ESPN feed is public but unofficial; it's fine for a prototype, and a licensed feed (e.g. Sportradar) would replace it for anything real.
 
 ## Voice (ElevenLabs)
 

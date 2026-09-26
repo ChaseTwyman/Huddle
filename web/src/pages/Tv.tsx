@@ -74,6 +74,7 @@ export function Tv() {
       else if (k === 't' || k === 'T') control('talkativeness', TALK[(TALK.indexOf(snap.settings.talkativeness) + 1) % TALK.length]);
       else if (k === 'g' || k === 'G') control('preset', snap.presetLabel?.includes('Game 4') ? null : 'game4');
       else if (k === 'h' || k === 'H') setDock((d) => !d);
+      else if ((k === 's' || k === 'S') && snap.live) control('live_sync', snap.live.latestIdx);
       else if (k === 'j' || k === 'J') { setDock(true); setJumpOpen((j) => !j); }
       else if (/^[1-9]$/.test(k)) {
         const seg = snap.demo.segments[Number(k) - 1];

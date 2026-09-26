@@ -41,6 +41,9 @@ One line per ambiguous choice made during the build.
 
 - Claude is available as a third provider (`LLM_PROVIDER=anthropic`, official `@anthropic-ai/sdk`) at the team's request. Llama 4 via Groq remains the documented default for the Meta challenge. Claude runs at effort `low` with no temperature (current models reject sampling params).
 
+- F14 live mode (P2, built at the team's request) v1 follows ESPN's public summary feed rather than screen capture: streaming services usually capture as black frames (DRM), and the feed has official play text. Huddle holds each play until feed time + the family's TV delay; Predict closes before the TV snap, Call It before the referee announcement (assumed ~20 s after the snap); rounds under 5 s are skipped rather than spoil. Replays of finished games default to a 30 s delay. Live games use full mode and have no storylines.
+- Live Sync anchors to the newest feed play shown in the dock (the host presses at its snap on TV). An earlier design ("the next play to arrive is the one you pressed at") failed whenever the TV lagged the feed.
+
 # PRD deviations
 
 - **Call It options before the announcement.** PRD F5 says no penalty name appears on the TV or phones before the announcement. The four Call It options necessarily include the real penalty's name, unmarked, among three distractors. Everything else (ticker, cards, speech, status, reveal data, option ids) is checked by `spoilers.test.ts` to never name it. Option ids are opaque letters.

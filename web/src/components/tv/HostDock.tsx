@@ -33,14 +33,36 @@ export function HostDock({ snap, aiLog, control, showJump, voiceName, hasVideo, 
         <button className={s.voice ? '' : 'on'} onClick={() => control('voice', !s.voice)}>{s.voice ? 'Mute' : 'Unmute'} <kbd>M</kbd></button>
       </div>
       <div className="muted" style={{ fontSize: 12 }}>Play {d.idx + 1}/{d.total} · {d.mode} · {d.pacing} · voice: {voiceName}</div>
-      {opt('Mode', 'mode', s.mode, [['condensed', 'Condensed'], ['full', 'Full'], ['demo', 'Demo']])}
-      {opt('Pacing', 'pacing', s.pacing, [['gameNight', 'Game night'], ['demo', 'Demo']])}
+      {snap.live ? null : opt('Mode', 'mode', s.mode, [['condensed', 'Condensed'], ['full', 'Full'], ['demo', 'Demo']])}
+      {snap.live ? null : opt('Pacing', 'pacing', s.pacing, [['gameNight', 'Game night'], ['demo', 'Demo']])}
       {opt('Talk', 'talkativeness', s.talkativeness, [['quiet', 'Quiet'], ['normal', 'Normal'], ['chatty', 'Chatty']])}
       <div className="row"><span className="muted" style={{ width: 96 }}>Preset</span>
         <button className={preset === 'none' ? 'on' : ''} onClick={() => control('preset', null)}>Off</button>
         <button className={preset === 'game1' ? 'on' : ''} onClick={() => control('preset', 'game1')}>Game 1</button>
         <button className={preset === 'game4' ? 'on' : ''} onClick={() => control('preset', 'game4')}>Game 4 <kbd>G</kbd></button>
       </div>
+      {snap.live ? (
+        <>
+          <h4>{snap.live.kind === 'live' ? 'Live game' : 'Replay (as if live)'}</h4>
+          <div className="muted" style={{ fontSize: 13 }}>
+            ESPN: {snap.live.kind === 'replay' ? 'replaying on the original timing' : snap.live.detail || snap.live.state}{snap.live.lastUpdateAgoSec !== null ? ` · updated ${snap.live.lastUpdateAgoSec}s ago` : ''}{snap.live.queued ? ` · ${snap.live.queued} plays queued` : ''}
+            {snap.live.error ? <div style={{ color: 'var(--bad)' }}>Feed error: {snap.live.error}</div> : null}
+          </div>
+          <div className="row">
+            <span className="muted" style={{ width: 96 }}>TV delay</span>
+            <button onClick={() => control('live_delay', Math.max(0, snap.live!.delaySec - 5))}>−5</button>
+            <b style={{ minWidth: 48, textAlign: 'center' }}>{snap.live.delaySec}s</b>
+            <button onClick={() => control('live_delay', snap.live!.delaySec + 5)}>+5</button>
+          </div>
+          {snap.live.kind === 'live' && snap.live.latest ? (
+            <div style={{ fontSize: 13 }}>
+              <div className="muted">Newest play from ESPN. Press <b>Sync</b> the moment its snap happens on your TV:</div>
+              <div style={{ margin: '4px 0' }}>{snap.live.latest}</div>
+              <button className="on" onClick={() => control('live_sync', snap.live!.latestIdx)}>Sync <kbd>S</kbd></button>
+            </div>
+          ) : null}
+        </>
+      ) : null}
       <h4>Video mode</h4>
       <div className="row">
         <label style={{ display: 'inline-flex' }}><span className="btn" style={{ minHeight: 36, padding: '0 12px', fontSize: 14 }}>{hasVideo ? 'Change video' : 'Load game video'}</span>
@@ -54,6 +76,7 @@ export function HostDock({ snap, aiLog, control, showJump, voiceName, hasVideo, 
           {vision ? <div style={{ marginTop: 6, color: vision.warning ? 'var(--flag)' : 'var(--chalk)' }}>Huddle sees: {vision.text}{vision.warning ? ` ⚠ ${vision.warning}` : ''} <span className="muted">({vision.source})</span></div> : null}
         </div>
       ) : null}
+      {snap.live ? null : <>
       <h4>Segments</h4>
       <div className="row">
         {d.segments.map((seg, i) => <button key={seg.id} onClick={() => control('jump', { segment: seg.id })} title={seg.label}><kbd>{i + 1}</kbd> {seg.label}</button>)}
@@ -62,6 +85,7 @@ export function HostDock({ snap, aiLog, control, showJump, voiceName, hasVideo, 
       <div className="jump" style={{ maxHeight: showJump ? 360 : 140 }}>
         {d.moments.map((m) => <button key={m.id} onClick={() => control('jump', { moment: m.id })}>{m.label}</button>)}
       </div>
+      </>}
       <h4>Players</h4>
       <div className="row" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
         {snap.players.map((p) => (

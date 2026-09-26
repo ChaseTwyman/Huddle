@@ -68,10 +68,11 @@ export function createHttpApp(manager: RoomManager, opts: { prod: boolean; port:
         const first = await fetchSummary(eventId);
         const source = kind === 'live' ? new EspnSource(eventId) : new ReplaySource(first, opts.clock, b.replaySpeed ?? 1);
         const live = new LiveGame(first, source, opts.clock);
+        if (kind === 'replay') live.data.timeline.title = live.data.timeline.title.replace('(live)', '(replay)');
         // Replays play 30 s behind the feed by default (like a streaming TV), so Predict and Call It fit before each reveal.
         live.delayMs = (b.delaySec ?? (kind === 'replay' ? 30 : 0)) * 1000;
         const settings: Settings = {
-          familyName: b.familyName?.trim() || null, gameId: b.gameId, mode: b.mode === 'demo' ? 'full' : b.mode, pacing: 'live',
+          familyName: b.familyName?.trim() || null, gameId: b.gameId, mode: 'full', pacing: 'live',
           talkativeness: b.talkativeness, voice: b.voice, fanHandicap: b.fanHandicap,
         };
         const room = manager.create(settings, live);

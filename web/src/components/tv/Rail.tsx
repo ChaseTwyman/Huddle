@@ -58,7 +58,7 @@ export function Ticker({ snap }: { snap: RoomSnapshot }) {
   return (
     <div className="ticker">
       <span className="tag">PLAY</span>
-      <span className="text">{snap.ticker ?? 'Waiting for kickoff'}</span>
+      <span className="text">{snap.ticker ?? (snap.live ? 'Waiting for the first play from ESPN…' : 'Waiting for kickoff')}</span>
       <span className="code">Room {snap.code} · {snap.game.title}</span>
     </div>
   );
