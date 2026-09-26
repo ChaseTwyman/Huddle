@@ -1,0 +1,31 @@
+# Render Blueprint: one web service runs the whole app (web pages + game server + live connections).
+# Render dashboard -> New -> Blueprint -> pick this repo. Then fill in the keys it asks for.
+services:
+  - type: web
+    name: huddle
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start:prod
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      # Build tools (vite, typescript, tsx) are devDependencies; install them on Render too.
+      - key: NPM_CONFIG_PRODUCTION
+        value: "false"
+      # AI: mock (no key), openai_compatible (Groq/Llama), or anthropic (Claude).
+      - key: LLM_PROVIDER
+        value: mock
+      - key: LLM_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      # Voice: browser (no key) or elevenlabs.
+      - key: TTS_PROVIDER
+        value: browser
+      - key: ELEVENLABS_API_KEY
+        sync: false
+      - key: LLM_CACHE
+        value: "on"

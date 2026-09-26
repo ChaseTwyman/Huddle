@@ -44,6 +44,8 @@ export function lanHost(): string {
 
 export function createHttpApp(manager: RoomManager, opts: { prod: boolean; port: number; clock: Clock; extra?: (app: express.Express) => void }) {
   const app = express();
+  // Behind a hosting proxy (Render), trust X-Forwarded-Proto/Host so links use the public https address.
+  app.set('trust proxy', true);
   app.use(express.json({ limit: '8mb' }));
 
   app.get('/api/health', (_req, res) => { res.json({ ok: true }); });
@@ -95,7 +97,13 @@ export function createHttpApp(manager: RoomManager, opts: { prod: boolean; port:
     res.json({ code: room.code, hostToken: room.hostToken });
   });
 
-  app.get('/api/lan', (_req, res) => {
+  app.get('/api/lan', (req, res) => {
+    // Hosted (Render etc.): phones use the same public address the TV was opened on. PUBLIC_URL overrides.
+    if (process.env.PUBLIC_URL) { res.json({ phoneUrlBase: process.env.PUBLIC_URL.replace(/\/$/, '') }); return; }
+    const host = (req.get('x-forwarded-host') ?? req.get('host') ?? '').split(',')[0].trim();
+    const local = /^(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/.test(host);
+    if (opts.prod && host && !local) { res.json({ phoneUrlBase: `${req.protocol}://${host}` }); return; }
+    // On a laptop: phones reach it over the LAN address.
     const port = opts.prod ? opts.port : 5173;
     // DEV_HTTPS=1 (vite serves HTTPS so phones may use the camera): QR codes must point at https too.
     const proto = !opts.prod && process.env.DEV_HTTPS === '1' ? 'https' : 'http';

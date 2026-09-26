@@ -12,6 +12,7 @@
     "dev:https": "cross-env DEV_HTTPS=1 npm run dev",
     "build": "vite build",
     "start": "npm run build && cross-env NODE_ENV=production tsx server/index.ts",
+    "start:prod": "cross-env NODE_ENV=production tsx server/index.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "fetch-game": "tsx scripts/fetch-game.ts",
