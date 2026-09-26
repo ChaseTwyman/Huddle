@@ -88,13 +88,20 @@ Every push to `main` redeploys. Free-plan notes: the service sleeps after ~15 mi
 
 ## Switching providers and models
 
+Meta's Llama API (the default in `.env.example` and `render.yaml`):
+
 ```
 LLM_PROVIDER=openai_compatible
-LLM_BASE_URL=https://api.groq.com/openai/v1
-LLM_API_KEY=...
-LLM_MODEL_SMART=meta-llama/llama-4-maverick-17b-128e-instruct
-LLM_MODEL_FAST=meta-llama/llama-4-scout-17b-16e-instruct
+LLM_BASE_URL=https://api.llama.com/compat/v1
+LLM_API_KEY=...your Llama API key...
+LLM_MODEL_SMART=Llama-4-Maverick-17B-128E-Instruct-FP8
+LLM_MODEL_FAST=Llama-4-Scout-17B-16E-Instruct-FP8
+LLM_MODEL_VISION=Llama-4-Scout-17B-16E-Instruct-FP8
 ```
+
+Check the exact model IDs your key can use: `curl -H "Authorization: Bearer $LLM_API_KEY" https://api.llama.com/compat/v1/models`. If a call says "model not found", Huddle logs the same hint and keeps running on templates.
+
+Groq: `LLM_BASE_URL=https://api.groq.com/openai/v1`, `LLM_MODEL_SMART=meta-llama/llama-4-maverick-17b-128e-instruct`, `LLM_MODEL_FAST=meta-llama/llama-4-scout-17b-16e-instruct`.
 
 Together: `LLM_BASE_URL=https://api.together.xyz/v1`, `LLM_MODEL_SMART=meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8`, `LLM_MODEL_FAST=meta-llama/Llama-4-Scout-17B-16E-Instruct`. Any OpenAI-compatible host works. Model IDs live only in `.env`. Responses are cached in `data/cache/llm/` (`LLM_CACHE=off` to disable), which also pre-warms demo moments: run the demo once before recording.
 
