@@ -60,7 +60,7 @@ type Round = {
   close: () => void;
 };
 
-export type SpokenRecord = { lineId: string; text: string; kind: 'explain' | 'short' | 'beat' | 'announcement' | 'storyline' | 'halftime' | 'final'; at: number; endAt?: number; qtr: number; trigger?: Trigger; spoken: boolean;
+export type SpokenRecord = { lineId: string; text: string; kind: 'explain' | 'short' | 'beat' | 'announcement' | 'storyline' | 'halftime' | 'final' | 'intro'; at: number; endAt?: number; qtr: number; trigger?: Trigger; spoken: boolean;
   /** Huddle's short version after a person's explanation left someone confused (follows the human turn directly). */
   followUp?: boolean;
 };
@@ -504,7 +504,8 @@ export class Room {
     this.spokenLog.push(rec);
     if (this.settings.voice && this.tvCount > 0) {
       const audioUrl = this.tts?.register(lineId, text) ?? null;
-      this.transport.speak(this.code, { lineId, text, priority, ...(audioUrl ? { audioUrl } : {}) });
+      const cue = kind === 'announcement' ? 'whistle' : kind === 'intro' || kind === 'storyline' ? undefined : 'chime';
+      this.transport.speak(this.code, { lineId, text, priority, ...(audioUrl ? { audioUrl } : {}), ...(cue ? { cue } : {}) });
       // Server-rendered audio adds fetch time before playback starts.
       const slack = this.win(audioUrl ? 5000 : 2500);
       await new Promise<void>((resolve) => {
@@ -530,6 +531,7 @@ export class Room {
     if (this.phase !== 'lobby') return;
     this.phase = 'profiles';
     this.touch();
+    void this.say(this.gen, 'Welcome to game night. Three quick questions are on your phones.');
     const learners = [...this.players.values()].filter((x) => x.role === 'learner');
     if (learners.length && [...this.players.values()].every((p) => p.profileDone)) void this.finishProfiles();
   }
@@ -584,6 +586,11 @@ export class Room {
     this.touch();
   }
 
+  /** Speak a host line (welcome, kickoff) that nothing waits on; a jump or reset silently cancels it. */
+  private async say(gen: number, text: string) {
+    try { await this.speak(gen, text, 'intro', 1); } catch (e) { if (!(e instanceof Aborted)) throw e; }
+  }
+
   startGame() {
     if (this.started) return;
     this.started = true;
@@ -591,6 +598,74 @@ export class Room {
     this.phase = 'live';
     for (const p of this.players.values()) p.knowledgeStart = structuredClone(p.knowledge);
     this.touch();
+    void this.kickoff(this.gen);
+  }
+
+  private practicing = false;
+
+  /** Before the first play: a practice Call It (no points) so everyone learns the buzzer, then a kickoff line. */
+  private async kickoff(gen: number) {
+    if (this.live && !this.live.isReplay && this.game.timeline.plays.length > 1) {
+      // Joining a game in progress: no practice, no waiting; the game is already going.
+      this.beginEngine();
+      void this.say(gen, this.kickoffLine());
+      return;
+    }
+    // Replays start their clock now; the family's delay (30 s by default) covers the practice and kickoff lines.
+    this.live?.begin();
+    try {
+      if (this.settings.practice !== false && this.connectedPlayers.length) await this.practiceRound(gen);
+      await this.speak(gen, this.kickoffLine(), 'intro', 1);
+    } catch (e) {
+      if (!(e instanceof Aborted)) throw e;
+    } finally {
+      this.practicing = false;
+    }
+    // A jump during the kickoff already started the engine from its target.
+    if (gen === this.gen) this.beginEngine();
+  }
+
+  private kickoffLine(): string {
+    const g = this.game.timeline;
+    const h = this.team(g.home).city;
+    const a = this.team(g.away).city;
+    if (this.live && !this.live.isReplay && g.plays.length > 1) {
+      const last = g.plays[g.plays.length - 1];
+      return `We're joining live. ${this.scoreLine(last.scoreAfter)}. Here we go.`;
+    }
+    return `${a} at ${h}. When a yellow flag flies, grab your phone and guess the call. Here we go.`;
+  }
+
+  private async practiceRound(gen: number) {
+    this.practicing = true;
+    // Fixed order so the right answer (false start) isn't first.
+    const order = ['pass_interference_defensive', 'false_start', 'face_mask', 'holding_offensive'].map((id) => ({ id, label: concept(id, this.league).name }));
+    const roundP = this.openRound('callit', -1, 'Practice: a lineman jumps before the snap. Flag! What was the call?', order, 12_000);
+    await this.speak(gen, 'Before kickoff, a practice round. No points. Check your phones.', 'intro', 1);
+    const r = await roundP;
+    this.check(gen);
+    const correct = 'false_start';
+    const c = concept(correct, this.league);
+    r.reveal = {
+      correctOptionId: correct,
+      results: [...r.answers.entries()].map(([playerId, a]) => ({ playerId, correct: a.optionId === correct, points: 0 })),
+    };
+    this.round = r;
+    for (const x of r.reveal.results) {
+      const p = this.players.get(x.playerId);
+      if (p) p.lastResult = { id: nanoid(6), correct: x.correct, points: 0, label: x.correct ? 'Nailed it. Practice only.' : `It was: ${c.name}` };
+    }
+    this.setCard({ kind: 'explain', title: `Practice · ${c.name}`, body: c.full, by: 'Huddle', source: 'Practice round · no points' });
+    await this.speak(gen, `It was a ${c.name.toLowerCase()}. ${c.full}`, 'intro', 1);
+    await this.pause(gen, this.win(1500));
+    // Nothing from practice may linger into the real game.
+    this.round = null;
+    this.card = null;
+    for (const p of this.players.values()) p.lastResult = null;
+    this.touch();
+  }
+
+  private beginEngine() {
     if (this.live) {
       this.live.begin();
       // Joining a game already in progress: start at the latest real play (not a timeout or period end), not the opening kickoff.
@@ -688,6 +763,11 @@ export class Room {
 
   skip() {
     this.skips++;
+    if (this.practicing) {
+      if (this.round?.open) this.round.close();
+      for (const r of [...this.pendingSpeech.values()]) r();
+      return;
+    }
     for (const resolve of [...this.pendingPrompts.values()]) resolve(null);
     if (this.round?.open) this.round.close();
     for (const r of [...this.pendingSpeech.values()]) r();

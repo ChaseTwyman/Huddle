@@ -1,22 +1,43 @@
+/*
+ * Huddle design tokens. Neutral graphite surfaces, one accent blue for actions, and football colors
+ * (flag yellow, line-of-scrimmage blue, turf) reserved for football meaning. One typeface (Inter),
+ * sentence case, hairline borders, soft elevation.
+ */
 :root {
-  --bg: #0B120E;
-  --surface: #111B15;
-  --surface-2: #17241C;
-  --line: #24332A;
-  --chalk: #F2F5EF;
-  --muted: #9FB0A5;
+  --bg: #0E0F11;
+  --surface: #17181B;
+  --surface-2: #222328;
+  --surface-3: #2D2F35;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+  --chalk: #F2F3F5;
+  --muted: #A3A8B1;
+  --subtle: #6D727B;
+
+  --accent: #0866FF;
+  --accent-hover: #1877FF;
+  --accent-soft: rgba(8, 102, 255, 0.16);
+  --on-accent: #FFFFFF;
+
   --turf: #1D4D2E;
   --turf-stripe: #1F5532;
   --flag: #F5C518;
   --los: #3D8BFF;
-  --good: #3DDC84;
-  --bad: #FF6B6B;
-  --display: "Big Shoulders Display", "Arial Narrow", sans-serif;
-  --body: "IBM Plex Sans", system-ui, sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --good: #2FBF5B;
+  --bad: #F2475E;
+  --story: #A970FF;
 
+  --display: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+
+  --radius-sm: 8px;
   --radius: 14px;
-  --radius-lg: 22px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
   --gap: 16px;
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.35), 0 4px 16px rgba(0, 0, 0, 0.22);
+  --shadow-2: 0 2px 6px rgba(0, 0, 0, 0.35), 0 16px 48px rgba(0, 0, 0, 0.4);
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }

@@ -1,7 +1,9 @@
+import { CUE_LEAD_MS, sfx } from './sfx';
+
 const PREFERRED = ['Google US English', 'Samantha', 'Microsoft Aria Online (Natural)'];
 const WPS = 2.6;
 
-type Line = { lineId: string; text: string; priority: number; audioUrl?: string };
+type Line = { lineId: string; text: string; priority: number; audioUrl?: string; cue?: 'chime' | 'whistle' };
 
 /**
  * TV voice (BUILD_PROMPT 11.3): speechSynthesis, one line at a time, lower-priority queued lines are
@@ -25,6 +27,7 @@ export class Speaker {
 
   /** Call from a user gesture (the Start overlay) so browsers allow speech. */
   unlock() {
+    sfx.unlock();
     if (!this.supported) return;
     const pick = () => {
       const voices = window.speechSynthesis.getVoices();
@@ -57,6 +60,7 @@ export class Speaker {
 
   setMuted(m: boolean) {
     this.muted = m;
+    sfx.setEnabled(!m);
     if (m) {
       const pending = [...this.queue];
       this.queue = [];
@@ -98,6 +102,16 @@ export class Speaker {
       this.timer = setTimeout(() => this.finish(line.lineId), 0);
       return;
     }
+    if (line.cue) {
+      // A short chime (Huddle) or whistle (referee) first, so the room knows to listen.
+      sfx[line.cue]();
+      this.timer = setTimeout(() => { if (this.current?.lineId === line.lineId) this.start(line, estimate); }, CUE_LEAD_MS[line.cue]);
+      return;
+    }
+    this.start(line, estimate);
+  }
+
+  private start(line: Line, estimate: number) {
     if (line.audioUrl) {
       // Server-rendered voice (ElevenLabs); fall back to browser speech if it can't play.
       const a = new Audio(line.audioUrl);

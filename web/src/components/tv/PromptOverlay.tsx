@@ -30,7 +30,7 @@ export function PromptOverlay({ snap, now, windowMs }: { snap: RoomSnapshot; now
     <div className={`prompt-overlay ${p.kind}`} role="dialog" aria-label={p.question}>
       <div className="prompt-head">
         <div style={{ flex: 1 }}>
-          <div className="prompt-kind">{p.kind === 'callit' ? 'Call it!' : 'Predict'}</div>
+          <div className="prompt-kind">{p.kind === 'callit' ? 'Flag on the play · Call it' : 'Predict'}</div>
           <div className="prompt-q">{p.voided ? 'No play. Prediction voided.' : p.question}</div>
         </div>
         {open ? <Ring remainingMs={remaining} totalMs={windowMs} /> : null}

@@ -262,3 +262,33 @@ describe('review regressions', () => {
     room.dispose();
   });
 });
+
+describe('Kickoff: practice Call It', () => {
+  it('opens a no-points practice round before the first play, then clears it before the game starts', async () => {
+    let practiceId: string | null = null;
+    const { room, clock, transport } = harness({}, (id, v, r) => {
+      if (v.prompt?.kind === 'callit' && /Practice/.test(v.prompt.question)) { practiceId = v.prompt.id; r.answer(id, v.prompt.id, 'false_start'); }
+    });
+    const p = room.joinPlayer({ name: 'Mom' });
+    room.setProfile(p.id, learnerProfile as never);
+    room.control('start_game', undefined);
+    await clock.run({ until: () => practiceId !== null, maxSteps: 10_000 });
+    expect(room.snapshot().scorebug).toBeNull(); // no play has started yet
+    await clock.run({ until: () => room.snapshot().card?.title?.startsWith('Practice') === true, maxSteps: 10_000 });
+    expect(room.players.get(p.id)!.lastResult).toMatchObject({ correct: true, points: 0 });
+    await clock.run({ until: () => room.snapshot().scorebug !== null, maxSteps: 100_000 });
+    expect(room.players.get(p.id)!.points).toBe(0);
+    expect(room.players.get(p.id)!.lastResult).toBeNull();
+    expect(room.snapshot().card?.title ?? '').not.toMatch(/Practice/);
+    expect(transport.messages.some((m) => m.kind === 'speak' && /practice round/i.test(JSON.stringify(m.payload)))).toBe(true);
+  });
+
+  it('can be turned off', async () => {
+    const { room, clock } = harness({ practice: false });
+    room.joinPlayer({ name: 'Mom' });
+    room.control('start_game', undefined);
+    let practiced = false;
+    await clock.run({ until: () => { if (/Practice/.test(room.snapshot().prompt?.question ?? '')) practiced = true; return room.snapshot().scorebug !== null; }, maxSteps: 100_000 });
+    expect(practiced).toBe(false);
+  });
+});

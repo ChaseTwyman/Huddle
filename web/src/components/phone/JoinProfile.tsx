@@ -9,6 +9,7 @@ export function Join({ code, onJoin, error, busy }: { code: string; onJoin: (nam
     <div className="stack">
       <div className="step">Room {code}</div>
       <h1>Join the huddle</h1>
+      <div className="muted" style={{ marginTop: -6 }}>Your phone is your buzzer. Everything happens on the TV.</div>
       <input className="name-input" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your first name" maxLength={24} autoFocus aria-label="Your first name" />
       <div className="swatches" role="radiogroup" aria-label="Pick a color">
         {PLAYER_COLORS.map((c) => (
@@ -34,7 +35,7 @@ export function Profile({ onDone }: { onDone: (a: ProfileAnswers) => void }) {
   const step = !watch ? 1 : !rootFor ? 2 : 3;
   return (
     <div className="stack">
-      <div className="step">{step} of 3</div>
+      <div className="progress" aria-label={`Question ${step} of 3`}>{[1, 2, 3].map((i) => <i key={i} className={i <= step ? 'on' : ''} />)}</div>
       {step === 1 ? (
         <>
           <h2>What do you usually watch?</h2>

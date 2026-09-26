@@ -15,7 +15,8 @@ export type TtsConfig = {
 export function ttsConfigFromEnv(env = process.env): TtsConfig {
   const apiKey = env.ELEVENLABS_API_KEY || '';
   return {
-    provider: env.TTS_PROVIDER === 'elevenlabs' && apiKey ? 'elevenlabs' : 'browser',
+    // ElevenLabs whenever a key is set, unless TTS_PROVIDER=browser forces the TV's built-in voice.
+    provider: env.TTS_PROVIDER !== 'browser' && apiKey ? 'elevenlabs' : 'browser',
     apiKey,
     voiceId: env.ELEVENLABS_VOICE_ID || '21m00Tcm4TlvDq8ikWAM',
     modelId: env.ELEVENLABS_MODEL || 'eleven_flash_v2_5',

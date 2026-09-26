@@ -103,7 +103,7 @@ export function Play() {
     <div className="top">
       <span className="me-dot" style={{ background: me.color }} />
       <b>{me.name}</b>{me.role === 'fan' ? <span className="muted">· fan</span> : null}
-      <span className="pts">{me.points} · #{me.rank}</span>
+      <span className="pts">{me.points} pts · #{me.rank}</span>
     </div>
   );
 
@@ -122,6 +122,7 @@ export function Play() {
         {buzzText ? <div className="buzz">{buzzText}</div> : null}
         <div className="eyes">
           <div>
+            <div className="tv-glyph" aria-hidden><i /></div>
             <div className="big">Eyes on the TV</div>
             <div className="muted" style={{ marginTop: 12 }}>{view.phase === 'lobby' ? 'Waiting for everyone to join…' : view.phase === 'final' ? 'Final whistle. Recap coming…' : 'Your phone buzzes when it needs you.'}</div>
           </div>

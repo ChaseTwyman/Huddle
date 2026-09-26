@@ -14,6 +14,30 @@ import { Halftime, Lobby, Profiles, Recap, Storylines } from '../components/tv/S
 import { HostDock } from '../components/tv/HostDock';
 import { VideoPane, type VisionChip } from '../components/tv/VideoPane';
 import { getVideoFile, setVideoFile } from '../lib/videoStore';
+import { sfx } from '../lib/sfx';
+import { Mark } from '../components/Mark';
+import type { RoomSnapshot } from '../../../shared/types';
+
+/** Room sounds on the TV: a pop per new player, a tick per lock-in, a cue when a prompt opens and on the reveal. */
+function useRoomSounds(snap: RoomSnapshot | null) {
+  const prev = useRef<{ players: number; locked: number; prompt: string | null; reveal: string | null } | null>(null);
+  useEffect(() => {
+    if (!snap) return;
+    const cur = {
+      players: snap.players.length,
+      locked: snap.players.filter((p) => p.lockedIn).length,
+      prompt: snap.prompt?.id ?? null,
+      reveal: snap.prompt?.reveal ? snap.prompt.id : null,
+    };
+    const p = prev.current;
+    prev.current = cur;
+    if (!p) return;
+    if (cur.players > p.players) sfx.join();
+    if (cur.prompt && cur.prompt !== p.prompt) sfx.open();
+    else if (cur.prompt === p.prompt && cur.locked > p.locked) sfx.tick();
+    if (cur.reveal && cur.reveal !== p.reveal) sfx.reveal();
+  }, [snap]);
+}
 
 const TALK: Talkativeness[] = ['quiet', 'normal', 'chatty'];
 
@@ -27,7 +51,10 @@ export function Tv() {
     return fromUrl ?? storage.session.get(`huddle:host:${upper}`);
   }, [params, upper]);
 
-  const [started, setStarted] = useState(false);
+  // Coming from "Start game night", that tap already unlocked sound: skip the Start screen.
+  const speaker = useRef(new Speaker());
+  const [started, setStarted] = useState(() => storage.session.get(`huddle:autostart:${upper}`) === '1');
+  useEffect(() => { if (started) speaker.current.unlock(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const [dock, setDock] = useState(false);
   const [jumpOpen, setJumpOpen] = useState(false);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
@@ -37,14 +64,15 @@ export function Tv() {
     setVideoUrl((old) => { if (old) URL.revokeObjectURL(old); return f ? URL.createObjectURL(f) : null; });
   };
   useEffect(() => { const f = getVideoFile(); if (f) setVideoUrl(URL.createObjectURL(f)); }, []);
-  const speaker = useRef(new Speaker());
   const conn = useTvConnection(upper, hostToken, started, {
     onSpeak: (l) => speaker.current.say(l),
     onMute: (m) => speaker.current.setMuted(m),
   });
   const { snapshot: snap, control, isHost } = conn;
+  useRoomSounds(snap);
 
-  useEffect(() => { speaker.current.onDone = (id) => conn.spoken(id); });
+  const [speaking, setSpeaking] = useState(false);
+  useEffect(() => { speaker.current.onDone = (id) => conn.spoken(id); speaker.current.onSpeaking = (l) => setSpeaking(!!l); });
 
   // Clock skew between server and this screen, for countdowns.
   const [skew, setSkew] = useState(0);
@@ -88,10 +116,11 @@ export function Tv() {
   if (!started) {
     return (
       <div className="start-overlay">
-        <div style={{ textAlign: 'center', display: 'grid', gap: 24 }}>
-          <div className="room-code" style={{ fontSize: 96 }}>{upper}</div>
+        <div className="inner">
+          <span className="wordmark"><Mark />Huddle</span>
+          <div className="muted">Room {upper}. Put this window on the TV, full screen.</div>
           <button className="btn primary" onClick={() => { speaker.current.unlock(); setStarted(true); }}>Start Huddle</button>
-          <div className="muted">Starting lets the TV speak. Put this window on the TV, full screen.</div>
+          <div className="muted" style={{ fontSize: 15 }}>Starting lets the TV play sound.</div>
         </div>
       </div>
     );
@@ -99,6 +128,7 @@ export function Tv() {
   if (conn.error) return <div className="tv"><div className="stage"><h1>{conn.error}</h1><a className="btn" href="/">Create a new room</a></div></div>;
   if (!snap) return <div className="tv"><div className="stage"><div className="hint">Connecting…</div></div></div>;
 
+  const advance = isHost ? () => control('advance') : undefined;
   const windowMs = snap.prompt?.kind === 'callit' ? WINDOWS.callItMs : WINDOWS.predictMs;
   const liveLike = snap.phase === 'live';
   const overlays = (
@@ -116,21 +146,22 @@ export function Tv() {
 
   return (
     <div className="tv">
-      {snap.phase === 'lobby' ? <Lobby snap={snap} /> : null}
-      {snap.phase === 'profiles' ? <Profiles snap={snap} /> : null}
-      {snap.phase === 'storylines' ? <Storylines snap={snap} /> : null}
+      {snap.phase === 'lobby' ? <Lobby snap={snap} onAdvance={advance} /> : null}
+      {snap.phase === 'profiles' ? <Profiles snap={snap} onAdvance={advance} /> : null}
+      {snap.phase === 'storylines' ? <Storylines snap={snap} onAdvance={advance} /> : null}
       {snap.phase === 'halftime' ? <Halftime snap={snap} /> : null}
       {snap.phase === 'final' || snap.phase === 'recap' ? <Recap snap={snap} /> : null}
       {liveLike ? (
         <>
           <Scorebug snap={snap} />
           {videoUrl && snap.video.enabled
-            ? <VideoPane url={videoUrl} snap={snap} now={now} isHost={isHost} control={control} onVision={setVision}>{overlays}</VideoPane>
+            ? <VideoPane url={videoUrl} snap={snap} now={now} isHost={isHost} control={control} onVision={setVision} speaking={speaking}>{overlays}</VideoPane>
             : <Field snap={snap}>{overlays}</Field>}
           <div className="rail">
             <Scoreboard snap={snap} />
             <CaptionCard snap={snap} />
             <StorylineChips snap={snap} />
+            {speaking ? <div className="speaking" aria-hidden><span className="bars"><i /><i /><i /></span>Huddle is speaking</div> : null}
           </div>
           <Ticker snap={snap} />
         </>

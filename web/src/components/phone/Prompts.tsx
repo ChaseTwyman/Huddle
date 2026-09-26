@@ -22,9 +22,9 @@ export function PromptScreen({ prompt: p, now, send }: { prompt: PlayerPrompt; n
     case 'predict':
     case 'callit':
       return (
-        <div className="stack">
+        <div className={`stack ${p.kind}`}>
           {cd}
-          <div className="step">{p.kind === 'callit' ? 'Flag! Call it' : 'Predict'}</div>
+          <div className="step">{p.kind === 'callit' ? 'Flag on the play · Call it' : 'Predict'}</div>
           <h2>{p.question}</h2>
           {p.options.map((o) => {
             const locked = p.lockedOptionId === o.id;
@@ -34,7 +34,7 @@ export function PromptScreen({ prompt: p, now, send }: { prompt: PlayerPrompt; n
               </button>
             );
           })}
-          {p.lockedOptionId ? <div className="muted" style={{ textAlign: 'center' }}>Locked in. Eyes on the TV.</div> : null}
+          {p.lockedOptionId ? <div className="muted" style={{ textAlign: 'center', marginTop: 4 }}>Locked in. Eyes on the TV.</div> : null}
         </div>
       );
     case 'takeit':
@@ -43,7 +43,7 @@ export function PromptScreen({ prompt: p, now, send }: { prompt: PlayerPrompt; n
           {cd}
           <div className="step">You know this one</div>
           <h2>Take it? Explain “{p.title}” to the room.</h2>
-          <div className="cheat"><span className="label">CHEAT LINE</span>{p.cheat}</div>
+          <div className="cheat"><span className="label">Cheat line</span>{p.cheat}</div>
           <button className="big-btn good" onClick={() => send.takeit(p.id, true)}>Take it</button>
           <button className="big-btn ghost" onClick={() => send.takeit(p.id, false)}>Not now</button>
         </div>
@@ -54,7 +54,7 @@ export function PromptScreen({ prompt: p, now, send }: { prompt: PlayerPrompt; n
           {cd}
           <div className="step">Your turn to teach</div>
           <h2>You know this one. Explain {p.title} to {p.others}?</h2>
-          <div className="cheat"><span className="label">CHEAT LINE</span>{p.cheat}</div>
+          <div className="cheat"><span className="label">Cheat line</span>{p.cheat}</div>
           <button className="big-btn good" onClick={() => send.handoff(p.id, true)}>I'll explain</button>
           <button className="big-btn ghost" onClick={() => send.handoff(p.id, false)}>Pass</button>
         </div>
@@ -63,7 +63,7 @@ export function PromptScreen({ prompt: p, now, send }: { prompt: PlayerPrompt; n
       return (
         <div className="stack">
           <div className="step">You're explaining · {p.title}</div>
-          <div className="cheat" style={{ fontSize: 28 }}><span className="label">SAY SOMETHING LIKE</span>{p.cheat}</div>
+          <div className="cheat" style={{ fontSize: 28 }}><span className="label">Say something like</span>{p.cheat}</div>
           <button className="big-btn primary" onClick={() => send.done(p.id)}>Done</button>
           {cd}
         </div>

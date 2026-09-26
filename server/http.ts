@@ -22,6 +22,7 @@ export const CreateRoomBody = z.object({
   talkativeness: z.enum(['quiet', 'normal', 'chatty']).default('normal'),
   voice: z.boolean().default(true),
   fanHandicap: z.boolean().default(true),
+  practice: z.boolean().default(true),
 });
 
 const VIRTUAL = /vethernet|wsl|hyper-v|virtualbox|vmware|docker|vbox|utun|bridge|loopback|tailscale|zerotier/i;
@@ -78,7 +79,7 @@ export function createHttpApp(manager: RoomManager, opts: { prod: boolean; port:
         live.delayMs = (b.delaySec ?? (kind === 'replay' ? 30 : 0)) * 1000;
         const settings: Settings = {
           familyName: b.familyName?.trim() || null, gameId: b.gameId, mode: 'full', pacing: 'live',
-          talkativeness: b.talkativeness, voice: b.voice, fanHandicap: b.fanHandicap,
+          talkativeness: b.talkativeness, voice: b.voice, fanHandicap: b.fanHandicap, practice: b.practice,
         };
         const room = manager.create(settings, live);
         live.start();
@@ -94,7 +95,7 @@ export function createHttpApp(manager: RoomManager, opts: { prod: boolean; port:
     }
     const settings: Settings = {
       familyName: b.familyName?.trim() || null, gameId: b.gameId, mode: b.mode, pacing: b.pacing,
-      talkativeness: b.talkativeness, voice: b.voice, fanHandicap: b.fanHandicap,
+      talkativeness: b.talkativeness, voice: b.voice, fanHandicap: b.fanHandicap, practice: b.practice,
     };
     const room = manager.create(settings);
     res.json({ code: room.code, hostToken: room.hostToken });

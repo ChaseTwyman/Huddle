@@ -68,7 +68,7 @@ Production build: `npm start` builds the web app and serves everything from `:87
 The repo has a `render.yaml` Blueprint: one web service runs the pages, the game server and the live connections.
 
 1. On render.com: **New → Blueprint**, connect GitHub, pick this repo, **Apply**.
-2. When asked, paste the keys you want (leave the rest blank): `LLM_API_KEY` (Groq) or `ANTHROPIC_API_KEY` (Claude), and `ELEVENLABS_API_KEY`. Then in the service's **Environment** tab set `LLM_PROVIDER` (`openai_compatible` or `anthropic`) and `TTS_PROVIDER` (`elevenlabs`) to match, and save (it redeploys).
+2. When asked, paste the keys you want (leave the rest blank): `LLM_API_KEY` (your Meta Model API key; or Groq, or `ANTHROPIC_API_KEY` for Claude), and `ELEVENLABS_API_KEY`. Then in the service's **Environment** tab set `LLM_PROVIDER` to match, and save (it redeploys). The ElevenLabs voice turns on by itself when its key is set.
 3. Open `https://<your-service>.onrender.com` on the laptop and create a room. Phones scan the QR from anywhere (no shared Wi-Fi needed), and the flag camera works on phones because it's https.
 
 Every push to `main` redeploys. Free-plan notes: the service sleeps after ~15 min without traffic (first load then takes up to a minute, so open it before you start), and its disk resets on each deploy (family progress and AI/voice caches start fresh).
@@ -150,8 +150,7 @@ The ESPN feed is public but unofficial; it's fine for a prototype, and a license
 By default the TV speaks with the browser's built-in voice. For a realistic voice, add to `.env`:
 
 ```
-TTS_PROVIDER=elevenlabs
-ELEVENLABS_API_KEY=...
+ELEVENLABS_API_KEY=...   # the ElevenLabs voice turns on whenever this is set (TTS_PROVIDER=browser forces the built-in voice)
 ELEVENLABS_VOICE_ID=...   # optional: any voice from your ElevenLabs library
 ```
 

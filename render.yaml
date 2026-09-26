@@ -31,9 +31,7 @@ services:
         sync: false
       - key: ANTHROPIC_API_KEY
         sync: false
-      # Voice: browser (no key) or elevenlabs.
-      - key: TTS_PROVIDER
-        value: browser
+      # Voice: ElevenLabs whenever this key is set (set TTS_PROVIDER=browser to force the built-in voice).
       - key: ELEVENLABS_API_KEY
         sync: false
       - key: LLM_CACHE

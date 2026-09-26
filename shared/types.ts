@@ -108,6 +108,8 @@ export type Settings = {
   talkativeness: Talkativeness;
   voice: boolean;
   fanHandicap: boolean;
+  /** Practice Call It before kickoff (default on). */
+  practice?: boolean;
 };
 
 export type TeamInfo = { abbr: string; city: string; name: string; primary: string; secondary: string };
@@ -234,7 +236,8 @@ export type ClientToServer = {
 };
 
 /** audioUrl: server-rendered voice (ElevenLabs) to play instead of browser speech; the TV falls back if it fails. */
-export type SpeakLine = { lineId: string; text: string; priority: number; audioUrl?: string };
+/** cue: a short sound the TV plays before the line (chime = Huddle explains, whistle = referee). */
+export type SpeakLine = { lineId: string; text: string; priority: number; audioUrl?: string; cue?: 'chime' | 'whistle' };
 
 export type ServerToClient = {
   'room:snapshot': (s: RoomSnapshot) => void;

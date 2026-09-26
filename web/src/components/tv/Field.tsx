@@ -16,7 +16,7 @@ function EndZone({ side, team }: { side: 'left' | 'right'; team: TeamInfo }) {
   return (
     <g>
       <rect x={x0} y={0} width={100} height={H} fill={hexA(team.primary, 0.35)} />
-      <text x={x0 + 50} y={H / 2} fill="rgba(242,245,239,0.85)" fontFamily="Big Shoulders Display, Arial Narrow, sans-serif" fontWeight={800}
+      <text x={x0 + 50} y={H / 2} fill="rgba(242,245,239,0.85)" fontFamily="Inter, system-ui, sans-serif" fontWeight={700}
         fontSize={64} textAnchor="middle" dominantBaseline="middle" transform={`rotate(${side === 'left' ? -90 : 90} ${x0 + 50} ${H / 2})`} letterSpacing={8}>
         {team.abbr}
       </text>
@@ -77,7 +77,7 @@ export function Field({ snap, children }: { snap: RoomSnapshot; children?: React
         {NUMS.map((n, i) => {
           const px = x((i + 1) * 10);
           return (
-            <g key={i} fill="rgba(242,245,239,0.7)" fontFamily="Big Shoulders Display, Arial Narrow, sans-serif" fontWeight={800} fontSize={40} textAnchor="middle">
+            <g key={i} fill="rgba(242,245,239,0.7)" fontFamily="Inter, system-ui, sans-serif" fontWeight={700} fontSize={40} textAnchor="middle">
               <text x={px} y={70}>{n}</text>
               <text x={px} y={H - 45} transform={`rotate(180 ${px} ${H - 58})`}>{n}</text>
             </g>

@@ -11,6 +11,8 @@ type Props = {
   isHost: boolean;
   control: (a: HostAction, v?: unknown) => void;
   onVision: (chip: VisionChip) => void;
+  /** Huddle is talking: duck the broadcast audio under the voice. */
+  speaking?: boolean;
   children?: ReactNode;
 };
 
@@ -21,8 +23,21 @@ const ord = (d: number) => (d === 1 ? '1st' : d === 2 ? '2nd' : d === 3 ? '3rd' 
  * follows it, pauses the video while a Predict or Call It window is open (so the broadcast can't announce the call
  * first), captures the frame at each flag for the Call It model, and reads the scorebug every 2 s.
  */
-export function VideoPane({ url, snap, now, isHost, control, onVision, children }: Props) {
+export function VideoPane({ url, snap, now, isHost, control, onVision, speaking = false, children }: Props) {
   const ref = useRef<HTMLVideoElement>(null);
+
+  // Duck: fade the broadcast to 20% while Huddle speaks, back to full after.
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    const target = speaking ? 0.2 : 1;
+    const step = setInterval(() => {
+      const d = target - v.volume;
+      if (Math.abs(d) < 0.04) { v.volume = target; clearInterval(step); return; }
+      v.volume = Math.min(1, Math.max(0, v.volume + Math.sign(d) * 0.08));
+    }, 30);
+    return () => clearInterval(step);
+  }, [speaking]);
   const lastSeek = useRef<string | null>(null);
   const flagSent = useRef(false);
   const snapRef = useRef(snap);
