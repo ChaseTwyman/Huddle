@@ -8,7 +8,8 @@ import { RoomManager } from './room/RoomManager';
 import { RealClock, type Clock } from './room/clock';
 import { SocketTransport } from './room/transport';
 import { FamilyStore } from './persistence/families';
-import { configFromEnv } from './ai/llm';
+import { z } from 'zod';
+import { LLM, configFromEnv } from './ai/llm';
 import { registerP1Routes } from './p1';
 import { TtsService } from './ai/tts';
 
@@ -29,8 +30,11 @@ export async function startServer(opts: StartOptions = {}): Promise<{ http: Http
     logPlays: !opts.quiet,
     tts,
   });
+  // AI self-check: one tiny call at startup, so the host (and Render's logs) can see whether the model answers.
+  const aiStatus: { provider: string; ok: boolean | null; ms?: number; note?: string } = { provider: configFromEnv().provider, ok: null };
   const app = createHttpApp(manager, { prod, port, clock, extra: (a) => {
     registerP1Routes(a, clock);
+    a.get('/api/ai-status', (_req, res) => { res.json(aiStatus); });
     a.get('/api/tts/:lineId', async (req, res) => {
       const audio = await tts.audioFor(req.params.lineId);
       if (!audio) { res.status(404).end(); return; }
@@ -48,6 +52,21 @@ export async function startServer(opts: StartOptions = {}): Promise<{ http: Http
   if (!opts.quiet) {
     const cfg = configFromEnv();
     console.log(`[huddle] server on :${actual} · LLM provider: ${cfg.provider}${cfg.provider === 'mock' ? ' (no key needed)' : ` · ${cfg.baseURL}`} · voice: ${tts.enabled ? `ElevenLabs (${tts.config.modelId})` : 'browser speech'}`);
+    if (cfg.provider !== 'mock') {
+      const llm = new LLM(clock, { cache: false });
+      llm.quiet = true;
+      void llm.json({
+        task: 'director', model: 'smart', system: 'Return JSON only.', user: 'Reply with {"ok": true}.',
+        schema: z.object({ ok: z.boolean() }), timeoutMs: 8000, fallback: () => ({ ok: false }),
+      }).then((r) => {
+        aiStatus.ok = r.source === 'llm' && r.value.ok;
+        aiStatus.ms = Math.round(r.ms);
+        aiStatus.note = llm.log[llm.log.length - 1]?.note;
+        console.log(aiStatus.ok
+          ? `[llm] self-check ok: ${cfg.models.smart} answered in ${aiStatus.ms} ms`
+          : `[llm] self-check FAILED (${aiStatus.note ?? 'no answer'}): every AI job will use its template fallback. Check LLM_PROVIDER, LLM_BASE_URL, LLM_API_KEY, the model names, and LLM_REASONING_EFFORT.`);
+      });
+    }
   }
   return {
     http, manager, port: actual,

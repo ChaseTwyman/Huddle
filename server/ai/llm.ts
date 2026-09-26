@@ -28,6 +28,12 @@ export type LlmConfig = {
   cache: boolean; maxConcurrency: number;
   /** Anthropic only: effort for these short, latency-bound JSON jobs. */
   effort: Effort;
+  /**
+   * OpenAI-compatible reasoning models only (sent as `reasoning_effort`). Meta's muse-spark-1.3 reasons ~7 s per
+   * call at its default, longer than every job's time limit, so every call fell back to templates; "minimal"
+   * answers in ~2 s. Empty = don't send the parameter.
+   */
+  reasoningEffort?: string;
 };
 
 const DEFAULT_CLAUDE_MODEL = 'claude-opus-5';
@@ -46,9 +52,11 @@ export function configFromEnv(env = process.env): LlmConfig {
       },
     };
   }
+  const baseURL = env.LLM_BASE_URL || 'https://api.groq.com/openai/v1';
   return {
     provider, effort, ...shared,
-    baseURL: env.LLM_BASE_URL || 'https://api.groq.com/openai/v1',
+    reasoningEffort: env.LLM_REASONING_EFFORT ?? (/api\.meta\.ai/.test(baseURL) ? 'minimal' : ''),
+    baseURL,
     apiKey: env.LLM_API_KEY || '',
     models: {
       smart: env.LLM_MODEL_SMART || '',
@@ -272,12 +280,16 @@ export class LLM {
   private async complete(model: string, messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[], temperature: number, signal: AbortSignal, hasImages: boolean): Promise<string> {
     const client = this.client!;
     const useFormat = !this.noResponseFormat && !hasImages;
+    const reasoning = this.config.reasoningEffort ? { reasoning_effort: this.config.reasoningEffort } : {};
     try {
       const res = await client.chat.completions.create(
-        { model, messages, temperature, ...(useFormat ? { response_format: { type: 'json_object' as const } } : {}) },
+        { model, messages, temperature, ...reasoning, ...(useFormat ? { response_format: { type: 'json_object' as const } } : {}) } as OpenAI.Chat.Completions.ChatCompletionCreateParamsNonStreaming,
         { signal },
       );
-      return res.choices[0]?.message?.content ?? '';
+      const choice = res.choices[0];
+      // A reasoning model that spends its whole budget thinking returns no content; say so instead of "invalid JSON".
+      if (!choice?.message?.content && choice?.finish_reason === 'length') throw new Error('no answer: the model used its whole token budget reasoning (set LLM_REASONING_EFFORT=minimal)');
+      return choice?.message?.content ?? '';
     } catch (err) {
       const e = err as { status?: number; message?: string };
       if (useFormat && e?.status === 400 && /response_format|json/i.test(e.message ?? '')) {
