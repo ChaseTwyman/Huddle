@@ -48,8 +48,11 @@ One line per ambiguous choice made during the build.
 - Camera Call It options are the four most common NFL penalties (offensive holding, false start, defensive pass interference, defensive holding) because the penalty isn't known yet. When the real one isn't among them, nobody scores. This breaks F5's "real penalty always among the options" for camera rounds only; recorded under PRD deviations.
 - A camera round is tied to the first flagged play the feed posts within 75 s of the sighting; a clean play shown after it cancels the round, and 90 s without a flagged play cancels it too.
 
+- AI provider: the team moved to Meta's Model API with Muse Spark 1.3 (`https://api.meta.ai/v1`, OpenAI-compatible) for every job. Meta retired the Llama API (api.llama.com) in July 2026. Same client code path as Groq; only configuration changed.
+
 # PRD deviations
 
 - **Call It options before the announcement.** PRD F5 says no penalty name appears on the TV or phones before the announcement. The four Call It options necessarily include the real penalty's name, unmarked, among three distractors. Everything else (ticker, cards, speech, status, reveal data, option ids) is checked by `spoilers.test.ts` to never name it. Option ids are opaque letters.
 - **Camera Call It rounds (F14).** When the flag camera opens Call It before the feed names the penalty, the options are the four most common penalties, so the real one may not be among them (F5 says it always is). Feed-driven rounds keep the F5 guarantee.
+- **Models (PRD 8, 9).** The PRD specifies Llama 4 Maverick and Scout; the team now uses Muse Spark 1.3 on Meta's Model API for all jobs (Meta's successor line; the Llama API was retired). Model IDs live only in config.
 - **Director timing.** PRD 8 lists the flag and decision windows as separate Director moments; Huddle runs one Director turn per play in dead time, right after the announcement or decision result (see Decisions). The behavior the PRD describes (explanation follows the reveal) is kept.
