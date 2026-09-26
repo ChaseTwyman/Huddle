@@ -53,13 +53,14 @@ describe('F8 knowledge levels', () => {
     const slot1 = presetKnowledge(preset, 0);
     expect(level(slot1.downs)).toBe('mastered');
     expect(level(slot1.holding_defensive)).toBe('familiar');
+    expect(level(slot1.fourth_down_decision)).toBe('mastered');
     const slot2 = presetKnowledge(preset, 1);
     expect(level(slot2.holding_defensive)).toBe('seen');
     expect(level(slot2.first_down_line)).toBe('mastered');
-    expect(level(slot2.field_goal)).toBe('familiar');
+    expect(level(slot2.two_point_conversion)).toBe('familiar');
     const slot5 = presetKnowledge(preset, 4);
     expect(level(slot5.downs)).toBe('mastered');
-    expect(level(slot5.punt_return)).toBe('seen');
+    expect(level(slot5.punt_return)).toBe('mastered');
     expect(level(slot5.holding_defensive)).toBe('seen');
     expect(level(slot5.safety)).toBe('new');
   });

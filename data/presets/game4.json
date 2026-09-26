@@ -1,7 +1,7 @@
 {
   "id": "game4",
   "label": "Simulated: Game 4 knowledge",
-  "_note": "Knowledge seeded by learner join order. Slots past the end reuse the last slot. \"basics\" means every concept with category basics. Starts from BUILD_PROMPT 6.8 and adds everyday concepts three games of watching would cover, so the demo segments show the fade (tuned with npm run simulate; thresholds untouched).",
+  "_note": "Knowledge seeded by learner join order. Slots past the end reuse the last slot. \"basics\" means every concept with category basics. Starts from BUILD_PROMPT 6.8; after three games everyone knows the everyday rules in the demo segments (4th downs, field goals, the clock), so Huddle stays quiet on those. The two showcase rules stay open: slot 1 (join Mom first) is one step from Mastered on defensive holding and Familiar on the two-point try, the others below her, so Huddle hands those explanations to her. Tuned with npm run simulate; thresholds untouched.",
   "slots": [
     {
       "mastered": [
@@ -17,15 +17,15 @@
         "incomplete_pass",
         "timeout",
         "kneel_down",
-        "two_minute_warning"
+        "two_minute_warning",
+        "fourth_down_decision",
+        "running_out_the_clock"
       ],
       "familiar": [
         "holding_defensive",
         "pass_interference_defensive",
         "automatic_first_down",
-        "two_point_conversion",
-        "fourth_down_decision",
-        "running_out_the_clock"
+        "two_point_conversion"
       ],
       "seen": []
     },
@@ -36,19 +36,20 @@
         "punt",
         "third_down",
         "incomplete_pass",
-        "timeout"
+        "timeout",
+        "field_goal",
+        "fourth_down_decision",
+        "kneel_down",
+        "running_out_the_clock",
+        "two_minute_warning",
+        "punt_return"
       ],
       "familiar": [
-        "field_goal",
-        "punt_return",
-        "kneel_down",
-        "two_minute_warning"
+        "extra_point",
+        "two_point_conversion"
       ],
       "seen": [
-        "holding_defensive",
-        "two_point_conversion",
-        "extra_point",
-        "fourth_down_decision"
+        "holding_defensive"
       ]
     },
     {
@@ -57,19 +58,18 @@
         "touchdown",
         "third_down",
         "incomplete_pass",
-        "timeout"
-      ],
-      "familiar": [
-        "punt",
+        "timeout",
         "field_goal",
-        "kneel_down"
-      ],
-      "seen": [
-        "punt_return",
-        "two_minute_warning",
         "fourth_down_decision",
-        "two_point_conversion",
+        "kneel_down",
+        "punt",
         "running_out_the_clock",
+        "two_minute_warning",
+        "punt_return"
+      ],
+      "familiar": [],
+      "seen": [
+        "two_point_conversion",
         "holding_defensive"
       ]
     }

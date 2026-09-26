@@ -631,7 +631,10 @@ export class Room {
   }
 
   /** Skip: close any open window early and cut the current pacing wait. */
+  private skips = 0;
+
   skip() {
+    this.skips++;
     for (const resolve of [...this.pendingPrompts.values()]) resolve(null);
     if (this.round?.open) this.round.close();
     for (const r of [...this.pendingSpeech.values()]) r();
@@ -993,9 +996,9 @@ export class Room {
     if (!candidates.length) return;
     const verdict = this.scheduler.canSpeak({ trigger, now: this.now(), qtr: play.qtr, windowOpen: this.windowsOpen > 0 });
     if (!verdict.ok) return;
-    // A decision explanation right after a storyline beat would crowd the room; flags always get theirs.
-    if (verdict.waitMs > 0 && trigger !== 'penalty') return;
-    if (afterBeat && trigger === 'decision') return;
+    // Flags and decisions always get their explanation (F4, F5); they wait out the minimum gap instead
+    // (e.g. after a storyline beat on the same play, like Hurts' two-point try).
+    void afterBeat;
 
     const handoffs: Record<string, string[]> = {};
     for (const c of candidates) {
@@ -1012,22 +1015,22 @@ export class Room {
     }, this.game.timeline.home, this.game.timeline.away);
     this.check(gen);
     if (decision.action === 'silent') return;
-    if (verdict.waitMs > 0) await this.pause(gen, verdict.waitMs);
+    // Re-check after the model call: the remaining gap has shrunk while it was thinking.
+    const again = this.scheduler.canSpeak({ trigger, now: this.now(), qtr: play.qtr, windowOpen: this.windowsOpen > 0 });
+    if (again.ok && again.waitMs > 0) await this.pause(gen, again.waitMs);
 
-    // Grounded detail: after a flag, the card may carry one unlocked fact about the flagged player.
-    if (decision.source === 'fallback' && trigger === 'penalty' && play.penalty?.player) {
+    // Grounded detail: after a flag, the card may carry one unlocked quote about the flagged player
+    // (e.g. Bradberry's), whether the card came from the model or the template.
+    if (trigger === 'penalty' && play.penalty?.player) {
       const fact = this.playerFacts(play).find((f) => f.includes(lastName(play.penalty!.player!)) && f.includes('"'));
-      if (fact && decision.card.body.length + fact.length < 279) decision.card = { ...decision.card, body: `${decision.card.body} ${fact}` };
+      if (fact && !decision.card.body.includes(fact) && decision.card.body.length + fact.length < 279) decision.card = { ...decision.card, body: `${decision.card.body} ${fact}` };
     }
 
-    const exposed = new Set(this.connectedLearners.map((l) => l.id));
     const target = decision.action === 'handoff' && decision.handoffTo ? this.players.get(decision.handoffTo) : undefined;
     if (target && target.connected) await this.flowHandoff(gen, play, trigger, decision, target);
     else await this.flowExplain(gen, play, trigger, decision);
-    for (const id of exposed) {
-      const p = this.players.get(id);
-      if (p) addExposure(p.knowledge, decision.conceptId);
-    }
+    // Everyone connected now (after the explanation) was in the room for it.
+    for (const p of this.connectedLearners) addExposure(p.knowledge, decision.conceptId);
     this.knowledgeChanged();
     this.touch();
   }
@@ -1074,6 +1077,7 @@ export class Room {
   }
 
   private async humanExplain(gen: number, play: TimelinePlay, trigger: Trigger, who: Player, decision: Extract<DirectorDecision, { action: 'explain' | 'handoff' }>) {
+    const skipsAtStart = this.skips;
     this.explaining = { playerId: who.id, name: first(who.name) };
     this.setCard(this.explainCard(decision, first(who.name), 'human'));
     await this.ask<boolean>(who, { id: nanoid(8), kind: 'done', title: decision.card.title, cheat: decision.cheat, closesAt: this.now() + this.win(WINDOWS.humanExplainMaxMs) }, this.win(WINDOWS.humanExplainMaxMs));
@@ -1093,6 +1097,8 @@ export class Room {
     this.scheduler.spoke({ now: this.now(), qtr: play.qtr, countsToBudget: trigger === 'play' });
     this.touch();
 
+    // Host pressed Next during the explanation: don't open a second round of prompts.
+    if (this.skips !== skipsAtStart) return;
     const listeners = this.connectedLearners.filter((l) => l.id !== who.id);
     const answers = await Promise.all(listeners.map((l) =>
       this.ask<'got_it' | 'confused'>(l, { id: nanoid(8), kind: 'feedback', title: decision.card.title, by: first(who.name), closesAt: this.now() + this.win(WINDOWS.feedbackMs) }, this.win(WINDOWS.feedbackMs))));

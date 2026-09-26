@@ -12,7 +12,13 @@ A laptop drives the TV (the shared screen). Everyone joins on their phone, which
 
 Product requirements: [`docs/PRD.md`](docs/PRD.md). Implementation spec: [`BUILD_PROMPT.md`](BUILD_PROMPT.md). Choices and deviations: [`DECISIONS.md`](DECISIONS.md).
 
-![Call It on the TV](docs/tv-callit.png)
+| Shared screen: Call It on the Bradberry flag | Phone: Call It |
+|---|---|
+| ![Call It on the TV](docs/tv-callit.png) | <img src="docs/phone-callit.png" width="260" alt="Call It on a phone"> |
+| **After the call: a learner explains (handoff)** | **Lobby** |
+| ![Mom is explaining](docs/tv-explain.png) | ![Lobby with room code and QR](docs/tv-lobby.png) |
+
+More in [`docs/`](docs/): setup, storylines, live field, host dock, phone join/profile/waiting.
 
 ## PRD traceability
 
@@ -27,7 +33,7 @@ Status: **done** = implemented and verified by the named test or script. "Manual
 | F5 | Call It | P0 | done | `server/game/callit.ts`, `Room.fetchCallIt` / `onFlag` / `onAnnounced`, `web/src/components/tv/PromptOverlay.tsx` | `callit.test.ts` (real penalty always among 4 distinct catalog options, junk LLM output → table, deterministic); **`spoilers.test.ts`** (every message, TTS line and non-Call It model input); `npm run smoke` (Call It on 3rd & 8 at PHI 15). |
 | F6 | The Director | P0 | done | `server/director/scheduler.ts`, `director.ts`, `templates.ts`, `server/ai/*`, `web/src/lib/tts.ts` | `scheduler.test.ts` (budgets, gap, windows, silence); `room.test.ts` (budgets in a real room, mute is immediate); `llm.test.ts` (slow model → template within 4 s); `npm run simulate` (quiet / normal / chatty budgets over a full game). |
 | F7 | "I got this" and role reversal | P0 | done | `Room.flowExplain` / `flowHandoff` / `humanExplain`, `web/src/components/phone/Prompts.tsx` | `room.test.ts` "F7" (take-it → fan explains, Still confused → short version; decline → Huddle within 1 s; handoff → +100 and Mastered); `npm run smoke` (offer after the call). |
-| F8 | Knowledge tracking and fade | P0 | done | `server/game/knowledge.ts`, `server/persistence/families.ts`, `data/presets/game1.json`, `game4.json` | `knowledge.test.ts` (every threshold, room level, handoff candidates, presets); `npm run simulate` (Game 4 preset: 58% fewer Huddle lines over segments A–C, 10 seeded runs); TV shows "Simulated: Game 4 knowledge". |
+| F8 | Knowledge tracking and fade | P0 | done | `server/game/knowledge.ts`, `server/persistence/families.ts`, `data/presets/game1.json`, `game4.json` | `knowledge.test.ts` (every threshold, room level, handoff candidates, presets); `npm run simulate` (Game 4 preset: 83% fewer Huddle lines over segments A–C, 10 seeded runs; Game 4 hands the two-point and holding explanations to Mom); TV shows "Simulated: Game 4 knowledge". |
 | F9 | Family scoreboard | P0 | done | `server/game/scoring.ts`, `web/src/components/tv/Rail.tsx` | `scoring.test.ts` (points, contrarian bonus, first-correct bonus, fan handicap, tie-break); `room.test.ts` "F9/F10" (board updates ≤ 0.5 s after a reveal). |
 | F10 | Post-game recap | P0 | done | `server/game/recap.ts`, `Room.onFinal`, `web/src/components/phone/PhoneRecap.tsx`, `Stages.tsx` | `room.test.ts` "F9/F10" (ready ≤ 8 s after the final whistle, lists concepts learned tonight); `npm run simulate` and `npm run smoke` (recap reached). Manual: Copy for group chat on a real phone. |
 | F11 | Plain-English ticker | P1 | done | `server/game/ticker.ts` (`plainTicker`), `Room.prefetchTicker` | `llm.test.ts` "F11" (rewrite used; a rewrite naming a penalty is rejected; "Flag on the play" kept; model sees only cleaned text); `spoilers.test.ts` covers ticker model inputs. |
@@ -89,6 +95,12 @@ The live-model path was **not** exercised in this build environment (no API key 
 - **Hotkeys:** Space play/pause · N next play · 1–9 segments · J jump list · M mute · T cycle talkativeness · G toggle the Game 4 preset · H host dock · Enter advance lobby / profiles / storylines.
 - **The fade:** press **G** before a segment to seed "Game 4" knowledge. The TV shows "Simulated: Game 4 knowledge"; Huddle stays quieter and hands explanations to learners. Knowledge seeds by **learner join order**: have Mom join first (slot 1 knows defensive holding).
 - **Recording:** use Demo pacing, record the TV window with a screen recorder and the couch with a separate camera. Keep a backup take. Don't put broadcast footage in the public video.
+
+## Video mode, sync tool, vision lab (P1)
+
+- **Vision lab** (`/lab/vision`): upload any broadcast screenshot; Llama 4 Scout reads the scorebug (down, distance, clock, score, FLAG) and the page shows the JSON. Needs a provider in `.env`; in mock mode it answers "no scorebug visible".
+- **Video mode:** pick a local video of the game on the setup page (or "Load game video" in the host dock). It stays on the laptop and is never uploaded. The TV shows the video instead of the drawn field. It pauses during Predict and Call It windows, and from the flag until the announcement, so the broadcast can't give the call away. Every 2 s the TV reads the scorebug ("Huddle sees: …" in the host dock, with a warning when it disagrees with the play data). At each flag the frame goes to the Call It model.
+- **Sync tool** (`/sync/2022_22_KC_PHI`): play the video and press Space at every snap. Save writes `data/games/<id>/video_sync.json`. Synced plays wait for the video to reach their snap. Unsynced plays use normal pacing.
 
 ## Before demoing: team review
 
