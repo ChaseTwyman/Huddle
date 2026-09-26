@@ -1,4 +1,5 @@
 import type { AiLogEntry, HostAction, RoomSnapshot } from '../../../../shared/types';
+import type { VisionChip } from './VideoPane';
 
 type Props = {
   snap: RoomSnapshot;
@@ -6,10 +7,13 @@ type Props = {
   control: (a: HostAction, v?: unknown) => void;
   showJump: boolean;
   voiceName: string;
+  hasVideo: boolean;
+  onVideo: (f: File | null) => void;
+  vision: VisionChip;
 };
 
 /** Host controls (toggle with H). Everything here also has a hotkey. */
-export function HostDock({ snap, aiLog, control, showJump, voiceName }: Props) {
+export function HostDock({ snap, aiLog, control, showJump, voiceName, hasVideo, onVideo, vision }: Props) {
   const s = snap.settings;
   const d = snap.demo;
   const opt = <T extends string>(label: string, action: HostAction, current: T, values: [T, string][]) => (
@@ -37,6 +41,19 @@ export function HostDock({ snap, aiLog, control, showJump, voiceName }: Props) {
         <button className={preset === 'game1' ? 'on' : ''} onClick={() => control('preset', 'game1')}>Game 1</button>
         <button className={preset === 'game4' ? 'on' : ''} onClick={() => control('preset', 'game4')}>Game 4 <kbd>G</kbd></button>
       </div>
+      <h4>Video mode</h4>
+      <div className="row">
+        <label style={{ display: 'inline-flex' }}><span className="btn" style={{ minHeight: 36, padding: '0 12px', fontSize: 14 }}>{hasVideo ? 'Change video' : 'Load game video'}</span>
+          <input type="file" accept="video/*" style={{ display: 'none' }} onChange={(e) => onVideo(e.target.files?.[0] ?? null)} /></label>
+        {hasVideo ? <button onClick={() => onVideo(null)}>Back to drawn field</button> : null}
+        <a href={`/sync/${snap.game.id}`} target="_blank" rel="noreferrer" style={{ color: 'var(--muted)', fontSize: 13 }}>Sync tool</a>
+      </div>
+      {snap.video.enabled ? (
+        <div className="muted" style={{ fontSize: 13 }}>
+          {snap.video.synced} snaps synced{snap.video.synced === 0 ? ' (plays use normal pacing until you sync)' : ''}
+          {vision ? <div style={{ marginTop: 6, color: vision.warning ? 'var(--flag)' : 'var(--chalk)' }}>Huddle sees: {vision.text}{vision.warning ? ` ⚠ ${vision.warning}` : ''} <span className="muted">({vision.source})</span></div> : null}
+        </div>
+      ) : null}
       <h4>Segments</h4>
       <div className="row">
         {d.segments.map((seg, i) => <button key={seg.id} onClick={() => control('jump', { segment: seg.id })} title={seg.label}><kbd>{i + 1}</kbd> {seg.label}</button>)}

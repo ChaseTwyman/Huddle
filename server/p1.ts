@@ -1,30 +1,13 @@
 import type express from 'express';
 import fs from 'node:fs';
 import path from 'node:path';
-import { z } from 'zod';
 import type { Clock } from './room/clock';
 import { LLM } from './ai/llm';
 import { readScorebug, scorebugChip } from './ai/vision';
-import { dataPath } from './paths';
-import { gameIndex } from './data/loadGame';
-
-export const VideoSync = z.object({
-  gameId: z.string(),
-  /** play idx → video seconds at the snap */
-  snaps: z.record(z.string().regex(/^\d+$/), z.number().nonnegative()),
-  updatedAt: z.string().optional(),
-});
-export type VideoSync = z.infer<typeof VideoSync>;
+import { gameIndex, loadGame } from './data/loadGame';
+import { VideoSync, loadVideoSync, syncFile } from './data/videoSync';
 
 const validGame = (id: string) => /^[\w-]+$/.test(id) && gameIndex().some((g) => g.id === id);
-const syncFile = (id: string) => dataPath('games', id, 'video_sync.json');
-
-export function loadVideoSync(gameId: string): VideoSync {
-  try {
-    if (fs.existsSync(syncFile(gameId))) return VideoSync.parse(JSON.parse(fs.readFileSync(syncFile(gameId), 'utf8')));
-  } catch { /* fall through to empty */ }
-  return { gameId, snaps: {} };
-}
 
 /** P1 routes: vision lab (F13) and video sync (F12). */
 export function registerP1Routes(app: express.Express, clock: Clock) {
@@ -38,6 +21,15 @@ export function registerP1Routes(app: express.Express, clock: Clock) {
     } catch (e) {
       res.status(400).json({ error: (e as Error).message });
     }
+  });
+
+  // Team authoring tool only (the sync page): lists plays with their public text so snaps can be matched to video.
+  app.get('/api/games/:id/sync-plays', (req, res) => {
+    if (!validGame(req.params.id)) { res.status(404).json({ error: 'unknown game' }); return; }
+    const plays = loadGame(req.params.id).timeline.plays
+      .filter((p) => p.kind !== 'end_of_period' && p.kind !== 'timeout')
+      .map((p) => ({ idx: p.idx, qtr: p.qtr, clock: p.clock, posteam: p.posteam, situation: p.down ? `${p.down} & ${p.goalToGo ? 'Goal' : p.ydstogo}` : p.kind, text: p.publicDesc }));
+    res.json(plays);
   });
 
   app.get('/api/games/:id/video-sync', (req, res) => {

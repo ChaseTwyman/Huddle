@@ -201,3 +201,28 @@ describe('F9/F10 scoreboard and recap', () => {
     expect(recap.groupChatText).toContain('Mom');
   });
 });
+
+describe('F12 video mode', () => {
+  it('holds each synced snap until the video reaches it, and seeks the video on a jump', async () => {
+    const snaps: string[] = [];
+    const { room, clock, transport } = harness({ mode: 'condensed' });
+    const origin = room.onEngineEvent.bind(room);
+    room.onEngineEvent = async (ev) => { if (ev.type === 'snap') snaps.push(`${ev.play.idx}@${clock.now()}`); return origin(ev); };
+    room.setProfile(room.joinPlayer({ name: 'Mom' }).id, learnerProfile);
+    room.setVideoMode(true, { gameId: 'fixture_mini', snaps: { '1': 100, '2': 130 } });
+    expect(room.settings.mode).toBe('full');
+    room.control('start_game', undefined);
+    await clock.advance(120_000);
+    expect(snaps.some((s) => s.startsWith('1@'))).toBe(false); // waiting for the video
+    room.control('video_time', 99.9);
+    await clock.advance(1000);
+    expect(snaps.some((s) => s.startsWith('1@'))).toBe(true);
+    expect(snaps.some((s) => s.startsWith('2@'))).toBe(false);
+    room.control('jump', { idx: 2 });
+    const snap = transport.messages.filter((m) => m.kind === 'snapshot').pop();
+    await clock.advance(100);
+    const after = transport.messages.filter((m) => m.kind === 'snapshot').pop();
+    expect(snap && after && after.kind === 'snapshot' && after.payload.video.seek?.t).toBe(126);
+    room.dispose();
+  });
+});

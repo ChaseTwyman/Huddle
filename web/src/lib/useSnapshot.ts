@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { AiLogEntry, HostAction, RoomSnapshot, SpeakLine } from '../../../shared/types';
 import { connect, type HuddleSocket } from './socket';
 
@@ -42,11 +42,10 @@ export function useTvConnection(code: string, hostToken: string | null, enabled:
     return () => { s.disconnect(); socketRef.current = null; };
   }, [code, hostToken, enabled]);
 
-  return {
-    snapshot, aiLog, isHost, error, connected,
-    control: (action, value) => socketRef.current?.emit('host:control', { action, value }),
-    spoken: (lineId) => socketRef.current?.emit('tv:spoken', { lineId }),
-  };
+  // Stable callbacks: effects that depend on them (video timers) must not restart on every snapshot.
+  const control = useCallback((action: HostAction, value?: unknown) => { socketRef.current?.emit('host:control', { action, value }); }, []);
+  const spoken = useCallback((lineId: string) => { socketRef.current?.emit('tv:spoken', { lineId }); }, []);
+  return { snapshot, aiLog, isHost, error, connected, control, spoken };
 }
 
 /** Server time is close enough to client time on a LAN; used for countdowns. */

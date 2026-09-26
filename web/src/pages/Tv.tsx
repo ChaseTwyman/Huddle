@@ -12,6 +12,8 @@ import { PromptOverlay } from '../components/tv/PromptOverlay';
 import { CaptionCard, Scoreboard, StorylineChips, Ticker } from '../components/tv/Rail';
 import { Halftime, Lobby, Profiles, Recap, Storylines } from '../components/tv/Stages';
 import { HostDock } from '../components/tv/HostDock';
+import { VideoPane, type VisionChip } from '../components/tv/VideoPane';
+import { getVideoFile, setVideoFile } from '../lib/videoStore';
 
 const TALK: Talkativeness[] = ['quiet', 'normal', 'chatty'];
 
@@ -28,6 +30,13 @@ export function Tv() {
   const [started, setStarted] = useState(false);
   const [dock, setDock] = useState(false);
   const [jumpOpen, setJumpOpen] = useState(false);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [vision, setVision] = useState<VisionChip>(null);
+  const pickVideo = (f: File | null) => {
+    setVideoFile(f);
+    setVideoUrl((old) => { if (old) URL.revokeObjectURL(old); return f ? URL.createObjectURL(f) : null; });
+  };
+  useEffect(() => { const f = getVideoFile(); if (f) setVideoUrl(URL.createObjectURL(f)); }, []);
   const speaker = useRef(new Speaker());
   const conn = useTvConnection(upper, hostToken, started, {
     onSpeak: (l) => speaker.current.say(l),
@@ -43,6 +52,13 @@ export function Tv() {
   const now = useNow(200) + skew;
 
   useEffect(() => { if (snap) speaker.current.setMuted(!snap.settings.voice); }, [snap?.settings.voice]);
+
+  // F12: turn video mode on for the room once the host TV has a video.
+  const videoEnabled = snap?.video.enabled ?? false;
+  useEffect(() => {
+    if (isHost && started && videoUrl && snap && !videoEnabled) control('video', true);
+    if (isHost && started && !videoUrl && videoEnabled) control('video', false);
+  }, [isHost, started, videoUrl, videoEnabled, !!snap, control]);
 
   useEffect(() => {
     if (!started) return;
@@ -84,6 +100,18 @@ export function Tv() {
 
   const windowMs = snap.prompt?.kind === 'callit' ? WINDOWS.callItMs : WINDOWS.predictMs;
   const liveLike = snap.phase === 'live';
+  const overlays = (
+    <>
+      {snap.status && !snap.prompt ? <div className="status-banner">{snap.status}</div> : null}
+      <PromptOverlay snap={snap} now={now} windowMs={windowMs} />
+      {snap.explaining ? (
+        <div className="explaining-banner">
+          <span className="dot" style={{ background: snap.players.find((p) => p.id === snap.explaining!.playerId)?.color ?? 'var(--good)' }} />
+          {snap.explaining.name} is explaining
+        </div>
+      ) : null}
+    </>
+  );
 
   return (
     <div className="tv">
@@ -95,16 +123,9 @@ export function Tv() {
       {liveLike ? (
         <>
           <Scorebug snap={snap} />
-          <Field snap={snap}>
-            {snap.status && !snap.prompt ? <div className="status-banner">{snap.status}</div> : null}
-            <PromptOverlay snap={snap} now={now} windowMs={windowMs} />
-            {snap.explaining ? (
-              <div className="explaining-banner">
-                <span className="dot" style={{ background: snap.players.find((p) => p.id === snap.explaining!.playerId)?.color ?? 'var(--good)' }} />
-                {snap.explaining.name} is explaining
-              </div>
-            ) : null}
-          </Field>
+          {videoUrl && snap.video.enabled
+            ? <VideoPane url={videoUrl} snap={snap} now={now} isHost={isHost} control={control} onVision={setVision}>{overlays}</VideoPane>
+            : <Field snap={snap}>{overlays}</Field>}
           <div className="rail">
             <Scoreboard snap={snap} />
             <CaptionCard snap={snap} />
@@ -113,7 +134,7 @@ export function Tv() {
           <Ticker snap={snap} />
         </>
       ) : null}
-      {isHost && dock ? <HostDock snap={snap} aiLog={conn.aiLog} control={control} showJump={jumpOpen} voiceName={speaker.current.voiceName} /> : null}
+      {isHost && dock ? <HostDock snap={snap} aiLog={conn.aiLog} control={control} showJump={jumpOpen} voiceName={speaker.current.voiceName} hasVideo={!!videoUrl} onVideo={pickVideo} vision={vision} /> : null}
       {!conn.connected ? <div className="status-banner" style={{ position: 'fixed', top: 12 }}>Reconnecting…</div> : null}
     </div>
   );

@@ -3,6 +3,7 @@ import { HostSetup } from './pages/HostSetup';
 import { Tv } from './pages/Tv';
 import { Play } from './pages/Play';
 import { VisionLab } from './pages/VisionLab';
+import { SyncTool } from './pages/SyncTool';
 
 export function App() {
   return (
@@ -12,6 +13,7 @@ export function App() {
       <Route path="/play/:code" element={<Play />} />
       <Route path="/play" element={<Play />} />
       <Route path="/lab/vision" element={<VisionLab />} />
+      <Route path="/sync/:gameId" element={<SyncTool />} />
       <Route path="*" element={<HostSetup />} />
     </Routes>
   );

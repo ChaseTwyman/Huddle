@@ -31,6 +31,11 @@ export class ReplayEngine implements GameSource {
   private demoSegmentIdx = 0;
   /** Multiplier applied to every pacing wait (smoke test speeds demo pacing up). */
   speed = 1;
+  /**
+   * Optional hold before each snap (F12 video mode): return a promise that resolves when the video reaches the
+   * play's synced snap time, or null to use normal pacing.
+   */
+  beforeSnap: ((play: TimelinePlay) => Promise<void> | null) | null = null;
 
   constructor(
     private timeline: Timeline,
@@ -219,7 +224,9 @@ export class ReplayEngine implements GameSource {
       return;
     }
     await this.emit(gen, { type: 'pre_snap', play });
-    await this.wait(gen, play.decision ? 1000 : pace.preSnapMs);
+    const hold = this.beforeSnap?.(play) ?? null;
+    if (hold) await this.guard(gen, hold);
+    else await this.wait(gen, play.decision ? 1000 : pace.preSnapMs);
 
     if (play.kind === 'penalty_only') {
       await this.emit(gen, { type: 'flag', play });

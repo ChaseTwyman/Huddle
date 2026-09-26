@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/setup.css';
 import type { GameIndexEntry, Mode, Pacing, Talkativeness } from '../../../shared/types';
 import { storage } from '../lib/socket';
+import { setVideoFile } from '../lib/videoStore';
 
 function Seg<T extends string>({ value, onChange, options }: { value: T; onChange: (v: T) => void; options: [T, string][] }) {
   return (
@@ -24,6 +25,7 @@ export function HostSetup() {
   const [talk, setTalk] = useState<Talkativeness>('normal');
   const [voice, setVoice] = useState(true);
   const [fanHandicap, setFanHandicap] = useState(true);
+  const [video, setVideo] = useState<File | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -46,6 +48,7 @@ export function HostSetup() {
       const j = await res.json();
       if (!res.ok) throw new Error(j.error ?? 'Could not create room');
       storage.session.set(`huddle:host:${j.code}`, j.hostToken);
+      setVideoFile(video);
       nav(`/tv/${j.code}?host=${j.hostToken}`);
     } catch (e) {
       setError((e as Error).message);
@@ -81,6 +84,10 @@ export function HostSetup() {
         <div className="field-row">
           <label>How much Huddle talks</label>
           <Seg value={talk} onChange={setTalk} options={[['quiet', 'Quiet'], ['normal', 'Normal'], ['chatty', 'Chatty']]} />
+        </div>
+        <div className="field-row">
+          <label htmlFor="video">Game video (optional, video mode): stays on this laptop, never uploaded</label>
+          <input id="video" type="file" accept="video/*" onChange={(e) => setVideo(e.target.files?.[0] ?? null)} style={{ paddingTop: 12 }} />
         </div>
         <div className="toggles">
           <label><input type="checkbox" checked={voice} onChange={(e) => setVoice(e.target.checked)} /> Voice on</label>

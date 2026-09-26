@@ -175,6 +175,8 @@ export type RoomSnapshot = {
     idx: number; total: number; paused: boolean; mode: string; pacing: string;
   };
   status: string | null; // short engine status line, e.g. "Whistle. Flag before the snap."
+  /** F12 video mode: whether the TV shows the local video, and a seek request after a jump. */
+  video: { enabled: boolean; synced: number; seek: { id: string; t: number } | null };
   /** Server clock at send time; clients use it to correct countdowns for clock skew. */
   serverNow: number;
 };
@@ -202,7 +204,8 @@ export type AiLogEntry = { at: number; task: string; source: 'llm' | 'cache' | '
 
 export type HostAction =
   | 'start_profiles' | 'start_game' | 'play' | 'pause' | 'next' | 'jump' | 'mode' | 'pacing'
-  | 'talkativeness' | 'voice' | 'preset' | 'reroll_storyline' | 'advance' | 'set_role';
+  | 'talkativeness' | 'voice' | 'preset' | 'reroll_storyline' | 'advance' | 'set_role'
+  | 'video' | 'video_time' | 'frame';
 
 // Socket payloads
 export type ClientToServer = {

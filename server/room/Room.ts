@@ -10,7 +10,8 @@ import type { Clock, TimerHandle } from './clock';
 import { sleep } from './clock';
 import type { Transport } from './transport';
 import type { LLM } from '../ai/llm';
-import { CALLIT_SYSTEM } from '../ai/prompts';
+import { CALLIT_SYSTEM, CALLIT_VIDEO_NOTE } from '../ai/prompts';
+import { loadVideoSync, type VideoSync } from '../data/videoSync';
 import { CallItOut } from '../ai/schemas';
 import { loadGame, type GameData } from '../data/loadGame';
 import { concept } from '../data/concepts';
@@ -232,6 +233,7 @@ export class Room {
         mode: this.engine.modeName, pacing: this.engine.pacingKey,
       },
       status: this.status,
+      video: { enabled: this.videoMode, synced: this.videoSync ? Object.keys(this.videoSync.snaps).length : 0, seek: this.videoSeek },
       serverNow: this.now(),
     };
   }
@@ -605,6 +607,16 @@ export class Room {
         if (p && p.role === 'learner') void this.assignOne(p, p.storyline ? [p.storyline.storylineId] : []);
         break;
       }
+      case 'video': this.setVideoMode(value === true); break;
+      case 'video_time': if (typeof value === 'number' && Number.isFinite(value)) this.onVideoTime(value); break;
+      case 'frame': {
+        const f = value as { kind?: string; image?: string } | undefined;
+        if (f?.kind === 'flag' && typeof f.image === 'string' && f.image.startsWith('data:image/') && f.image.length < 1_500_000) {
+          this.flagFrame = f.image;
+          this.flagFrameWaiter?.();
+        }
+        break;
+      }
       case 'set_role': {
         const v = value as { playerId?: string; role?: string } | undefined;
         const p = v?.playerId ? this.players.get(v.playerId) : undefined;
@@ -627,7 +639,7 @@ export class Room {
   }
 
   jump(value: unknown) {
-    const v = (value ?? {}) as { idx?: number; segment?: string; moment?: string };
+    const v = (value ?? {}) as { idx?: number; segment?: string; moment?: string; fromVideo?: boolean };
     let idx: number | undefined;
     if (v.segment) idx = this.game.moments.segments.find((s) => s.id === v.segment)?.startIdx;
     else if (v.moment) {
@@ -650,7 +662,14 @@ export class Room {
     if (this.game.timeline.plays[idx].qtr >= 3) this.revealed.add('halftime');
     this.started = true;
     this.phase = 'live';
-    if (v.segment) this.engine.jumpToSegment(v.segment);
+    if (this.videoMode && !v.fromVideo) {
+      // Seek the TV's video a few seconds before the nearest synced snap at or before the target.
+      let t: number | undefined;
+      for (let i = idx; i >= 0 && t === undefined; i--) t = this.snapTime(i);
+      if (t !== undefined) this.videoSeek = { id: nanoid(6), t: Math.max(0, t - 4) };
+    }
+    for (const w of this.videoWaiters.splice(0)) w.resolve();
+    if (v.segment && !this.videoMode) this.engine.jumpToSegment(v.segment);
     else this.engine.jumpTo(idx);
     this.settings.mode = this.engine.modeName;
     this.touch();
@@ -673,6 +692,67 @@ export class Room {
       p.knowledgeStart = structuredClone(p.knowledge);
     });
     this.touch();
+  }
+
+  // ---------------------------------------------------------------- F12 video mode
+
+  private videoMode = false;
+  private videoSync: VideoSync | null = null;
+  private videoTime = 0;
+  private videoWaiters: { t: number; resolve: () => void }[] = [];
+  private videoSeek: { id: string; t: number } | null = null;
+  private flagFrame: string | null = null;
+  private flagFrameWaiter: (() => void) | null = null;
+
+  private snapTime(idx: number): number | undefined {
+    return this.videoSync?.snaps[String(idx)];
+  }
+
+  /** Video mode: the engine waits for the video to reach each synced snap; the whole game plays (full mode). */
+  setVideoMode(on: boolean, sync?: VideoSync) {
+    this.videoMode = on;
+    if (on) {
+      this.videoSync = sync ?? loadVideoSync(this.game.timeline.gameId);
+      this.settings.mode = 'full';
+      this.engine.setMode('full');
+      this.engine.beforeSnap = (play) => this.videoHold(play);
+    } else {
+      this.engine.beforeSnap = null;
+      for (const w of this.videoWaiters.splice(0)) w.resolve();
+    }
+    this.touch();
+  }
+
+  private videoHold(play: TimelinePlay): Promise<void> | null {
+    const t = this.snapTime(play.idx);
+    if (!this.videoMode || t === undefined) return null;
+    if (this.videoTime >= t - 0.3) return Promise.resolve();
+    return new Promise<void>((resolve) => this.videoWaiters.push({ t, resolve }));
+  }
+
+  /** The TV reports the video's current time (host only, about twice a second). */
+  onVideoTime(t: number) {
+    const prev = this.videoTime;
+    this.videoTime = t;
+    const ready = this.videoWaiters.filter((w) => t >= w.t - 0.3);
+    this.videoWaiters = this.videoWaiters.filter((w) => t < w.t - 0.3);
+    ready.forEach((w) => w.resolve());
+    if (!this.videoMode || !this.videoSync || !this.started) return;
+    // Someone scrubbed the video: follow it to the play at that time.
+    if (Math.abs(t - prev) > 20) {
+      const entries = Object.entries(this.videoSync.snaps).map(([i, v]) => [Number(i), v] as const).sort((a, b) => a[1] - b[1]);
+      const at = entries.filter(([, v]) => v <= t + 1).pop();
+      if (at && Math.abs(at[0] - this.engine.currentIdx) > 1) this.jump({ idx: at[0], fromVideo: true });
+    }
+  }
+
+  private async waitFlagFrame(ms: number): Promise<string | null> {
+    if (this.flagFrame) return this.flagFrame;
+    await new Promise<void>((resolve) => {
+      const t = this.clock.setTimeout(() => { this.flagFrameWaiter = null; resolve(); }, ms);
+      this.flagFrameWaiter = () => { this.clock.clearTimeout(t); this.flagFrameWaiter = null; resolve(); };
+    });
+    return this.flagFrame;
   }
 
   // ---------------------------------------------------------------- engine events
@@ -791,7 +871,7 @@ export class Room {
     }
   }
 
-  private async fetchCallIt(play: TimelinePlay): Promise<CallItRound> {
+  private async fetchCallIt(play: TimelinePlay, frame?: string): Promise<CallItRound> {
     const pen = play.penalty!;
     const catalog = catalogFor(play);
     const user = JSON.stringify({
@@ -805,7 +885,9 @@ export class Room {
       catalog: catalog.map((id) => ({ id, name: concept(id).name })),
     }, null, 1);
     const res = await this.llm.json({
-      task: 'callit', model: 'fast', system: CALLIT_SYSTEM, user, schema: CallItOut, timeoutMs: 2500, temperature: 0.3,
+      task: 'callit', model: frame ? 'vision' : 'fast', system: CALLIT_SYSTEM,
+      user: frame ? `${user}\n\n${CALLIT_VIDEO_NOTE}` : user, ...(frame ? { images: [frame] } : {}),
+      schema: CallItOut, timeoutMs: 2500, temperature: 0.3,
       fallback: () => ({ distractors: fallbackDistractors(play, pen.conceptId) }),
     });
     return buildCallIt(play, res.value.distractors, res.source);
@@ -816,6 +898,13 @@ export class Room {
     this.status = play.kind === 'penalty_only' ? 'Whistle. Flag before the snap.' : 'Flag on the play!';
     if (play.kind === 'penalty_only') this.ticker = 'Flag on the play.';
     this.touch();
+    this.flagFrame = null;
+    if (this.videoMode) {
+      // F13: the TV captures the frame at the flag; include it in the distractor call when it arrives in time.
+      const frame = await this.waitFlagFrame(this.win(1200));
+      this.check(gen);
+      if (frame) this.callItCache.set(play.idx, this.fetchCallIt(play, frame));
+    }
     if (!this.callItCache.has(play.idx)) this.callItCache.set(play.idx, this.fetchCallIt(play));
     const callit = await this.callItCache.get(play.idx)!;
     this.check(gen);
