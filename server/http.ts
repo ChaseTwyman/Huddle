@@ -8,6 +8,7 @@ import { gameIndex } from './data/loadGame';
 import type { RoomManager } from './room/RoomManager';
 import type { Clock } from './room/clock';
 import { EspnSource, LiveGame, ReplaySource, fetchSummary, listLiveGames } from './live/feed';
+import { allPlays } from './live/espn';
 import { ROOT } from './paths';
 
 export const CreateRoomBody = z.object({
@@ -72,6 +73,11 @@ export function createHttpApp(manager: RoomManager, opts: { prod: boolean; port:
         const [, kind, leagueKey, eventId] = liveMatch;
         const league = leagueKey === 'cfb' ? 'college' : 'nfl';
         const first = await fetchSummary(eventId, league);
+        // Some games (often smaller college games) are live but ESPN posts no play-by-play for them: nothing to follow.
+        if (kind === 'live' && first.header.competitions[0]?.status.type.state === 'in' && allPlays(first).length === 0) {
+          res.status(409).json({ error: "ESPN isn't posting play-by-play for this game, so Huddle can't follow it. Pick another game." });
+          return;
+        }
         const source = kind === 'live' ? new EspnSource(eventId, league) : new ReplaySource(first, opts.clock, b.replaySpeed ?? 1);
         const live = new LiveGame(first, source, opts.clock, 4000, league);
         if (kind === 'replay') live.data.timeline.title = live.data.timeline.title.replace('(live)', '(replay)');

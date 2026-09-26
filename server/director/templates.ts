@@ -27,7 +27,8 @@ export function sourceLine(c: Concept, extra?: string): string {
 
 export function cardFor(c: Concept, penaltyName?: string): { title: string; body: string } {
   const title = (penaltyName ?? c.name).slice(0, 40);
-  const body = [c.full, c.detail && c.category !== 'penalty' ? c.detail : null].filter(Boolean).join(' ').slice(0, 280);
+  // The card's `detail` restates `full` in fewer words; showing both reads as a repeat.
+  const body = c.full.slice(0, 280);
   return { title, body };
 }
 

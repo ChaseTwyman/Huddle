@@ -17,7 +17,7 @@ export function PhoneRecap({ recap }: { recap: NonNullable<PlayerView['recap']> 
       {me ? (
         <div className="card-sm" style={{ borderTop: `6px solid ${me.color}` }}>
           <div className="title">#{me.rank} · {me.headline}</div>
-          <div className="muted" style={{ fontFamily: 'var(--mono)', fontSize: 14, margin: '6px 0' }}>
+          <div className="muted" style={{ fontSize: 15, margin: '6px 0', fontVariantNumeric: 'tabular-nums' }}>
             {me.points} pts · Call It {me.callIt.correct}/{me.callIt.total} · Predict {me.predict.correct}/{me.predict.total}
           </div>
           <div>{me.bestMoment}</div>

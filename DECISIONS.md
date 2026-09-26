@@ -56,6 +56,8 @@ One line per ambiguous choice made during the build.
 - Kickoff (team request): before the first play, a practice Call It (false start, no points) plus a spoken kickoff line; the host welcome is spoken when profiles open. Nothing from practice (card, round, phone result) survives into the game, so the spoiler check still holds. Skipped when joining a live game already in progress; a replay's clock starts at kickoff so its 30 s delay absorbs the practice. `practice: false` turns it off.
 - Voice: ElevenLabs is used whenever `ELEVENLABS_API_KEY` is set (`TTS_PROVIDER=browser` forces the built-in voice). A synthesized chime plays before Huddle explains and a whistle before the referee's announcement; in video mode the broadcast audio ducks to 20% while Huddle talks.
 - One-tap setup: "Start game night" creates the room and opens the lobby with sound already unlocked (that tap is the browser's required gesture), so the TV's Start screen is skipped. Classic game tiles never show the final score.
+- Live games ESPN is not posting play-by-play for (seen on a live Big Ten game: the summary has no `drives` at all) are refused at room creation with a message, instead of a TV that waits forever.
+- Team colors that are nearly black on the dark UI (Ole Miss navy) are drawn with the team's secondary color on the scorebug chip, end zone and possession arrow.
 - Design refresh (team request, "less vibecoded, more like a Meta product"): Inter as the only typeface, neutral graphite surfaces, one accent blue for actions, flag yellow and turf reserved for football meaning, pill buttons, hairline borders. This replaces BUILD_PROMPT 11.1's Big Shoulders / IBM Plex "stadium night" look; size minimums (TV 24px, phone 18px text and 64px buttons) are kept.
 
 # PRD deviations

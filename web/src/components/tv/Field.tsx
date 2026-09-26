@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { teamColor } from '../../lib/color';
 import type { RoomSnapshot, TeamInfo } from '../../../../shared/types';
 
 const W = 1200;
@@ -15,7 +16,7 @@ function EndZone({ side, team }: { side: 'left' | 'right'; team: TeamInfo }) {
   const x0 = side === 'left' ? 0 : 1100;
   return (
     <g>
-      <rect x={x0} y={0} width={100} height={H} fill={hexA(team.primary, 0.35)} />
+      <rect x={x0} y={0} width={100} height={H} fill={hexA(teamColor(team), 0.35)} />
       <text x={x0 + 50} y={H / 2} fill="rgba(242,245,239,0.85)" fontFamily="Inter, system-ui, sans-serif" fontWeight={700}
         fontSize={64} textAnchor="middle" dominantBaseline="middle" transform={`rotate(${side === 'left' ? -90 : 90} ${x0 + 50} ${H / 2})`} letterSpacing={8}>
         {team.abbr}
@@ -98,7 +99,7 @@ export function Field({ snap, children }: { snap: RoomSnapshot; children?: React
         {/* ball + possession arrow */}
         <g className="ball-g" style={{ transform: `translateX(${x(ballAbs)}px)`, transitionDuration: `${f?.animateMs ?? 0}ms` }}>
           {possTeam ? (
-            <polygon points={dir === 1 ? '28,-12 52,0 28,12' : '-28,-12 -52,0 -28,12'} transform={`translate(0 ${H / 2})`} fill={possTeam.primary} stroke="var(--chalk)" strokeWidth={2} />
+            <polygon points={dir === 1 ? '28,-12 52,0 28,12' : '-28,-12 -52,0 -28,12'} transform={`translate(0 ${H / 2})`} fill={teamColor(possTeam)} stroke="var(--chalk)" strokeWidth={2} />
           ) : null}
           <g transform={`translate(0 ${H / 2})`}>
             <ellipse rx={20} ry={12} fill="#8B4A2B" stroke="#5A2F1B" strokeWidth={2} />

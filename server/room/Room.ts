@@ -596,6 +596,7 @@ export class Room {
     this.started = true;
     this.gen++;
     this.phase = 'live';
+    this.lastEngine = { at: this.now(), what: 'kickoff' };
     for (const p of this.players.values()) p.knowledgeStart = structuredClone(p.knowledge);
     this.touch();
     void this.kickoff(this.gen);
@@ -639,13 +640,13 @@ export class Room {
   private async practiceRound(gen: number) {
     this.practicing = true;
     // Fixed order so the right answer (false start) isn't first.
-    const order = ['pass_interference_defensive', 'false_start', 'face_mask', 'holding_offensive'].map((id) => ({ id, label: concept(id, this.league).name }));
+    const order = ['pass_interference_defensive', 'false_start', 'face_mask', 'holding_offensive'].map((cid, i) => ({ id: 'abcd'[i], label: concept(cid, this.league).name }));
     const roundP = this.openRound('callit', -1, 'Practice: a lineman jumps before the snap. Flag! What was the call?', order, 12_000);
     await this.speak(gen, 'Before kickoff, a practice round. No points. Check your phones.', 'intro', 1);
     const r = await roundP;
     this.check(gen);
-    const correct = 'false_start';
-    const c = concept(correct, this.league);
+    const correct = 'b'; // false start
+    const c = concept('false_start', this.league);
     r.reveal = {
       correctOptionId: correct,
       results: [...r.answers.entries()].map(([playerId, a]) => ({ playerId, correct: a.optionId === correct, points: 0 })),
@@ -656,7 +657,8 @@ export class Room {
       if (p) p.lastResult = { id: nanoid(6), correct: x.correct, points: 0, label: x.correct ? 'Nailed it. Practice only.' : `It was: ${c.name}` };
     }
     this.setCard({ kind: 'explain', title: `Practice · ${c.name}`, body: c.full, by: 'Huddle', source: 'Practice round · no points' });
-    await this.speak(gen, `It was a ${c.name.toLowerCase()}. ${c.full}`, 'intro', 1);
+    // `full` already names the foul ("False start: …"), so it can stand alone.
+    await this.speak(gen, `The answer: ${c.full}`, 'intro', 1);
     await this.pause(gen, this.win(1500));
     // Nothing from practice may linger into the real game.
     this.round = null;
@@ -1451,6 +1453,7 @@ export class Room {
   /** Watchdog: describe a live game whose engine has been quiet for longer than `ms` (null if healthy). */
   stallReport(ms: number): string | null {
     if (this.phase !== 'live' || this.engine.paused || !this.started) return null;
+    if (this.live && this.game.timeline.plays.length === 0) return null; // waiting for the feed's first play, not stalled
     const quiet = this.now() - this.lastEngine.at;
     if (quiet < ms) return null;
     return `quiet ${Math.round(quiet / 1000)}s after "${this.lastEngine.what}"; windows open ${this.windowsOpen}; prompts pending ${this.pendingPrompts.size}; speech pending ${this.pendingSpeech.size}; TVs ${this.tvCount}`;

@@ -267,7 +267,7 @@ describe('Kickoff: practice Call It', () => {
   it('opens a no-points practice round before the first play, then clears it before the game starts', async () => {
     let practiceId: string | null = null;
     const { room, clock, transport } = harness({}, (id, v, r) => {
-      if (v.prompt?.kind === 'callit' && /Practice/.test(v.prompt.question)) { practiceId = v.prompt.id; r.answer(id, v.prompt.id, 'false_start'); }
+      if (v.prompt?.kind === 'callit' && /Practice/.test(v.prompt.question)) { practiceId = v.prompt.id; r.answer(id, v.prompt.id, 'b'); /* b = false start */ }
     });
     const p = room.joinPlayer({ name: 'Mom' });
     room.setProfile(p.id, learnerProfile as never);

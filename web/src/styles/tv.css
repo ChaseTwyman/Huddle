@@ -220,6 +220,7 @@
   padding: 18px; font-size: 15px; display: flex; flex-direction: column; gap: 14px; overflow: auto;
   box-shadow: var(--shadow-2); animation: rise 200ms var(--ease);
 }
+.dock > * { flex-shrink: 0; }
 .dock h4 { margin: 0; font-size: 13px; font-weight: 600; color: var(--muted); }
 .dock .row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .dock button { min-height: 36px; padding: 0 14px; border-radius: 999px; background: var(--surface-2); border: 0; font-size: 14px; font-weight: 600; }

@@ -9,7 +9,7 @@
 .setup-top .top-link { font-size: 15px; color: var(--muted); text-decoration: none; padding: 8px 14px; border-radius: 999px; background: var(--surface-2); }
 .setup-top .top-link:hover { color: var(--chalk); }
 .hero { width: min(640px, 100%); display: grid; gap: 10px; margin-top: 12px; }
-.hero h1 { font-size: clamp(34px, 6vw, 52px); letter-spacing: -0.035em; line-height: 1.02; }
+.hero h1 { text-wrap: balance; hyphens: manual; font-size: clamp(34px, 6vw, 52px); letter-spacing: -0.035em; line-height: 1.02; }
 .hero p { margin: 0; color: var(--muted); font-size: 18px; max-width: 34em; }
 .setup-card {
   width: min(640px, 100%); display: grid; gap: 18px;

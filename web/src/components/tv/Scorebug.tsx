@@ -1,9 +1,10 @@
 import type { RoomSnapshot, TeamInfo } from '../../../../shared/types';
+import { teamColor } from '../../lib/color';
 
 function Team({ t, score, hasBall, timeouts }: { t: TeamInfo; score: number; hasBall: boolean; timeouts: number | null }) {
   return (
     <div className="sb-team">
-      <span className="chip" style={{ background: t.primary }} />
+      <span className="chip" style={{ background: teamColor(t) }} />
       <span className="abbr">{t.abbr}</span>
       {hasBall ? <span className="ball" aria-label="has the ball" /> : null}
       <span className="score">{score}</span>

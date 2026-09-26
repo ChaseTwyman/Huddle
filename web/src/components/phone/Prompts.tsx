@@ -24,7 +24,7 @@ export function PromptScreen({ prompt: p, now, send }: { prompt: PlayerPrompt; n
       return (
         <div className={`stack ${p.kind}`}>
           {cd}
-          <div className="step">{p.kind === 'callit' ? 'Flag on the play · Call it' : 'Predict'}</div>
+          <div className="step">{/^Practice/.test(p.question) ? 'Practice round · no points' : p.kind === 'callit' ? 'Flag on the play · Call it' : 'Predict'}</div>
           <h2>{p.question}</h2>
           {p.options.map((o) => {
             const locked = p.lockedOptionId === o.id;

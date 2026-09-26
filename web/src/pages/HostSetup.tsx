@@ -123,7 +123,7 @@ export function HostSetup() {
       </header>
 
       <section className="hero">
-        <h1>Football night, with a co-host.</h1>
+        <h1>Football night, with a co&#8209;host.</h1>
         <p>Everyone plays along on their phone. Huddle explains the rules as they come up, and talks less as your family learns.</p>
       </section>
 

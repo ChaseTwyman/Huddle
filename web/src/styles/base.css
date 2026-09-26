@@ -10,7 +10,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-h1, h2, h3, .display { font-family: var(--display); font-weight: 700; letter-spacing: -0.02em; margin: 0; line-height: 1.1; }
+h1, h2, h3, .display { font-family: var(--display); font-weight: 700; letter-spacing: -0.02em; margin: 0; line-height: 1.1; text-wrap: balance; }
 .mono { font-family: var(--mono); }
 .muted { color: var(--muted); }
 .num { font-variant-numeric: tabular-nums; }
