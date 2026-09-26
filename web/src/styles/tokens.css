@@ -1,0 +1,22 @@
+:root {
+  --bg: #0B120E;
+  --surface: #111B15;
+  --surface-2: #17241C;
+  --line: #24332A;
+  --chalk: #F2F5EF;
+  --muted: #9FB0A5;
+  --turf: #1D4D2E;
+  --turf-stripe: #1F5532;
+  --flag: #F5C518;
+  --los: #3D8BFF;
+  --good: #3DDC84;
+  --bad: #FF6B6B;
+  --display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+  --body: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --radius: 14px;
+  --radius-lg: 22px;
+  --gap: 16px;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
